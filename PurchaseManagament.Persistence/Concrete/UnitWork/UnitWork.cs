@@ -17,26 +17,7 @@ namespace PurchaseManagament.Persistence.Concrete.UnitWork
             _context = context;
         }
 
-        public bool Commit()
-        {
-            var result = false;
-
-            using (var transaction = _context.Database.BeginTransaction())
-            {
-                try
-                {
-                    _context.SaveChangesAsync();
-                    transaction.CommitAsync();
-                    result = true;
-                }
-                catch
-                {
-                    transaction.RollbackAsync();
-                    throw;
-                }
-            }
-            return result;
-        }
+        
 
         public async Task<bool> CommitAsync()
         {

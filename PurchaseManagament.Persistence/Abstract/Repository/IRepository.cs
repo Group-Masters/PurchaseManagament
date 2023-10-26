@@ -21,6 +21,7 @@ namespace PurchaseManagament.Persistence.Abstract.Repository
         #endregion
 
         #region GetByFilter Methods
+        Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
         Task<T> GetBySpesificFilter(Expression<Func<T, bool>> filter = null);
         Task<IEnumerable<T>> GetByFilter(Expression<Func<T, bool>> filter = null);
         Task<T> GetBySpesificFilterAsNoTracking(Expression<Func<T, bool>> filter = null);

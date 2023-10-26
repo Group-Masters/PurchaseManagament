@@ -6,6 +6,6 @@ namespace PurchaseManagament.Persistence.Abstract.UnitWork
     {
         IRepository<T> GetRepository<T>() where T : class;
         Task<bool> CommitAsync();
-        bool Commit();
+    
     }
 }

@@ -21,7 +21,12 @@ namespace PurchaseManagament.Persistence.Concrete.Repositories
         {
             _dbSet.Add(entity);
         }
-
+        public  async Task<bool> AnyAsync(Expression<Func<T, bool>> filter )
+        {
+            var result = await EF.CompileAsyncQuery((PurchaseManagamentContext ctx) => ctx.Set<T>().Any(filter)).Invoke( _context);
+            return result;
+        }
+  
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
