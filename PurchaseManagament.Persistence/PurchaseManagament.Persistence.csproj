@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\UnitWork\" />
     <Folder Include="Concrete\Mappings\" />
-    <Folder Include="Concrete\UnitWork\" />
   </ItemGroup>
 
   <ItemGroup>
