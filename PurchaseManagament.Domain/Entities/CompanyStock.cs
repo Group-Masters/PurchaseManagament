@@ -15,6 +15,7 @@ namespace PurchaseManagament.Domain.Entities
 
         public Company Company { get; set; }
         public Product Product { get; set; }
+        public IEnumerable<StockOperations> StockOperations { get; set; }
 
     }
 }

@@ -11,5 +11,7 @@ namespace PurchaseManagament.Domain.Entities
     {
         public string  Name { get; set; }
         public IEnumerable<CompanyDepartment> CompanyDepartments { get; set; }
+        public IEnumerable<CompanyStock> CompanyStocks { get; set; }
+
     }
 }

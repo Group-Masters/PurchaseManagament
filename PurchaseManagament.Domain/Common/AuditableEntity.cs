@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PurchaseManagament.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,11 @@ namespace PurchaseManagament.Domain.Common
         public DateTime? ModifiedDate { get; set; }
       
         public string CreatedIP { get; set; }
-        public string CreatedBy { get; set; }
-        public string? ModifiedBy { get; set; }
+        public string CreatedById { get; set; }
+        public string? ModifiedById { get; set; }
         public string? ModifiedIP { get; set; }
+        public Employee CreatedBy { get; set; }
+        public Employee ModifiedBy { get; set; }
 
     }
 }
