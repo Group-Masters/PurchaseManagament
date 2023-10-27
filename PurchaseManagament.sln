@@ -3,19 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.Domain", "PurchaseManagament.Domain\PurchaseManagament.Domain.csproj", "{0706C3F3-8C82-424F-B208-8E24F91CEEC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.Domain", "PurchaseManagament.Domain\PurchaseManagament.Domain.csproj", "{0706C3F3-8C82-424F-B208-8E24F91CEEC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.Persistence", "PurchaseManagament.Persistence\PurchaseManagament.Persistence.csproj", "{30F528E7-EBAE-4295-93B3-206F80F2DA09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.Persistence", "PurchaseManagament.Persistence\PurchaseManagament.Persistence.csproj", "{30F528E7-EBAE-4295-93B3-206F80F2DA09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.Application", "PurchaseManagament.Application\PurchaseManagament.Application.csproj", "{0F4E7FE2-161F-4298-BA6B-D37973F5E509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.Application", "PurchaseManagament.Application\PurchaseManagament.Application.csproj", "{0F4E7FE2-161F-4298-BA6B-D37973F5E509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.API", "PurchaseManagament.API\PurchaseManagament.API.csproj", "{694D6DC3-AEC8-42D5-872A-A304C91651A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.API", "PurchaseManagament.API\PurchaseManagament.API.csproj", "{694D6DC3-AEC8-42D5-872A-A304C91651A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.UI", "PurchaseManagament.UI\PurchaseManagament.UI.csproj", "{93A4C5B3-E594-4F1A-8831-DE009CB9CFCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.UI", "PurchaseManagament.UI\PurchaseManagament.UI.csproj", "{93A4C5B3-E594-4F1A-8831-DE009CB9CFCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.Utils", "PurchaseManagament.Utils\PurchaseManagament.Utils.csproj", "{608D4EA0-649E-4D07-A86A-56AF9A32FDF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.Utils", "PurchaseManagament.Utils\PurchaseManagament.Utils.csproj", "{608D4EA0-649E-4D07-A86A-56AF9A32FDF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchaseManagament.Insfracture", "PurchaseManagament.Insfracture\PurchaseManagament.Insfracture.csproj", "{5E8D3DAA-EADD-41B9-859E-187B9F87B441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PurchaseManagament.Insfracture", "PurchaseManagament.Insfracture\PurchaseManagament.Insfracture.csproj", "{5E8D3DAA-EADD-41B9-859E-187B9F87B441}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Core", "1-Core", "{0F7330A4-6D16-45D9-9203-E02A346F6FB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Infraturucture", "2-Infraturucture", "{FE0FB85C-ECA0-40DA-9E7C-269BCB6F8243}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-api", "3-api", "{A7150AB1-8214-436D-9EB6-D068056CA95B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Presentation", "4-Presentation", "{00609701-670A-4B97-A7D1-184B31DD44EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +62,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0706C3F3-8C82-424F-B208-8E24F91CEEC4} = {0F7330A4-6D16-45D9-9203-E02A346F6FB6}
+		{30F528E7-EBAE-4295-93B3-206F80F2DA09} = {FE0FB85C-ECA0-40DA-9E7C-269BCB6F8243}
+		{0F4E7FE2-161F-4298-BA6B-D37973F5E509} = {0F7330A4-6D16-45D9-9203-E02A346F6FB6}
+		{694D6DC3-AEC8-42D5-872A-A304C91651A5} = {A7150AB1-8214-436D-9EB6-D068056CA95B}
+		{93A4C5B3-E594-4F1A-8831-DE009CB9CFCB} = {00609701-670A-4B97-A7D1-184B31DD44EB}
+		{608D4EA0-649E-4D07-A86A-56AF9A32FDF9} = {FE0FB85C-ECA0-40DA-9E7C-269BCB6F8243}
+		{5E8D3DAA-EADD-41B9-859E-187B9F87B441} = {FE0FB85C-ECA0-40DA-9E7C-269BCB6F8243}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {205D516E-1E61-41B7-9503-29EB391CBE39}
