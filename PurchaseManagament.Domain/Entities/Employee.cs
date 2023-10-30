@@ -18,6 +18,7 @@ namespace PurchaseManagament.Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public string BirthYear { get; set; }
+        public Gender Gender { get; set; }
 
         public IEnumerable<CompanyDepartment> CompanyDepartment { get; set; }
         public EmployeeDetail EmployeeDetail { get; set; }
@@ -46,5 +47,11 @@ namespace PurchaseManagament.Domain.Entities
 
 
         
+    }
+
+    public  enum Gender
+    {
+        Male=1,
+        Female,
     }
 }
