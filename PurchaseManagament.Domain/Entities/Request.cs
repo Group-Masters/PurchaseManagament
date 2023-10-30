@@ -13,12 +13,14 @@ namespace PurchaseManagament.Domain.Entities
         public long ProductId { get; set; }
         public long StatusId { get; set; }
         public long approvingEmployeeId { get; set; }
+        public long RequestEmployeeId { get; set; }
         public string Details { get; set; }
         public double Quantity { get; set; }
 
         public Product Product { get; set; }
         public Status Status { get; set; }
         public Employee ApprovedEmployee { get; set; }
+        public Employee RequestEmployee { get; set; }
         public IEnumerable<Offer> Offers { get; set; }
     }
 }

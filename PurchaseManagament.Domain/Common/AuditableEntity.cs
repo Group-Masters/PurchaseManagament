@@ -13,11 +13,12 @@ namespace PurchaseManagament.Domain.Common
         public DateTime? ModifiedDate { get; set; }
       
         public string CreatedIP { get; set; }
-        public string CreatedById { get; set; }
-        public string? ModifiedById { get; set; }
+        public long CreatedById { get; set; }
+        public long? ModifiedById { get; set; }
         public string? ModifiedIP { get; set; }
-        public Employee CreatedBy { get; set; }
-        public Employee ModifiedBy { get; set; }
+        public string CreatedByNameSurname { get; set; }
+        public string? ModifiedByNameSurname { get; set; }
+        
 
     }
 }
