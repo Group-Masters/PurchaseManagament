@@ -9,7 +9,7 @@ namespace PurchaseManagament.Domain.Abstract
 {
     public class BaseEntity
     {
-        public Int64 ID { get; set; }
+        public long ID { get; set; }
         public bool? IsDeleted { get; set; }
         public bool? IsActive { get; set; }
 
