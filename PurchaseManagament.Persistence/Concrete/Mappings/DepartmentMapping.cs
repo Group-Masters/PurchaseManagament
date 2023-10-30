@@ -13,10 +13,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .IsRequired().HasColumnName("DEPARTMENT_NAME").HasColumnType("nvarchar(50)");
 
-            builder.HasMany(x => x.CompanyDepartments)
-                .WithOne(x => x.Department)
-                .HasForeignKey(x => x.DepartmentId)
-                .OnDelete(DeleteBehavior.NoAction);
+         
                 
         }
     }

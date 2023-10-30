@@ -6,7 +6,7 @@ namespace PurchaseManagament.Domain.Entities
     public class Request:AuditableEntity
     {
         public long ProductId { get; set; }
-        public long StatusId { get; set; }
+  
         public long ApprovingEmployeeId { get; set; }
         public long RequestEmployeeId { get; set; }
         public string Details { get; set; }

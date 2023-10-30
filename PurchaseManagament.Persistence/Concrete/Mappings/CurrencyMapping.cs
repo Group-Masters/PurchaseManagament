@@ -15,10 +15,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Rate)
                .IsRequired().HasColumnName("CURRENCY_Rate");
 
-            builder.HasMany(x => x.Offers)
-                .WithOne(x => x.Currency)
-                .HasForeignKey(builder => builder.CurrencyId)
-                .OnDelete(DeleteBehavior.NoAction);
+            
         }
     }
 }

@@ -15,14 +15,9 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Adress)
               .HasColumnName("COMPANY_ADDRESS").HasColumnType("nvarchar(150)");
 
-            builder.HasMany(x => x.CompanyStocks)
-                .WithOne(x => x.Company)
-                .HasForeignKey(x => x.CompanyId)
-                .OnDelete(DeleteBehavior.NoAction);
+           
 
-            builder.HasMany(builder => builder.CompanyDepartments)
-                .WithOne(x => x.Company)
-                .HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.NoAction);
+           
         }
     }
 }

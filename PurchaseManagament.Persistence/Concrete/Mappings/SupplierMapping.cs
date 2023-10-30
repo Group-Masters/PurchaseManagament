@@ -16,8 +16,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .IsRequired().HasColumnType("SUPLIER_NAME").HasColumnType("nvarchar(50)");
 
-            builder.HasMany(x => x.Offers)
-                .WithOne(x => x.Supplier).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.NoAction);
+            
         }
     }
 }

@@ -11,6 +11,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.ToTable("STOCK_OPERATIONS");
 
             builder.Property(x  => x.Quantity).IsRequired().HasColumnName("QUANTITY");
+            builder.Property(x => x.CompanyStockId).IsRequired().HasColumnName("COMPANYSTOCK_ID");
+            builder.Property(x => x.ReceiverEmployeeId).IsRequired().HasColumnName("RECEIVER_EMPLOYEE_ID");
 
             builder.HasOne(x => x.CompanyStock)
                 .WithMany(x => x.StockOperations).HasForeignKey(x => x.CompanyStockId)
@@ -18,8 +20,12 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.HasOne(x => x.Product)
                 .WithMany(x => x.StockOperations)
-                .HasForeignKey(x => x.ProductId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(x => x.ProductId); 
+           
+            builder.HasOne(x => x.ReceiverEmployee)
+                .WithMany(x => x.StockOperations)
+                .HasForeignKey(x => x.ReceiverEmployeeId);
+          
         }
     }
 }

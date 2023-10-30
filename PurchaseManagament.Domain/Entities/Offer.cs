@@ -17,7 +17,7 @@ namespace PurchaseManagament.Domain.Entities
         public virtual Request Request { get; set; }
         public virtual Employee ApprovingEmployee { get; set; }
         public virtual Status Status { get; set; }
-        public virtual Invoice? Invoice { get; set; }
+        public virtual Invoice Invoice { get; set; }
 
     }
 }

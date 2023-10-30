@@ -38,7 +38,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
           
             builder.Property(x => x.State)
               .HasColumnName("STATUS")
-              .HasColumnOrder(7);
+              .HasColumnOrder(8);
 
             builder.HasOne(x => x.Product)
                 .WithMany(x => x.Requests)

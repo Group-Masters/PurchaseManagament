@@ -11,7 +11,7 @@ namespace PurchaseManagament.Domain.Entities
         public string Password { get; set; }
         public long EmployeeId { get; set; }
         public bool? EmailOk { get; set; }
-        public string? ApprovedCode { get; set; }
+        public string ApprovedCode { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }
