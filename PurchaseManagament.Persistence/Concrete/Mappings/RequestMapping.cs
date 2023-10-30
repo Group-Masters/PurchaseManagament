@@ -13,10 +13,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnType("bigint")
                 .HasColumnName("PRODUCT_ID");
 
-            builder.Property(x => x.StatusId)
-                .HasColumnOrder(3)
-                .HasColumnType("bigint")
-                .HasColumnName("STATUS_ID");
+
 
             builder.Property(x => x.ApprovingEmployeeId)
                 .HasColumnOrder(4)
