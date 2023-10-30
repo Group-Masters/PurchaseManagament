@@ -34,9 +34,9 @@ namespace PurchaseManagament.Persistence.Concrete.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            var entities = EF.CompileAsyncQuery((PurchaseManagamentContext ctx) => ctx.Set<T>()).Invoke(_context).ToBlockingEnumerable();
+            var entities =  EF.CompileAsyncQuery((PurchaseManagamentContext ctx) => ctx.Set<T>()).Invoke(_context).ToBlockingEnumerable();
             
-            return entities;
+            return  entities;
         }
 
         public async Task<IEnumerable<T>> GetAllAsyncAsNoTracking()

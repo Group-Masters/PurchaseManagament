@@ -8,10 +8,12 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Product> builder)
         {
+            builder.ToTable("PRODUCTS");
+
             builder.Property(x => x.MeasuringUnitId)
+                .HasColumnName("MEASURING_UNIT_ID")
                 .HasColumnOrder(2)
-                .HasColumnType("bigint")
-                .IsRequired();
+                .HasColumnType("bigint");
 
             builder.Property(x => x.Name)
                 .HasColumnName("NAME")
