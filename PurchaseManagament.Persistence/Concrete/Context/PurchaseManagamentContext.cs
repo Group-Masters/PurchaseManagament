@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Persistence.Concrete.Mappings;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
@@ -32,9 +33,23 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            //Example
-            //modelBuilder.ApplyConfiguration(new Employee());
+            modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
+            modelBuilder.ApplyConfiguration(new CompanyMapping());
+            modelBuilder.ApplyConfiguration(new CompanyStockMapping());
+            modelBuilder.ApplyConfiguration(new CurrencyMapping());
+            modelBuilder.ApplyConfiguration(new DepartmentMapping());
+            modelBuilder.ApplyConfiguration(new EmployeeDetailMapping());
+            modelBuilder.ApplyConfiguration(new EmployeeRoleMapping());
+            modelBuilder.ApplyConfiguration(new EmployeeMapping());
+            modelBuilder.ApplyConfiguration(new InvoiceMapping());
+            modelBuilder.ApplyConfiguration(new MeasuringUnitMapping());
+            modelBuilder.ApplyConfiguration(new OfferMapping());
+            modelBuilder.ApplyConfiguration(new RequestMapping());
+            modelBuilder.ApplyConfiguration(new RoleMapping());
+            modelBuilder.ApplyConfiguration(new ProductMapping());
+            modelBuilder.ApplyConfiguration(new StatusMapping());
+            modelBuilder.ApplyConfiguration(new StockOperationMapping());
+            modelBuilder.ApplyConfiguration(new SupplierMapping());
         }
     }
 }

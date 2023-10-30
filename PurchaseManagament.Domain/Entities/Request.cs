@@ -1,5 +1,4 @@
 ﻿using PurchaseManagament.Domain.Common;
-using PurchaseManagament.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,8 @@ namespace PurchaseManagament.Domain.Entities
     public class Request:AuditableEntity
     {
         public long ProductId { get; set; }
-        public long ApprovingEmployeeId { get; set; }
+        public long StatusId { get; set; }
+        public long approvingEmployeeId { get; set; }
         public long RequestEmployeeId { get; set; }
         public string Details { get; set; }
         public double Quantity { get; set; }
