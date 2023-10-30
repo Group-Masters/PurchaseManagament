@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Domain.Abstract
 {
-    public class AuditableEntity : BaseEntity
+    public abstract class AuditableEntity : BaseEntity
     {
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Domain.Abstract
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         public long ID { get; set; }
         public bool? IsDeleted { get; set; }
