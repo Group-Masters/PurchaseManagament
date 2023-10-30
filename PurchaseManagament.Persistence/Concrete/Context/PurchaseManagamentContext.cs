@@ -25,7 +25,11 @@ namespace PurchaseManagament.Persistence.Concrete.Context
        
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
-        
+
+        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options):base(options)
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,7 +51,6 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.ApplyConfiguration(new RequestMapping());
             modelBuilder.ApplyConfiguration(new RoleMapping());
             modelBuilder.ApplyConfiguration(new ProductMapping());
-      
             modelBuilder.ApplyConfiguration(new StockOperationMapping());
             modelBuilder.ApplyConfiguration(new SupplierMapping());
         }
