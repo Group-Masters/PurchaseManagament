@@ -18,9 +18,11 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(builder => builder.RequestId)
                 .HasColumnName("REQUEST_ID").HasColumnType("BigInt");
+           
+            builder.Property(builder => builder.Status)
+                .HasColumnName("STATUS");
 
-            builder.Property(builder => builder.StatusId)
-                .HasColumnName("STATUS_ID").HasColumnType("BigInt");
+
 
             builder.Property(builder => builder.SupplierId)
                 .HasColumnName("SUPLIER_ID").HasColumnType("BigInt");
@@ -35,10 +37,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasForeignKey(builder => builder.ApprovingEmployeeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.Status)
-                .WithMany(x => x.Offers)
-                .HasForeignKey(x => x.StatusId)
-                .OnDelete(DeleteBehavior.NoAction);
+         
 
             builder.HasOne(x => x.Currency)
                 .WithMany(x => x.Offers)

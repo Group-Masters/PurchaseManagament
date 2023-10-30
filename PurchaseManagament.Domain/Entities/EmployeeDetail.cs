@@ -4,7 +4,7 @@ namespace PurchaseManagament.Domain.Entities
 {
     public class EmployeeDetail:AuditableEntity
     {
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Adress { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

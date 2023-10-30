@@ -12,6 +12,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(x => x.Name)
                 .IsRequired().HasColumnName("CURRENCY_NAME").HasColumnType("nvarchar(20)");
+            builder.Property(x => x.Rate)
+               .IsRequired().HasColumnName("CURRENCY_Rate");
 
             builder.HasMany(x => x.Offers)
                 .WithOne(x => x.Currency)

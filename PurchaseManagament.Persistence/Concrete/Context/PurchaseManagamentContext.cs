@@ -22,7 +22,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Status> Statuses { get; set; }
+       
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
         
@@ -47,7 +47,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.ApplyConfiguration(new RequestMapping());
             modelBuilder.ApplyConfiguration(new RoleMapping());
             modelBuilder.ApplyConfiguration(new ProductMapping());
-            modelBuilder.ApplyConfiguration(new StatusMapping());
+      
             modelBuilder.ApplyConfiguration(new StockOperationMapping());
             modelBuilder.ApplyConfiguration(new SupplierMapping());
         }

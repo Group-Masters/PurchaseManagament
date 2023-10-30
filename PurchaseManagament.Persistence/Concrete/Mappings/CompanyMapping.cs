@@ -12,6 +12,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(x => x.Name)
                 .HasColumnName("COMPANY_NAME").HasColumnType("nvarchar(50)");
+            builder.Property(x => x.Adress)
+              .HasColumnName("COMPANY_ADDRESS").HasColumnType("nvarchar(150)");
 
             builder.HasMany(x => x.CompanyStocks)
                 .WithOne(x => x.Company)

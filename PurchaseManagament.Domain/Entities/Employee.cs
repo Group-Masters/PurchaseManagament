@@ -8,9 +8,7 @@ namespace PurchaseManagament.Domain.Entities
         public string Name { get; set; }
         public string Surname { get; set; }
         public string IdNumber { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+       
         public string BirthYear { get; set; }
         public Gender Gender { get; set; }
 

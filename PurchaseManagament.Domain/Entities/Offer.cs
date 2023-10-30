@@ -1,9 +1,5 @@
 ﻿using PurchaseManagament.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PurchaseManagament.Domain.Enums;
 
 namespace PurchaseManagament.Domain.Entities
 {
@@ -21,6 +17,7 @@ namespace PurchaseManagament.Domain.Entities
         public virtual Request Request { get; set; }
         public virtual Employee ApprovingEmployee { get; set; }
         public virtual Status Status { get; set; }
-        
+        public virtual Invoice? Invoice { get; set; }
+
     }
 }

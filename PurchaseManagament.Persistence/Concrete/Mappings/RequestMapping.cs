@@ -35,16 +35,17 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Quantity)
                 .HasColumnName("QUANTITY")
                 .HasColumnOrder(7);
+          
+            builder.Property(x => x.State)
+              .HasColumnName("STATUS")
+              .HasColumnOrder(7);
 
             builder.HasOne(x => x.Product)
                 .WithMany(x => x.Requests)
                 .HasForeignKey(x => x.ProductId)
                 .HasConstraintName("REQUEST_PRODUCTS");
 
-            builder.HasOne(x => x.Status)
-                .WithMany(x => x.Requests)
-                .HasForeignKey(x => x.StatusId)
-                .HasConstraintName("REQUEST_STATUS");
+           
 
             builder.HasOne(x => x.ApprovedEmployee)
                 .WithMany(x => x.ApprovedRequests)
