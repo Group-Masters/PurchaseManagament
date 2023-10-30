@@ -4,11 +4,11 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class SuplierMapping : AuditableEntityMapping<Supplier>
+    public class SupplierMapping : AuditableEntityMapping<Supplier>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Supplier> builder)
         {
-            builder.ToTable("SUPLIERS");
+            builder.ToTable("SUPPLIERS");
 
             builder.Property(x => x.Address)
                 .IsRequired().HasColumnName("SUPLIER_ADDRESS").HasColumnType("nvarchar(150)");

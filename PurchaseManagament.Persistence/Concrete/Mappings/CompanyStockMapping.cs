@@ -18,7 +18,6 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("PRODUCT_ID")
                 .HasColumnOrder(3);
 
-
             builder.HasOne(x => x.Company)
                 .WithMany(x => x.CompanyStocks)
                 .HasForeignKey(x => x.CompanyId)

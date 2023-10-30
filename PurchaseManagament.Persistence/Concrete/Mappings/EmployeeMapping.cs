@@ -32,19 +32,6 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.HasOne(x => x.CompanyDepartment)
                 .WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyDepartmentId).OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasMany(x => x.Requests)
-                .WithOne(x => x.ApprovedEmployee)
-                .HasForeignKey(x => x.approvingEmployeeId).OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasMany(x => x.Requests)
-               .WithOne(x => x.RequestEmployee)
-               .HasForeignKey(x => x.RequestEmployeeId).OnDelete(DeleteBehavior.NoAction);
-
-
-
-
-
         }
     }
 }

@@ -20,8 +20,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(x => x.ApprovedCode)
                 .HasColumnType("nvarchar(15)")
-                .HasDefaultValue(false)
-                .HasColumnOrder(3);
+                .HasColumnOrder(4);
 
             builder.HasOne(x => x.Employee)
                 .WithOne(x => x.EmployeeDetail)

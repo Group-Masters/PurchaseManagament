@@ -1,4 +1,6 @@
-﻿namespace PurchaseManagament.Domain.Entities
+﻿using PurchaseManagament.Domain.Common;
+
+namespace PurchaseManagament.Domain.Entities
 {
     public class Employee : AuditableEntity
     {
@@ -14,11 +16,10 @@
 
         public virtual CompanyDepartment CompanyDepartment { get; set; }
         public virtual EmployeeDetail EmployeeDetail { get; set; }
-        public virtual IEnumerable<CompanyDepartment> CompanyDepartment { get; set; }
-        public virtual EmployeeDetail? EmployeeDetail { get; set; }
         public virtual IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
         public virtual IEnumerable<Offer> Offers { get; set; }
-        public virtual IEnumerable<Request> Requests { get; set; }
+        public virtual IEnumerable<Request> EmployeeRequests { get; set; }
+        public virtual IEnumerable<Request> ApprovedRequests { get; set; }
         public virtual IEnumerable<StockOperations> StockOperations { get; set; }
               
     }

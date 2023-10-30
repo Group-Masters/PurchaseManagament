@@ -27,9 +27,9 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .IsRequired(false)
                 ;
 
-            builder.Property(x => x.CreatedById)
+            builder.Property(x => x.CreatedBy)
                 .HasColumnName("CREATED_BY_ID")
-                .HasColumnType("nvarchar(10)")
+                .HasColumnType("nvarchar(50)")
                 .IsRequired(false)
                 ;
 
@@ -37,25 +37,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("MODIFIED_DATE");
 
 
-            builder.Property(x => x.ModifiedById)
+            builder.Property(x => x.ModifiedBy)
                 .HasColumnName("MODIFIED_BY_ID")
-                .HasColumnType("nvarchar(10)")
+                .HasColumnType("nvarchar(50)")
                 .IsRequired(false);
 
             builder.Property(x => x.IsActive)
                 .HasColumnName("CREATED_BY_ID")
-                .HasColumnType("nvarchar(10)")
-                .IsRequired(false)
-                ;
-
-            builder.Property(x => x.CreatedByNameSurname)
-                .HasColumnName("CREATED_BY_NAME_SURNAME")
-                .HasColumnType("nvarchar(10)")
-                .IsRequired(false)
-                ;
-
-            builder.Property(x => x.ModifiedByNameSurname)
-                .HasColumnName("MODIFIED_BY_NAME_SURNAME")
                 .HasColumnType("nvarchar(10)")
                 .IsRequired(false)
                 ;
