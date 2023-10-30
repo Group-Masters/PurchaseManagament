@@ -1,13 +1,6 @@
-﻿using PurchaseManagament.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PurchaseManagament.Domain.Common
+﻿namespace PurchaseManagament.Domain.Common
 {
-    public class AuditableEntity:BaseEntity
+    public abstract class AuditableEntity:BaseEntity
     {
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
