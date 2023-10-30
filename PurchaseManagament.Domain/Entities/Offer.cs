@@ -17,11 +17,11 @@ namespace PurchaseManagament.Domain.Entities
         public decimal OfferedPrice { get; set; }
         public string Details { get; set; }
 
-        public Currency Currency { get; set; }
-        public Supplier Supplier { get; set; }
-        public Request Request { get; set; }
-        public Employee ApprovingEmployee { get; set; }
-        public Status Status { get; set; }
-        public Offer offer { get; set; }
+        public virtual Currency Currency { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual Request Request { get; set; }
+        public virtual Employee ApprovingEmployee { get; set; }
+        public virtual Status Status { get; set; }
+        
     }
 }

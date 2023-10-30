@@ -11,7 +11,7 @@ namespace PurchaseManagament.Domain.Entities
     {
         public long EmployeeId { get; set; }
         public long RoleId { get; set; }
-        public Employee Employee { get; set; }
-        public Role Role { get; set; }
+        public virtual Employee Employee { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

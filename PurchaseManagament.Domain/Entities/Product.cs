@@ -13,10 +13,10 @@ namespace PurchaseManagament.Domain.Entities
         public long MeasuringUnitId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public MeasuringUnit MeasuringUnit { get; set; }
-        public CompanyStock CompanyStock { get; set; }
-        public IEnumerable<Request> Requests { get; set; }
-        public IEnumerable<StockOperations> StockOperations { get; set; }
+        public virtual MeasuringUnit MeasuringUnit { get; set; }
+        public virtual CompanyStock CompanyStock { get; set; }
+        public virtual IEnumerable<Request> Requests { get; set; }
+        public virtual IEnumerable<StockOperations> StockOperations { get; set; }
 
     }
 }

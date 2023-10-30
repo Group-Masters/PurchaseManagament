@@ -15,10 +15,10 @@ namespace PurchaseManagament.Domain.Entities
         public long ProductId { get; set; }
         public double Quantity { get; set; }
 
-        public CompanyStock CompanyStock { get; set; }
-        public Product Product { get; set; }
+        public virtual CompanyStock CompanyStock { get; set; }
+        public virtual Product Product { get; set; }
 
-        public Employee ReceiverEmployee { get; set; }
+        public virtual Employee ReceiverEmployee { get; set; }
 
     }
 

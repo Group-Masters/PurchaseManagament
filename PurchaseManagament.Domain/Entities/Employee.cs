@@ -20,12 +20,12 @@ namespace PurchaseManagament.Domain.Entities
         public string BirthYear { get; set; }
         public Gender Gender { get; set; }
 
-        public IEnumerable<CompanyDepartment> CompanyDepartment { get; set; }
-        public EmployeeDetail EmployeeDetail { get; set; }
-        public IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
-        public IEnumerable<Offer> Offers { get; set; }
-        public IEnumerable<Request> Requests { get; set; }
-         public IEnumerable<StockOperations> StockOperations { get; set; }
+        public virtual IEnumerable<CompanyDepartment> CompanyDepartment { get; set; }
+        public virtual EmployeeDetail EmployeeDetail { get; set; }
+        public virtual IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
+        public virtual IEnumerable<Offer> Offers { get; set; }
+        public virtual IEnumerable<Request> Requests { get; set; }
+        public virtual IEnumerable<StockOperations> StockOperations { get; set; }
       
       
 

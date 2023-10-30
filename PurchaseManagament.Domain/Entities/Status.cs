@@ -12,8 +12,8 @@ namespace PurchaseManagament.Domain.Entities
     {
         public string StatusName { get; set; }
 
-        public IEnumerable<Request> Requests { get; set; }
-        public IEnumerable<Offer> Offers { get; set; }
+        public virtual IEnumerable<Request> Requests { get; set; }
+        public virtual IEnumerable<Offer> Offers { get; set; }
 
     }
 }

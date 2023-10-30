@@ -17,10 +17,10 @@ namespace PurchaseManagament.Domain.Entities
         public string Details { get; set; }
         public double Quantity { get; set; }
 
-        public Product Product { get; set; }
-        public Status Status { get; set; }
-        public Employee ApprovedEmployee { get; set; }
-        public Employee RequestEmployee { get; set; }
-        public IEnumerable<Offer> Offers { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Status Status { get; set; }
+        public virtual Employee ApprovedEmployee { get; set; }
+        public virtual Employee RequestEmployee { get; set; }
+        public virtual IEnumerable<Offer> Offers { get; set; }
     }
 }

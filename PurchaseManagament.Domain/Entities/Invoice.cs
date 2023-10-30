@@ -11,6 +11,6 @@ namespace PurchaseManagament.Domain.Entities
     {
         public long OfferId { get; set; }
         public Guid UuId { get; set; }
-        public long Offer { get; set; }
+        public virtual Offer Offer { get; set; }
     }
 }
