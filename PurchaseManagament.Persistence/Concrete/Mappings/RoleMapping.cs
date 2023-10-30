@@ -13,7 +13,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name).IsRequired().HasColumnName("ROLE_NAME").HasColumnType("nvarchar(20)");
 
             builder.HasMany(x => x.EmployeeRoles)
-                .WithOne(x => x.Role).HasForeignKey(x => x.RoleId);
+                .WithOne(x => x.Role).HasForeignKey(x => x.RoleId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
