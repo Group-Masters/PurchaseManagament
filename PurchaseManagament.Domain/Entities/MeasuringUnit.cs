@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    // Ürün Birim Tip
     public class MeasuringUnit:AuditableEntity
     {
         public string Name { get; set; }

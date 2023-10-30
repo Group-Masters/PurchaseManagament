@@ -10,7 +10,6 @@ namespace PurchaseManagament.Domain.Entities
     public class StockOperations:AuditableEntity
     {
         public long CompanyStockId { get; set; }
-        
         public long ReceiverEmployeeId { get; set; }
         public long ProductId { get; set; }
         public double Quantity { get; set; }

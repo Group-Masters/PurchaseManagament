@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    // Fatura
     public class Invoice:AuditableEntity
     {
         public long OfferId { get; set; }

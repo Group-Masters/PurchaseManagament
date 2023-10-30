@@ -2,11 +2,14 @@
 
 namespace PurchaseManagament.Domain.Entities
 {
+    // Şirket
     public class Company:AuditableEntity
     {
         public string  Name { get; set; }
-        public virtual IEnumerable<CompanyDepartment> CompanyDepartments { get; set; }
-        public virtual IEnumerable<CompanyStock> CompanyStocks { get; set; }
+        public string Adress { get; set; }
+
+        public virtual IEnumerable<CompanyDepartment> CompanyDepartments { get; set; } // Şirket ve Departman
+        public virtual IEnumerable<CompanyStock> CompanyStocks { get; set; } // Şirket Stok
 
     }
 }
