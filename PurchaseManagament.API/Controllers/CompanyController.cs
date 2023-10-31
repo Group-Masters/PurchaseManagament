@@ -13,32 +13,32 @@ namespace PurchaseManagament.API.Controllers
         {
             _companyService = companyService;
         }
-        [HttpPost("CreateCompany")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRM createCompanyRM)
         {
            var entities = await _companyService.CreateCompany(createCompanyRM);
             return Ok(entities);
         }
 
-        [HttpGet("GetAllCompany")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllCompany()
         {
             var entities = await _companyService.GetAllCompany();
             return Ok(entities);
         }
-        [HttpPost("GetCompanyByName")]
+        [HttpPost("GetByName")]
         public async Task<IActionResult> GetCompanyDepartmentByName(string name)
         {
             var entity = await _companyService.GetCompanyByName(name);
             return Ok(entity);
         }
-        [HttpPut("UpdateCompany")]
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyRM update)
         {
             var entity = await _companyService.UpdateCompany(update);
             return Ok(entity);
         }
-        [HttpDelete("DeleteCompany/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteDepartment(Int64 id)
         {
             var entity = await _companyService.DeleteCompany(new DeleteCompanyRM { Id=id});

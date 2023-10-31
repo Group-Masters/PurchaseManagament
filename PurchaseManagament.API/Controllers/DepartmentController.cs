@@ -2,8 +2,6 @@
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
-using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Contdepartmanlers
@@ -18,28 +16,28 @@ namespace PurchaseManagament.API.Contdepartmanlers
             _departmentService = departmentService;
         }
 
-        [HttpPost("CreateDepartment")]
-        public async Task<IActionResult> CreateDepartment(CreateDepartmentRM create)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentRM create)
         {
             var entity = await _departmentService.CreateDepartment(create);
             return Ok(entity);
         }
 
-        [HttpPut("UpdateDepartment")]
-        public async Task<IActionResult> UpdateDepartment(UpdateDepartmentRM updateDepartmentRM)
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateDepartment([FromBody] UpdateDepartmentRM updateDepartmentRM)
         {
             var entity = await _departmentService.UpdateDepartment(updateDepartmentRM);
             return Ok(entity);
         }
 
-        [HttpGet("GetDepartmentById")]
+        [HttpGet("GetById")]
         public async Task<ActionResult<Result<DepartmentDto>>> GetByIdDepartment(Int64 id)
         {
             var result = await _departmentService.GetDepartmentById(new GetByIdDepartmentRM { Id = id });
             return Ok(result);
         }
 
-        [HttpGet("GetAllDepartment")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllDepartment()
         {
            var entities = await _departmentService.GetAllDepartment();
@@ -54,17 +52,17 @@ namespace PurchaseManagament.API.Contdepartmanlers
         //    return Ok(entity);
         //}
 
-        [HttpPut("DeleteDepartment")]
-        public async Task<ActionResult<Result<bool>>> DeleteDepartment(Int64 Id)
+        [HttpPut("Delete/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteDepartment(Int64 id)
         {
-            var result = await _departmentService.DeleteDepartment(Id);
+            var result = await _departmentService.DeleteDepartment(id);
             return Ok(result);
         }
 
-        [HttpDelete("DeletePermanentDepartment")]
-        public async Task<ActionResult<Result<bool>>> DeleteDepartmentPermanent(Int64 Id)
+        [HttpDelete("DeletePermanent/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteDepartmentPermanent(Int64 id)
         {
-            var result = await _departmentService.DeleteDepartmentPermanent(Id);
+            var result = await _departmentService.DeleteDepartmentPermanent(id);
             return Ok(result);
         }
     }

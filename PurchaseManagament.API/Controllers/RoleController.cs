@@ -16,21 +16,21 @@ namespace PurchaseManagament.API.Controllers
             _roleService = roleService;
         }
 
-        [HttpPost("CreateRole")]
-        public async Task<ActionResult<Result<bool>>> CreateRole(CreateRoleRM createRoleVM)
+        [HttpPost("Create")]
+        public async Task<ActionResult<Result<bool>>> CreateRole([FromBody] CreateRoleRM createRoleVM)
         {
             var result = await _roleService.CreateRole(createRoleVM);
             return Ok(result);
         }
 
-        [HttpPut("UpdateRole")]
-        public async Task<ActionResult<Result<bool>>> UpdateRole(UpdateRoleRM updateRoleVM)
+        [HttpPut("Update")]
+        public async Task<ActionResult<Result<bool>>> UpdateRole([FromBody] UpdateRoleRM updateRoleVM)
         {
             var result = await _roleService.UpdateRole(updateRoleVM);
             return Ok(result);
         }
 
-        [HttpGet("GetRoleById")]
+        [HttpGet("GetById")]
         public async Task<ActionResult<Result<RoleDto>>> GetRoleById(Int64 id)
         {
             var result = await _roleService.GetRoleById(new GetRoleByIdRM { Id = id });
@@ -45,24 +45,24 @@ namespace PurchaseManagament.API.Controllers
         //    return Ok(result);
         //}
 
-        [HttpGet("GetAllRole")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<Result<HashSet<RoleDto>>>> GetAllRole()
         {
             var result = await _roleService.GetAllRole();
             return Ok(result);
         }
 
-        [HttpPut("DeleteRole")]
-        public async Task<ActionResult<Result<bool>>> DeleteRole(Int64 Id)
+        [HttpPut("Delete/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteRole(Int64 id)
         {
-            var result = await _roleService.DeleteRole(Id);
+            var result = await _roleService.DeleteRole(id);
             return Ok(result);
         }
 
-        [HttpDelete("DeletePermanentRole")]
-        public async Task<ActionResult<Result<bool>>> DeleteRolePermanent(Int64 Id)
+        [HttpDelete("DeletePermanent/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteRolePermanent(Int64 id)
         {
-            var result = await _roleService.DeleteRolePermanent(Id);
+            var result = await _roleService.DeleteRolePermanent(id);
             return Ok(result);
         }
     }
