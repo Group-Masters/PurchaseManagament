@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231030123349_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20231030124612_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
