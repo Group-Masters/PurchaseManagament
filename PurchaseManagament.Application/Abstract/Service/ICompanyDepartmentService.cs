@@ -9,6 +9,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         //CRUD
         Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmentRM createCompanyDepartmentRM);
         Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM);
+        Task<Result<bool>> DeleteCompanyDepartmentPermanent(Int64  id);
         Task<Result<bool>> DeleteCompanyDepartment(Int64 id);
 
         //GET METHODS

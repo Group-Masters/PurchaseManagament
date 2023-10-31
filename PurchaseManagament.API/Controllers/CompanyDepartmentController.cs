@@ -2,6 +2,7 @@
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
+using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
@@ -44,11 +45,18 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteCompanyDepartment(Int64 id)
         {
             var entity = await _companyDepartmentService.DeleteCompanyDepartment(id);
             return Ok(entity);
+        }
+
+        [HttpDelete("DeletePermanent/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteCompanyDepartmentPermanent(Int64 id)
+        {
+            var result = await _companyDepartmentService.DeleteCompanyDepartmentPermanent(id);
+            return Ok(result);
         }
     }
 }

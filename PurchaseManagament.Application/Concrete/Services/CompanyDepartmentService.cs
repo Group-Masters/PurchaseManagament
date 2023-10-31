@@ -38,6 +38,21 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<CompanyDepartment>().Update(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }        
+        
+        public async Task<Result<bool>> DeleteCompanyDepartmentPermanent(Int64 id)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id);
+            if (!existEntity)
+            {
+                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
             _unitWork.GetRepository<CompanyDepartment>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;

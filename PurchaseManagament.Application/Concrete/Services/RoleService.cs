@@ -86,7 +86,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             var mappedEntity = _mapper.Map<RoleDto>(entity);
             result.Data = mappedEntity;
             return result;
-
         }
 
         public async Task<Result<bool>> UpdateRole(UpdateRoleRM updateRoleRM)
