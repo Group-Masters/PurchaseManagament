@@ -1,4 +1,7 @@
-﻿using PurchaseManagament.Domain.Entities;
+﻿
+
+using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments
 {
@@ -6,8 +9,8 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDe
     {
         public long? CompanyId { get; set; }
         public long? DepartmentId { get; set; }
-        public virtual Company? Company { get; set; }
-        public virtual Department? De5partment { get; set; }
-        public IEnumerable<Employee>? Employes { get; set; }
+        public virtual CompanyDto? Company { get; set; }
+        public virtual DepartmentDto? De5partment { get; set; }
+        public IEnumerable<EmployeeDto>? Employes { get; set; }
     }
 }
