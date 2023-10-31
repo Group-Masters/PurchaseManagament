@@ -81,7 +81,8 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Company>().GetById(updateCompanyRM.Id);
-            _unitWork.GetRepository<Company>().Update(entity);
+            var mappedEntity = _mapper.Map(updateCompanyRM, entity);
+            _unitWork.GetRepository<Company>().Update(mappedEntity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
