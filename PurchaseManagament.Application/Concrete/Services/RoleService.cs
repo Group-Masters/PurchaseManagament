@@ -77,7 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<RoleDto>();
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Name.ToUpper().Trim() == getRoleByNameRM.Name.ToUpper().Trim());
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception("Bu isimle bir rol bulunamadı.");
             }
