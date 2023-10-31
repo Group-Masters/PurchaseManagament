@@ -6,6 +6,9 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -31,6 +34,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<GetRoleByIdRM, Role>();
             CreateMap<GetRoleByNameRM, Role>();
 
+            CreateMap<CreateProductRM, Product>();
+            CreateMap<UpdateProductRM, Product>();
+
             CreateMap<CreateEmployeeRoleRM,  EmployeeRole>();
             CreateMap<UpdateEmployeeRoleRM, EmployeeRole>();
             CreateMap<GetByEmployeeIdRM, EmployeeRole>();
@@ -39,6 +45,13 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateEmployeeVM, Employee>();
             CreateMap<CreateEmployeeVM, EmployeeDetail>();
+
+            CreateMap<CreateCompanyStockRM, CompanyStock>();
+            CreateMap<UpdateCompanyStockRM, CompanyStock>();
+
+            CreateMap<CreateMeasuringUnitRM, MeasuringUnit>();
+            CreateMap<UpdateMeasuringUnitRM, MeasuringUnit>();
+
         }
     }
 }
