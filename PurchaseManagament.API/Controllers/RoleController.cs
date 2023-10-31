@@ -57,7 +57,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("deletepermanent/{id:int}")]
+        [HttpDelete("deletepermanent/{id:int}")]
         public async Task<ActionResult<Result<bool>>> DeleteRolePermanent(long Id)
         {
             var result = _roleService.DeleteRolePermanent(Id);

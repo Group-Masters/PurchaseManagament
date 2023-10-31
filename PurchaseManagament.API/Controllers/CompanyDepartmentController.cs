@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
 
 namespace PurchaseManagament.API.Controllers
 {

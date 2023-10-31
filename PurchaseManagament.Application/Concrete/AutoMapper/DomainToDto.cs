@@ -15,9 +15,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x=>x.Email,y=>y.MapFrom(z=>z.EmployeeDetail.Email))
                 .ForMember(x=>x.Phone,y=>y.MapFrom(z=>z.EmployeeDetail.Phone));
 
-
-
             CreateMap<Role, RoleDto>();
+            CreateMap<EmployeeRole, EmployeeRoleDto>();
         }
     }
 }
