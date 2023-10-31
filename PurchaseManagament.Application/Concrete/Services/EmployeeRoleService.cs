@@ -61,7 +61,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception($"{getByEmployeeIdRM.EmployeeId} ID'li çalışana ait kayıtlı rol bulunamadı");
             }
 
-            var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilter(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId);
+            var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId);
             var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -76,7 +76,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception($"{getByRoleIdRM.RoleId} ID'li rol herhangi bir çalışana atanmamış");
             }
 
-            var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilter(x => x.RoleId == getByRoleIdRM.RoleId);
+            var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.RoleId == getByRoleIdRM.RoleId);
             var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDto>>(entities);
             result.Data = mappedEntity;
             return result;
