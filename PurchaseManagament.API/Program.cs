@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using PurchaseManagament.API.Filters;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.AutoMapper;
 using PurchaseManagament.Application.Concrete.Services;
@@ -12,7 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt =>
+{
+    opt.Filters.Add(new ExceptionHandlerFilter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
