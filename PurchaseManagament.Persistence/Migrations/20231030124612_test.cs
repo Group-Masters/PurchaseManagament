@@ -6,7 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+<<<<<<<< HEAD:PurchaseManagament.Persistence/Migrations/20231030124612_test.cs
+    public partial class test : Migration
+========
+    public partial class MigrationFinal : Migration
+>>>>>>>> 1e9ea216d639a2af2272499abd7b3a612288c1ad:PurchaseManagament.Persistence/Migrations/20231031051529_MigrationFinal.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

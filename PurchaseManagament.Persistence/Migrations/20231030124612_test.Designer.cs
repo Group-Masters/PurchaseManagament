@@ -12,8 +12,13 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231030123349_FirstMigration")]
-    partial class FirstMigration
+<<<<<<<< HEAD:PurchaseManagament.Persistence/Migrations/20231030124612_test.Designer.cs
+    [Migration("20231030124612_test")]
+    partial class test
+========
+    [Migration("20231031051529_MigrationFinal")]
+    partial class MigrationFinal
+>>>>>>>> 1e9ea216d639a2af2272499abd7b3a612288c1ad:PurchaseManagament.Persistence/Migrations/20231031051529_MigrationFinal.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
