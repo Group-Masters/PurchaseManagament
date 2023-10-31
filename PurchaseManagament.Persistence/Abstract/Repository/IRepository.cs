@@ -12,7 +12,7 @@ namespace PurchaseManagament.Persistence.Abstract.Repository
 
         //MODİFİED GETS
         #region Pure Get Methods
-         Task<IEnumerable<T>> GetAllAsync();
+         Task<IEnumerable<T>> GetAllAsync(params string[] includeColumns);
         Task<IEnumerable<T>> GetAllAsyncAsNoTracking();
         #endregion
 

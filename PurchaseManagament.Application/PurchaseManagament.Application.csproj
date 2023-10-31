@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PurchaseManagament.Persistence\PurchaseManagament.Persistence.csproj" />
+    <ProjectReference Include="..\PurchaseManagament.Utils\PurchaseManagament.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

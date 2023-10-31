@@ -26,7 +26,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
 
-        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options):base(options)
+        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options) : base(options)
         {
             Database.EnsureCreated();
         }

@@ -32,8 +32,19 @@ namespace PurchaseManagament.Persistence.Concrete.Repositories
             _dbSet.Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(params string[] includeColumns)
         {
+            IEnumerable<T> query = _dbSet;
+            if (includeColumns.Any())
+            {
+                foreach (var includeColumn in includeColumns)
+                {
+                    query = _dbSet.Include(includeColumn);
+                }
+            }
+            return await Task.FromResult(query);
+
+
             var entities =  EF.CompileAsyncQuery((PurchaseManagamentContext ctx) => ctx.Set<T>()).Invoke(_context).ToBlockingEnumerable();
             
             return  entities;
