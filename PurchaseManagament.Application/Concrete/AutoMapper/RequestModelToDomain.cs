@@ -17,9 +17,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<UpdateCompanyRM, Company>();
             CreateMap<DeleteCompanyRM, Company>();
 
-            CreateMap<CreateCompanyDepartmentRM, Company>();
-            CreateMap<DeleteCompanyDepartmentRM, Company>();
-            CreateMap<UpdateCompanyDepartmentRM, Company>();
+            CreateMap<CreateCompanyDepartmentRM, CompanyDepartment>();
+            CreateMap<DeleteCompanyDepartmentRM, CompanyDepartment>();
+            CreateMap<GetCompanyDepartmentByIdRM, CompanyDepartment>();
+            CreateMap<UpdateCompanyDepartmentRM, CompanyDepartment>();
 
             CreateMap<GetByIdDepartmentRM, Department>();
             CreateMap<CreateDepartmentRM, Department>();

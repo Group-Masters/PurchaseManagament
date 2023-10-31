@@ -29,15 +29,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCompanyDepartment(DeleteCompanyDepartmentRM deleteCompanyDepartmentRM)
+        public async Task<Result<bool>> DeleteCompanyDepartment(Int64 id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == deleteCompanyDepartmentRM.Id);
-            if (existEntity)
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id);
+            if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(deleteCompanyDepartmentRM.Id);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
             _unitWork.GetRepository<CompanyDepartment>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
@@ -52,16 +52,17 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentByName(string companyName)
+        public async Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentById(GetCompanyDepartmentByIdRM getCompanyDepartmentById)
         {
             var result = new Result<CompanyDepartmentDto>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartmentDto>().AnyAsync(x => x.Company.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
-            if (existEntity)
+            var entityControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == getCompanyDepartmentById.Id);
+            if (!entityControl)
             {
-                throw new Exception("Bu isimle bir şirket bulunamadı.");
+                throw new Exception($"Departman ID {getCompanyDepartmentById.Id} bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartmentDto>().GetByFilterAsync(x => x.Company.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
-            var mappedEntity = _mapper.Map<CompanyDepartmentDto>(entity);
+
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().GetById(getCompanyDepartmentById.Id);
+            var mappedEntity = _mapper.Map<CompanyDepartmentDto>(existEntity);
             result.Data = mappedEntity;
             return result;
         }
@@ -69,14 +70,14 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartmentDto>().AnyAsync(x => x.DepartmentId == updateCompanyDepartmentRM.DepartmentId);
-            if (existEntity)
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.DepartmentId == updateCompanyDepartmentRM.DepartmentId);
+            if (!existEntity)
             {
                 throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartmentDto>().GetById(updateCompanyDepartmentRM.DepartmentId);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(updateCompanyDepartmentRM.DepartmentId);
             var mappedEntity = _mapper.Map(updateCompanyDepartmentRM, entity);
-            _unitWork.GetRepository<CompanyDepartmentDto>().Update(mappedEntity);
+            _unitWork.GetRepository<CompanyDepartment>().Update(mappedEntity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }

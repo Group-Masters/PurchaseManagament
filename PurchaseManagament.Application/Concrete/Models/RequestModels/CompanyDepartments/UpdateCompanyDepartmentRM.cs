@@ -6,10 +6,7 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDe
 {
     public class UpdateCompanyDepartmentRM
     {
-        public long? CompanyId { get; set; }
-        public long? DepartmentId { get; set; }
-        public virtual CompanyDto? Company { get; set; }
-        public virtual DepartmentDto? De5partment { get; set; }
-        public IEnumerable<EmployeeDto>? Employes { get; set; }
+        public Int64? CompanyId { get; set; }
+        public Int64? DepartmentId { get; set; }
     }
 }

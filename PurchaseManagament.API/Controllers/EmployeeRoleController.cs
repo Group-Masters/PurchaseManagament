@@ -3,7 +3,6 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Wrapper;
-using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -17,7 +16,7 @@ namespace PurchaseManagament.API.Controllers
             _employeeRoleService = employeeRoleService;
         }
 
-        [HttpPost("CreateEmployeeRole")]
+        [HttpPost("Create")]
         public async Task<ActionResult<Result<bool>>> CreateEmployeeRole(CreateEmployeeRoleRM createEmployeeRoleVM)
         {
             var result = await _employeeRoleService.CreateEmployeeRole(createEmployeeRoleVM);
@@ -53,21 +52,21 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAllEmployeeRole")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDto>>>> GetAllEmployeeRole()
         {
             var result = await _employeeRoleService.GetAllEmployeeRole();
             return Ok(result);
         }
 
-        [HttpPut("DeleteEmployeeRole")]
+        [HttpPut("Delete")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRole(Int64 Id)
         {
             var result = _employeeRoleService.DeleteEmployeeRole(Id);
             return Ok(result);
         }
 
-        [HttpDelete("DeletePermanentEmployeeRole")]
+        [HttpDelete("DeletePermanent")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRolePermanent(Int64 Id)
         {
             var result = _employeeRoleService.DeleteEmployeeRolePermanent(Id);
