@@ -34,12 +34,55 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<bool>> DeleteCompany(DeleteCompanyRM deleteCompanyRM)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == deleteCompanyRM.Id);
+            if (existEntity)
+            {
+                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<Company>().GetById(deleteCompanyRM.Id);
+            _unitWork.GetRepository<Company>().Delete(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
         public async Task<Result<HashSet<CompanyDto>>> GetAllCompany()
         {
             var result = new Result<HashSet<CompanyDto>>();
             var entities = await _unitWork.GetRepository<Company>().GetAllAsync();
             var mappedEntity = _mapper.Map<HashSet<CompanyDto>>(entities);
             result.Data = mappedEntity;
+            return result;
+        }
+
+        public async Task<Result<CompanyDto>> GetCompanyByName(string companyName)
+        {
+            var result = new Result<CompanyDto>();
+            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
+            if (existEntity)
+            {
+                throw new Exception("Bu isimle bir şirket bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<Company>().GetBySpesificFilter(x => x.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
+            var mappedEntity = _mapper.Map<CompanyDto>(entity);
+            result.Data = mappedEntity;
+            return result;
+
+        }
+
+        public async Task<Result<bool>> UpdateCompany(UpdateCompanyRM updateCompanyRM)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == updateCompanyRM.Id);
+            if (existEntity)
+            {
+                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<Company>().GetById(updateCompanyRM.Id);
+            _unitWork.GetRepository<Company>().Update(entity);
+            result.Data = await _unitWork.CommitAsync();
             return result;
         }
     }
