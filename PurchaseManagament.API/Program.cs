@@ -26,10 +26,9 @@ builder.Services.AddScoped<IUnitWork, UnitWork>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<ICompanyDepartmentService, CompanyDepartmentService>();
-//builder.Services.AddScoped<ICompanyService, CompanyService>();
-//builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IEmployeService, EmployeeService>();
+builder.Services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
 
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 

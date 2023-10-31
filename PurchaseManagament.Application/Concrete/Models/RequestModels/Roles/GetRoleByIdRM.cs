@@ -2,6 +2,6 @@
 {
     public class GetRoleByIdRM
     {
-        public long Id { get; set; }
+        public Int64 Id { get; set; }
     }
 }

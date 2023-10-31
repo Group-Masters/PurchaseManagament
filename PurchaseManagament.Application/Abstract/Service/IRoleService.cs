@@ -9,9 +9,9 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> CreateRole(CreateRoleRM createRoleRM);
         Task<Result<bool>> UpdateRole(UpdateRoleRM updateRoleRM);
         Task<Result<RoleDto>> GetRoleById(GetRoleByIdRM getRoleByIdRM);
-        Task<Result<RoleDto>> GetRoleByName(GetRoleByNameRM ge);
+        Task<Result<RoleDto>> GetRoleByName(GetRoleByNameRM getRoleByNameRM);
         Task<Result<HashSet<RoleDto>>> GetAllRole();
-        Task<Result<bool>> DeleteRole(long Id);
-        Task<Result<bool>> DeleteRolePermanent(long Id);
+        Task<Result<bool>> DeleteRole(Int64 Id);
+        Task<Result<bool>> DeleteRolePermanent(Int64 Id);
     }
 }

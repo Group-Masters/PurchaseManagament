@@ -35,7 +35,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteRolePermanent(long Id)
+        public async Task<Result<bool>> DeleteRolePermanent(Int64 Id)
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id);
@@ -49,7 +49,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }        
         
-        public async Task<Result<bool>> DeleteRole(long Id)
+        public async Task<Result<bool>> DeleteRole(Int64 Id)
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id);

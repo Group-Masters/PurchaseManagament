@@ -1,6 +1,6 @@
 ﻿namespace PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles
 {
-    public class GetByIdRM
+    public class GetEmployeeRoleByIdRM
     {
         public Int64 Id { get; set; }
     }

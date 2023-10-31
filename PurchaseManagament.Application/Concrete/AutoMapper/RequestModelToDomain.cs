@@ -34,7 +34,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<UpdateEmployeeRoleRM, EmployeeRole>();
             CreateMap<GetByEmployeeIdRM, EmployeeRole>();
             CreateMap<GetByRoleIdRM, EmployeeRole>();
-            CreateMap<GetByIdRM, EmployeeRole>();
+            CreateMap<GetEmployeeRoleByIdRM, EmployeeRole>();
 
             CreateMap<CreateEmployeeVM, Employee>();
             CreateMap<CreateEmployeeVM, EmployeeDetail>();
