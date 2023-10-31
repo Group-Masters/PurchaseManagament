@@ -9,6 +9,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
         public DomainToDto()
         {
             CreateMap<Company, CompanyDto>();
+            CreateMap<CompanyDepartment, CompanyDepartmentDto>();
+            CreateMap<Department, DepartmentDto>();
+
 
         }
     }
