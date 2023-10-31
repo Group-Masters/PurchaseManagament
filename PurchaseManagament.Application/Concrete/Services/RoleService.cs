@@ -39,7 +39,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception($"Rol {Id} bulunamadı.");
             }
@@ -53,7 +53,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception($"Rol {Id} bulunamadı.");
             }
@@ -73,6 +73,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //Bozuk
         public async Task<Result<RoleDto>> GetRoleByName(GetRoleByNameRM getRoleByNameRM)
         {
             var result = new Result<RoleDto>();

@@ -1,7 +1,6 @@
 ﻿
 
 using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments
 {

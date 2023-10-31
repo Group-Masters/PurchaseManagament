@@ -31,18 +31,19 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetRoleById")]
-        public async Task<ActionResult<Result<RoleDto>>> GetRoleById(long id)
+        public async Task<ActionResult<Result<RoleDto>>> GetRoleById(Int64 id)
         {
             var result = await _roleService.GetRoleById(new GetRoleByIdRM { Id = id });
             return Ok(result);
         }
 
-        [HttpGet("GetRoleByName")]
-        public async Task<ActionResult<Result<RoleDto>>> GetRoleByName(string name)
-        {
-            var result = await _roleService.GetRoleByName(new GetRoleByNameRM { Name = name });
-            return Ok(result);
-        }
+        //Istenmeyen Ozellik
+        //[HttpGet("GetRoleByName")]
+        //public async Task<ActionResult<Result<RoleDto>>> GetRoleByName(string name)
+        //{
+        //    var result = await _roleService.GetRoleByName(new GetRoleByNameRM { Name = name });
+        //    return Ok(result);
+        //}
 
         [HttpGet("GetAllRole")]
         public async Task<ActionResult<Result<HashSet<RoleDto>>>> GetAllRole()
@@ -52,16 +53,16 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("DeleteRole")]
-        public async Task<ActionResult<Result<bool>>> DeleteRole(long Id)
+        public async Task<ActionResult<Result<bool>>> DeleteRole(Int64 Id)
         {
-            var result = _roleService.DeleteRole(Id);
+            var result = await _roleService.DeleteRole(Id);
             return Ok(result);
         }
 
         [HttpDelete("DeletePermanentRole")]
-        public async Task<ActionResult<Result<bool>>> DeleteRolePermanent(long Id)
+        public async Task<ActionResult<Result<bool>>> DeleteRolePermanent(Int64 Id)
         {
-            var result = _roleService.DeleteRolePermanent(Id);
+            var result = await _roleService.DeleteRolePermanent(Id);
             return Ok(result);
         }
     }

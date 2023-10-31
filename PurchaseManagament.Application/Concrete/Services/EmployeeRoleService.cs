@@ -111,7 +111,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception($"Rol {Id} bulunamadı.");
             }
@@ -125,7 +125,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception($"Rol {Id} bulunamadı.");
             }

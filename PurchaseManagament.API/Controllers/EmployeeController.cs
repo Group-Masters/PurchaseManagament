@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 
 namespace PurchaseManagament.API.Controllers

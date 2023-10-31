@@ -24,12 +24,13 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("UpdateEmployeeRole")]
-        public async Task<ActionResult<Result<bool>>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleVM)
-        {
-            var result = await _employeeRoleService.UpdateEmployeeRole(updateEmployeeRoleVM);
-            return Ok(result);
-        }
+        //Istenmeyen Ozellik
+        //[HttpPut("UpdateEmployeeRole")]
+        //public async Task<ActionResult<Result<bool>>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleVM)
+        //{
+        //    var result = await _employeeRoleService.UpdateEmployeeRole(updateEmployeeRoleVM);
+        //    return Ok(result);
+        //}
 
         [HttpGet("GetById")]
         public async Task<ActionResult<Result<EmployeeRoleDto>>> GetEmployeeRoleById(Int64 Id)
