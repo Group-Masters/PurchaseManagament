@@ -2,7 +2,7 @@
 {
     public class CreateCompanyDepartmentRM
     {
-        public long CompanyId { get; set; }
-        public long DepartmentId { get; set; }
+        public Int64 CompanyId { get; set; }
+        public Int64 DepartmentId { get; set; }
     }
 }

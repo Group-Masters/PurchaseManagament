@@ -8,13 +8,13 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         //CRUD
         Task<Result<bool>> CreateDepartment(CreateDepartmentRM createDepartmentRM);
-        Task<Result<bool>> DeleteDepartment(DeleteDepartmentRM deleteDepartmentRM);
         Task<Result<bool>> UpdateDepartment(UpdateDepartmentRM updateDepartmentRM);
+        Task<Result<bool>> DeleteDepartmentPermanent(Int64 Id);
+        Task<Result<bool>> DeleteDepartment(Int64 Id);
 
         //GET METHODS
         Task<Result<DepartmentDto>> GetDepartmentByName(string name);
+        Task<Result<DepartmentDto>> GetDepartmentById(GetByIdDepartmentRM getByIdDepartmentRM);
         Task<Result<HashSet<DepartmentDto>>> GetAllDepartment(); 
-
-        
     }
 }

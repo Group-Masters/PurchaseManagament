@@ -33,18 +33,47 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteDepartment(DeleteDepartmentRM deleteDepartmentRM)
+        public async Task<Result<bool>> DeleteDepartmentPermanent(Int64 Id)
         {
             var result = new Result<bool>();
-            var existEntity = _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == deleteDepartmentRM.Id);
-            if (existEntity != null)
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == Id);
+            if (!existEntity)
             {
-                var mappedEntity = _mapper.Map<Department>(deleteDepartmentRM);
-                _unitWork.GetRepository<Department>().Delete(mappedEntity);
-                result.Success = true;
-                result.Data = await _unitWork.CommitAsync();
+                throw new Exception($"Departman {Id} bulunamadı.");
             }
-            else { throw new Exception("Böyle bir department id bulunamadı"); }
+            var entity = await _unitWork.GetRepository<Department>().GetById(Id);
+            _unitWork.GetRepository<Department>().Delete(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
+        public async Task<Result<bool>> DeleteDepartment(Int64 Id)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == Id);
+            if (!existEntity)
+            {
+                throw new Exception($"Departman {Id} bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<Department>().GetById(Id);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<Department>().Update(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
+        public async Task<Result<DepartmentDto>> GetDepartmentById(GetByIdDepartmentRM getByIdDepartmentRM)
+        {
+            var result = new Result<DepartmentDto>();
+            var entityControl = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == getByIdDepartmentRM.Id);
+            if (!entityControl)
+            {
+                throw new Exception($"Departman ID {getByIdDepartmentRM.Id} bulunamadı.");
+            }
+
+            var existEntity = await _unitWork.GetRepository<Department>().GetById(getByIdDepartmentRM.Id);
+            var mappedEntity = _mapper.Map<DepartmentDto>(existEntity);
+            result.Data = mappedEntity;
             return result;
         }
 
@@ -54,15 +83,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entities = await _unitWork.GetRepository<Department>().GetAllAsync();
             var mappedEnties = _mapper.Map<HashSet<DepartmentDto>>(entities);
             result.Data = mappedEnties; result.Success = true; return result;
-               
-            
         }
 
         public async Task<Result<DepartmentDto>> GetDepartmentByName(string name)
         {
             var result = new Result<DepartmentDto>();
             var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Name.ToUpper().Trim() == name.ToUpper().Trim());
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception("Bu isimle bir şirket bulunamadı.");
             }
@@ -76,9 +103,9 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == updateDepartmentRM.Id);
-            if (existEntity)
+            if (!existEntity)
             {
-                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+                throw new Exception("Bu id ye sahip bir departman bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Department>().GetById(updateDepartmentRM.Id);
             var mappedEntity = _mapper.Map(updateDepartmentRM, entity);

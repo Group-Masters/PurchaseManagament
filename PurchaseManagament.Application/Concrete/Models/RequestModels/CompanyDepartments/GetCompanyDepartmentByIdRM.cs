@@ -1,6 +1,6 @@
 ﻿namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments
 {
-    public class DeleteCompanyDepartmentRM
+    public class GetCompanyDepartmentByIdRM
     {
         public Int64 Id { get; set; }
     }

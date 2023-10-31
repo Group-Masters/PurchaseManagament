@@ -1,7 +1,7 @@
 ﻿namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Departments
 {
-    public class DeleteDepartmentRM
+    public class GetByIdDepartmentRM
     {
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
     }
 }

@@ -8,11 +8,11 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         //CRUD
         Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmentRM createCompanyDepartmentRM);
-        Task<Result<bool>> DeleteCompanyDepartment(DeleteCompanyDepartmentRM deleteCompanyDepartmentRM);
         Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM);
+        Task<Result<bool>> DeleteCompanyDepartment(Int64 id);
 
         //GET METHODS
-        Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentByName(string companyName);
+        Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentById(GetCompanyDepartmentByIdRM getCompanyDepartmentById);
         Task<Result<HashSet<CompanyDepartmentDto>>> GetAllCompanyDepartment();
     }
 }
