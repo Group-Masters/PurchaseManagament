@@ -39,9 +39,9 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
         [HttpDelete("DeleteCompany")]
-        public async Task<IActionResult> DeleteDepartment(DeleteCompanyRM delete)
+        public async Task<IActionResult> DeleteDepartment(Int64 id)
         {
-            var entity = await _companyService.DeleteCompany(delete);
+            var entity = await _companyService.DeleteCompany(new DeleteCompanyRM { Id=id});
             return Ok(entity);
         }
     }
