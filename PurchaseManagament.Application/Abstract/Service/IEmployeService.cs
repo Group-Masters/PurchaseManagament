@@ -9,6 +9,6 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<List<EmployeeDto>>> GetAllEmployes();
         Task<Result<EmployeeDto>> GetEmployee(GetByIdVM CompanyId);
         Task<Result<long>> CreateEmployee(CreateEmployeeVM createEmployeeVM);
-
+        Task<Result<TokenDto>> Login(LoginVM loginVM);
     }
 }
