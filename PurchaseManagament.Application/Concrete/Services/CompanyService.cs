@@ -76,7 +76,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == updateCompanyRM.Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
             }
