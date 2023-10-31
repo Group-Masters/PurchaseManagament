@@ -66,7 +66,7 @@ namespace PurchaseManagament.Persistence.Concrete.Repositories
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> filter)
         {
-            return await _dbSet.AnyAsync(filter);
+            return await _dbSet.AsNoTracking().AnyAsync(filter);
         }
 
 
