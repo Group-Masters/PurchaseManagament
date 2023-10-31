@@ -59,7 +59,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<ProductDto>>> GetAllProduct()
         {
             var result = new Result<HashSet<ProductDto>>();
-            var entities = _unitWork.GetRepository<ProductDto>().GetAllAsync();
+            var entities = _unitWork.GetRepository<Product>().GetAllAsync();
             var mappedEntities = _mapper.Map<HashSet<ProductDto>>(await entities);
             result.Data = mappedEntities;
             return result;
