@@ -66,7 +66,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Bu isimle bir şirket bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Department>().GetBySpesificFilter(x => x.Name.ToUpper().Trim() == name.ToUpper().Trim());
+            var entity = await _unitWork.GetRepository<Department>().GetByFilterAsync(x => x.Name.ToUpper().Trim() == name.ToUpper().Trim());
             var mappedEntity = _mapper.Map<DepartmentDto>(entity);
             result.Data = mappedEntity;
             return result;

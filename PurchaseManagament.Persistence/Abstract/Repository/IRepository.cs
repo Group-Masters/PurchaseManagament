@@ -5,32 +5,15 @@ namespace PurchaseManagament.Persistence.Abstract.Repository
     public interface IRepository<T> 
         where T : class
     {
-        //CRUD
+        Task<IQueryable<T>> GetAllAsync(params string[] includeColumns);
+        Task<IQueryable<T>> GetByFilterAsync(Expression<Func<T, bool>> filter, params string[] includeColumns);
+        Task<T> GetSingleByFilterAsync(Expression<Func<T, bool>> filter, params string[] includeColumns);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
+        Task<T> GetById(object id);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-
-        //MODİFİED GETS
-        #region Pure Get Methods
-         Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetAllAsyncAsNoTracking();
-        #endregion
-
-        #region GetById Methods
-        Task<T> GetById(Object id);
-        #endregion
-
-        #region GetByFilter Methods
-        Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
-        Task<T> GetBySpesificFilter(Expression<Func<T, bool>> filter = null);
-        Task<IEnumerable<T>> GetByFilter(Expression<Func<T, bool>> filter = null);
-        Task<T> GetBySpesificFilterAsNoTracking(Expression<Func<T, bool>> filter = null);
-        Task<IEnumerable<T>> GetByFilterAsNoTracking(Expression<Func<T, bool>> filter = null);
-
-        #endregion
-
-
-
+        void Delete(object id);
 
     }
 }

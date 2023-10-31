@@ -22,8 +22,14 @@ builder.Services.AddDbContext<PurchaseManagamentContext>(a => a.UseSqlServer(@"S
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddScoped<IUnitWork, UnitWork>();
-
+//servicess
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<ICompanyDepartmentService, CompanyDepartmentService>();
+//builder.Services.AddScoped<ICompanyService, CompanyService>();
+//builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IEmployeService, EmployeeService>();
 
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 
