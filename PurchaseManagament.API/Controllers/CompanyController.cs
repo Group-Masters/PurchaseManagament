@@ -33,12 +33,12 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
         [HttpPut("UpdateCompany")]
-        public async Task<IActionResult> UpdateDepartment(UpdateCompanyRM update)
+        public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyRM update)
         {
             var entity = await _companyService.UpdateCompany(update);
             return Ok(entity);
         }
-        [HttpDelete("DeleteCompany")]
+        [HttpDelete("DeleteCompany/{id}")]
         public async Task<IActionResult> DeleteDepartment(Int64 id)
         {
             var entity = await _companyService.DeleteCompany(new DeleteCompanyRM { Id=id});
