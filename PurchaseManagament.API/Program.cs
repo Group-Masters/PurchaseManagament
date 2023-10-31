@@ -42,6 +42,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//ajax baðlantý kobul iþlemi
+app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
 app.UseAuthorization();
 
 app.MapControllers();
