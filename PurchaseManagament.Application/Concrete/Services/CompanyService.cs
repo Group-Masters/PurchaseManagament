@@ -38,7 +38,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<bool>();
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == deleteCompanyRM.Id);
-            if (existEntity)
+            if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
@@ -65,7 +65,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Bu isimle bir şirket bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Company>().GetBySpesificFilter(x => x.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
+            var entity = await _unitWork.GetRepository<Company>().GetByFilterAsync(x => x.Name.ToUpper().Trim() == companyName.ToUpper().Trim());
             var mappedEntity = _mapper.Map<CompanyDto>(entity);
             result.Data = mappedEntity;
             return result;

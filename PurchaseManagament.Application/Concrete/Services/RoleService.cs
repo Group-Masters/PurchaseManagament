@@ -81,7 +81,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Bu isimle bir rol bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Role>().GetBySpesificFilter(x => x.Name.ToUpper().Trim() == getRoleByNameRM.Name.ToUpper().Trim());
+            var entity = await _unitWork.GetRepository<Role>().GetByFilterAsync(x => x.Name.ToUpper().Trim() == getRoleByNameRM.Name.ToUpper().Trim());
             var mappedEntity = _mapper.Map<RoleDto>(entity);
             result.Data = mappedEntity;
             return result;
