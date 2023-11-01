@@ -22,12 +22,12 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        //[HttpPut("Update")]
-        //public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyDepartmentRM update)
-        //{
-        //    var entity = await _companyDepartmentService.UpdateCompanyDepartment(update);
-        //    return Ok(entity);
-        //}
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyStockRM update)
+        {
+            var entity = await _companyStockService.UpdateCompanyStock(update);
+            return Ok(entity);
+        }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllCompanyStock()

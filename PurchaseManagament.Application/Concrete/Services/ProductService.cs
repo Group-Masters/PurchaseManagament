@@ -33,12 +33,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> DeleteProduct(long id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Product>().GetById(id);
+            var entity = await _unitWork.GetRepository<Product>().GetById(id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<CompanyStock>().Delete(entity);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<Product>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
@@ -51,7 +52,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<CompanyStock>().Delete(entity);
+            _unitWork.GetRepository<CompanyStock>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
@@ -73,7 +74,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
             }
-            _unitWork.GetRepository<Product>().Update(entity);
+            var mappedEntity = _mapper.Map(updateProductRM, entity);
+            _unitWork.GetRepository<Product>().Update(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;
