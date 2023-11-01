@@ -40,7 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
 
-            var entityCD=await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.CompanyId == createEmployeeVM.CompanyId&&x.DepartmentId==createEmployeeVM.DepartmantId);
+            var entityCD=await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.CompanyId == createEmployeeVM.CompanyId&&x.DepartmentId==createEmployeeVM.DepartmentId);
 
             // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
             //var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));

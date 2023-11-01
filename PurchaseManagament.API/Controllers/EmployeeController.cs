@@ -4,7 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 
 namespace PurchaseManagament.API.Controllers
 {
-    [Route("employee")]
+    [Route("Employee")]
     public class EmployeeController : Controller
     {
         private IEmployeService _service;
@@ -13,8 +13,8 @@ namespace PurchaseManagament.API.Controllers
             _service = service;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeVM createEmployeeVM)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateEmployee([FromBody]CreateEmployeeVM createEmployeeVM)
         {
            var entities = await _service.CreateEmployee(createEmployeeVM);
             return Ok(entities);
