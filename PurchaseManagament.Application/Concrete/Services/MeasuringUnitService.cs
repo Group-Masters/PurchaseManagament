@@ -32,12 +32,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> DeleteMeasuringUnit(Int64 id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<MeasuringUnit>().GetById(id);
+            var entity = await _unitWork.GetRepository<MeasuringUnit>().GetById(id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<MeasuringUnit>().Delete(entity);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<MeasuringUnit>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
@@ -45,12 +46,12 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> DeleteMeasuringUnitPermanent(long id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<MeasuringUnit>().GetById(id);
+            var entity =  _unitWork.GetRepository<MeasuringUnit>().GetById(id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<MeasuringUnit>().Delete(entity);
+            _unitWork.GetRepository<MeasuringUnit>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }

@@ -8,11 +8,12 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         //CRUD
         Task<Result<bool>> CreateCompany(CreateCompanyRM createCompanyRM);
-        Task<Result<bool>> DeleteCompany(DeleteCompanyRM deleteCompanyRM); 
         Task<Result<bool>> UpdateCompany(UpdateCompanyRM updateCompanyRM);
+        Task<Result<bool>> DeleteCompanyPermanent(Int64 Id);
+        Task<Result<bool>> DeleteCompany(Int64 Id);
 
         //GET METHODS
-        Task<Result<CompanyDto>> GetCompanyByName(string companyName);
+        Task<Result<CompanyDto>> GetCompanyById(GetCompanyByIdRM getCompanyByIdRM);
         Task<Result<HashSet<CompanyDto>>> GetAllCompany();
     }
 }
