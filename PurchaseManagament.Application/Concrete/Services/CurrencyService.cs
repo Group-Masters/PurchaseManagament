@@ -62,9 +62,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public Task<Result<HashSet<CurrencyDTO>>> GetAllCurrency()
+        public async Task<Result<HashSet<CurrencyDTO>>> GetAllCurrency()
         {
-            throw new NotImplementedException();
+            var result = new Result<HashSet<CurrencyDTO>>();
+            var entities = _unitWork.GetRepository<Currency>().GetAllAsync();
+            var mappedEntities = _mapper.Map<HashSet<CurrencyDTO>>(await entities);
+            result.Data = mappedEntities;
+            return result;
         }
 
         public Task<Result<long>> UpdateCurrency(UpdateCurrencyRM updateCurrencyRM)

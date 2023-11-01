@@ -37,5 +37,13 @@ namespace PurchaseManagament.API.Controllers
             var result = await _currencyService.DeleteCurrencyPermanent(id);
             return Ok(result);
         }
+
+
+        [HttpGet("GetAllCurrency")]
+        public async Task<IActionResult> GetAllCurrency()
+        {
+            var entities = await _currencyService.GetAllCurrency();
+            return Ok(entities);
+        }
     }
 }
