@@ -19,11 +19,13 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CreateCompanyRM, Company>();
             CreateMap<UpdateCompanyRM, Company>();
             CreateMap<DeleteCompanyRM, Company>();
+            CreateMap<GetCompanyByIdRM, Company>();
 
             CreateMap<CreateCompanyDepartmentRM, CompanyDepartment>();
             CreateMap<DeleteCompanyDepartmentRM, CompanyDepartment>();
-            CreateMap<GetCompanyDepartmentByIdRM, CompanyDepartment>();
             CreateMap<UpdateCompanyDepartmentRM, CompanyDepartment>();
+            CreateMap<GetDepartmentByCompanyIdRM, CompanyDepartment>();
+            CreateMap<GetCompanyDepartmentByIdRM, CompanyDepartment>();
 
             CreateMap<GetByIdDepartmentRM, Department>();
             CreateMap<CreateDepartmentRM, Department>();
@@ -37,7 +39,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CreateProductRM, Product>();
             CreateMap<UpdateProductRM, Product>();
 
-            CreateMap<CreateEmployeeRoleRM,  EmployeeRole>();
+            CreateMap<CreateEmployeeRoleRM, EmployeeRole>();
             CreateMap<UpdateEmployeeRoleRM, EmployeeRole>();
             CreateMap<GetByEmployeeIdRM, EmployeeRole>();
             CreateMap<GetByRoleIdRM, EmployeeRole>();

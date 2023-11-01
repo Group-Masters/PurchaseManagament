@@ -13,7 +13,6 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteDepartment(Int64 Id);
 
         //GET METHODS
-        Task<Result<DepartmentDto>> GetDepartmentByName(string name);
         Task<Result<DepartmentDto>> GetDepartmentById(GetByIdDepartmentRM getByIdDepartmentRM);
         Task<Result<HashSet<DepartmentDto>>> GetAllDepartment(); 
     }

@@ -29,6 +29,21 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.DepartmentId == updateCompanyDepartmentRM.DepartmentId);
+            if (!existEntity)
+            {
+                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(updateCompanyDepartmentRM.DepartmentId);
+            var mappedEntity = _mapper.Map(updateCompanyDepartmentRM, entity);
+            _unitWork.GetRepository<CompanyDepartment>().Update(mappedEntity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
         public async Task<Result<bool>> DeleteCompanyDepartment(Int64 id)
         {
             var result = new Result<bool>();
@@ -82,18 +97,28 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
+        public async Task<Result<HashSet<DepartmentDto>>> GetDepartmentByCompanyId(GetDepartmentByCompanyIdRM getDepartmentByCompanyIdRM)
         {
-            var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.DepartmentId == updateCompanyDepartmentRM.DepartmentId);
-            if (!existEntity)
+            var result = new Result<HashSet<DepartmentDto>>();
+            var companyControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);
+            if (!companyControl)
             {
-                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+                throw new Exception($"{getDepartmentByCompanyIdRM.CompanyId} numaralı şirkete ait kayıt bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(updateCompanyDepartmentRM.DepartmentId);
-            var mappedEntity = _mapper.Map(updateCompanyDepartmentRM, entity);
-            _unitWork.GetRepository<CompanyDepartment>().Update(mappedEntity);
-            result.Data = await _unitWork.CommitAsync();
+
+            var companyDepartments = await _unitWork.GetRepository<CompanyDepartment>().GetByFilterAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);
+            var companyDepartmentDtos = _mapper.Map<HashSet<CompanyDepartmentDto>>(companyDepartments);
+            
+            HashSet<DepartmentDto> DepartmentDtos = new();
+
+            foreach(var companyDepartmentDto in companyDepartmentDtos)
+            {
+                var department = await _unitWork.GetRepository<Department>().GetById(companyDepartmentDto.DepartmentId);
+                var departmentDto = _mapper.Map<DepartmentDto>(department);
+                DepartmentDtos.Add(departmentDto);
+            }
+
+            result.Data = DepartmentDtos;
             return result;
         }
     }

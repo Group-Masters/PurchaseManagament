@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
+using PurchaseManagament.Application.Concrete.Services;
+using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -26,11 +30,11 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _companyService.GetAllCompany();
             return Ok(entities);
         }
-        [HttpPost("GetByName")]
-        public async Task<IActionResult> GetCompanyDepartmentByName(string name)
+        [HttpGet("GetById")]
+        public async Task<ActionResult<Result<CompanyDto>>> GetCompanyById(Int64 id)
         {
-            var entity = await _companyService.GetCompanyByName(name);
-            return Ok(entity);
+            var result = await _companyService.GetCompanyById(new GetCompanyByIdRM { Id = id });
+            return Ok(result);
         }
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyRM update)
@@ -38,11 +42,18 @@ namespace PurchaseManagament.API.Controllers
             var entity = await _companyService.UpdateCompany(update);
             return Ok(entity);
         }
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteDepartment(Int64 id)
+        [HttpPut("Delete/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteCompany(Int64 id)
         {
-            var entity = await _companyService.DeleteCompany(new DeleteCompanyRM { Id=id});
-            return Ok(entity);
+            var result = await _companyService.DeleteCompany(id);
+            return Ok(result);
+        }
+
+        [HttpDelete("DeletePermanent/{id}")]
+        public async Task<ActionResult<Result<bool>>> DeleteCompanyPermanent(Int64 id)
+        {
+            var result = await _companyService.DeleteCompanyPermanent(id);
+            return Ok(result);
         }
     }
 }

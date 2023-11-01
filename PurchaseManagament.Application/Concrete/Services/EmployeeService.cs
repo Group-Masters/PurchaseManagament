@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Execution;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PurchaseManagament.Application.Abstract.Service;
@@ -11,13 +9,9 @@ using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
