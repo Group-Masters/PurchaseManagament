@@ -35,14 +35,31 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public Task<Result<bool>> DeleteCurrency(long id)
+        public async Task<Result<bool>> DeleteCurrency(Int64 id)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            var entity = await _unitWork.GetRepository<Currency>().GetById(id);
+            if (entity is null)
+            {
+                throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
+            }
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<Currency>().Update(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
         }
 
-        public Task<Result<bool>> DeleteCurrencyPermanent(long id)
+        public async Task<Result<bool>> DeleteCurrencyPermanent(long id)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            var entity = _unitWork.GetRepository<Currency>().GetById(id);
+            if (entity is null)
+            {
+                throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
+            }
+            _unitWork.GetRepository<Currency>().Delete(await entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
         }
 
         public Task<Result<HashSet<CurrencyDTO>>> GetAllCurrency()
