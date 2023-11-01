@@ -87,7 +87,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
 
-        public Task<Result<EmployeeDto>> GetEmployee(GetByIdVM CompanyId)
+        public Task<Result<EmployeeDto>> GetEmployee()
         {
             throw new NotImplementedException();
         }
@@ -146,6 +146,8 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Email, person.EmployeeDetail.Email),
+                    new Claim(ClaimTypes.Name, person.EmployeeDetail.Username),
+
                     new Claim(ClaimTypes.Sid, person.Id.ToString()),
                    
                     
@@ -156,7 +158,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
             foreach (var r in roles)
             {
-                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
+               tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
             }
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PurchaseManagament.Domain.Abstract;
+using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Concrete.Mappings;
 
@@ -8,6 +11,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
     {
         //Tables => Db deki tablo şemaları
         //public DbSet<> Table { get; set; }
+
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyDepartment> CompanyDepartments { get; set; }
         public virtual DbSet<CompanyStock> CompanyStocks { get; set; }
@@ -25,9 +29,12 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
 
-        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options) : base(options)
+        private readonly ILoggedService _loggedUserService;
+
+        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
             Database.EnsureCreated();
+            _loggedUserService = loggedService;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -70,6 +77,53 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.Entity<Role>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Supplier>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<StockOperations>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
+        }
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            //Herhangi bir kayıt işleminde yapılan işlem ekleme ise CreateDate ve CreatedBy bilgileri otomatik olarak set edilir.
+            //Herhangi bir kayıt işleminde yapılan işlem güncelleme ise ModifiedDate ve ModifiedBy bilgileri otomatik olarak set edilir.
+
+            var entries = ChangeTracker.Entries<BaseEntity>().ToList();
+
+            foreach (var entry in entries)
+            {
+                //if (entry.State == EntityState.Deleted)
+                //{
+                //    entry.Entity.IsDeleted = true;
+                //    entry.State = EntityState.Modified;
+                //}
+
+                if (entry.Entity is AuditableEntity auditableEntity)
+                {
+                    switch (entry.State)
+                    {
+                        //update
+                        case EntityState.Modified:
+                            auditableEntity.ModifiedDate = DateTime.Now;
+                            auditableEntity.ModifiedBy = _loggedUserService.Username ?? "admin";
+                            auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
+                            break;
+                            
+                        //insert
+                        case EntityState.Added:
+                            auditableEntity.CreatedDate = DateTime.Now;
+                            auditableEntity.CreatedBy = _loggedUserService.UserId.ToString() ?? "admin";
+                            auditableEntity.CreatedIP = _loggedUserService.Ip ?? "admin";
+                            break;
+                        //delete
+                        case EntityState.Deleted:
+                            auditableEntity.ModifiedDate = DateTime.Now;
+                            auditableEntity.ModifiedBy = _loggedUserService.Username.ToString() ?? "admin";
+                            auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
     }
 }
