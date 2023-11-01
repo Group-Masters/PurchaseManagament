@@ -76,8 +76,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             var employeEntity = await _uWork.GetRepository<Employee>().GetAllAsync("EmployeeDetail");
             foreach (var employee in employeEntity)
             {
-                var a = employee.EmployeeDetail;
+              var a=  employee.CompanyDepartment.Company.Name;
             }
+
             var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
             result.Data = employeDtos;
             return result;
