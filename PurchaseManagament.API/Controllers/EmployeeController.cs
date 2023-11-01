@@ -14,7 +14,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeVM createEmployeeVM)
+        public async Task<IActionResult> CreateEmployee([FromBody]CreateEmployeeVM createEmployeeVM)
         {
            var entities = await _service.CreateEmployee(createEmployeeVM);
             return Ok(entities);

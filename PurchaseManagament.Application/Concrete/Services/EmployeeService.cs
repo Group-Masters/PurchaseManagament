@@ -40,7 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
 
-            var entityCD=await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.CompanyId == createEmployeeVM.CompanyId&&x.DepartmentId==createEmployeeVM.DepartmantId);
+            var entityCD=await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.CompanyId == createEmployeeVM.CompanyId&&x.DepartmentId==createEmployeeVM.DepartmentId);
 
             // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
             //var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
@@ -70,15 +70,27 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
+      
+        
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
         {
             var result = new Result<List<EmployeeDto>>();
-            var employeEntity = await _uWork.GetRepository<Employee>().GetAllAsync("EmployeeDetail");
-            foreach (var employee in employeEntity)
-            {
-                var a = employee.EmployeeDetail;
-            }
+            var employeEntity = await _uWork.GetRepository<Employee>().GetAllAsync("EmployeeDetail" );
+
+
+
+
             var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
+            var dtos = new List<EmployeeDto>();
+            foreach (var employee in employeDtos)
+            {
+              var a=await  _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.Id==employee.CompanyDepartmentId,"Department");
+                employee.DepartmentName=a.Department.Name;
+                employee.DepartmentName = a.Department.Name;
+               
+            }
+            
+            
             result.Data = employeDtos;
             return result;
         }

@@ -44,7 +44,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetDepartmentByCompanyId")]
+        [HttpGet("GetDepartmentByCompanyId/{id}")]
         public async Task<ActionResult<Result<HashSet<DepartmentDto>>>> GetDepartmentByCompanyId(Int64 id )
         {
             var result = await _companyDepartmentService.GetDepartmentByCompanyId(new GetDepartmentByCompanyIdRM { CompanyId = id });

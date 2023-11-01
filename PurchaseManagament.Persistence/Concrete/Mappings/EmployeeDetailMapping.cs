@@ -16,7 +16,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 
                 .HasColumnName("USERNAME")
                 .IsRequired();
-            builder.Property(x => x.Adress)
+            builder.Property(x => x.Address)
               
                 .HasColumnName("ADDRESS")
                 .IsRequired();

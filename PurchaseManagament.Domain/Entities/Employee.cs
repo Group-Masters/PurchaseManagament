@@ -23,7 +23,7 @@ namespace PurchaseManagament.Domain.Entities
     }
     public  enum Gender
     {
-        Male=1,
+        Male,
         Female,
     }
 }

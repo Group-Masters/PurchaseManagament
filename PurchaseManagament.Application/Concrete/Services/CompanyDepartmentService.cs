@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -103,7 +104,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var companyControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);
             if (!companyControl)
             {
-                throw new Exception($"{getDepartmentByCompanyIdRM.CompanyId} numaralı şirkete ait kayıt bulunamadı.");
+                throw new NotFoundException($"{getDepartmentByCompanyIdRM.CompanyId} numaralı şirkete ait kayıt bulunamadı.");
             }
 
             var companyDepartments = await _unitWork.GetRepository<CompanyDepartment>().GetByFilterAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);
