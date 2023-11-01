@@ -33,31 +33,31 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteDepartmentPermanent(Int64 Id)
+        public async Task<Result<bool>> DeleteDepartment(Int64 id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == Id);
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id);
             if (!existEntity)
             {
-                throw new Exception($"Departman {Id} bulunamadı.");
+                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Department>().GetById(Id);
-            _unitWork.GetRepository<Department>().Delete(entity);
+            var entity = await _unitWork.GetRepository<Department>().GetById(id);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<Department>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
 
-        public async Task<Result<bool>> DeleteDepartment(Int64 Id)
+        public async Task<Result<bool>> DeleteDepartmentPermanent(Int64 id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == Id);
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id);
             if (!existEntity)
             {
-                throw new Exception($"Departman {Id} bulunamadı.");
+                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Department>().GetById(Id);
-            entity.IsDeleted = true;
-            _unitWork.GetRepository<Department>().Update(entity);
+            var entity = await _unitWork.GetRepository<Department>().GetById(id);
+            _unitWork.GetRepository<Department>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
