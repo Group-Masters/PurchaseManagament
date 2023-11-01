@@ -71,9 +71,19 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public Task<Result<long>> UpdateCurrency(UpdateCurrencyRM updateCurrencyRM)
+        public async Task<Result<long>> UpdateCurrency(UpdateCurrencyRM updateCurrencyRM)
         {
-            throw new NotImplementedException();
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<Currency>().GetById(updateCurrencyRM.Id);
+            if (entity is null)
+            {
+                throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
+            }
+            var mappedEntity = _mapper.Map(updateCurrencyRM, entity);
+            _unitWork.GetRepository<Currency>().Update(mappedEntity);
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
         }
     }
 }

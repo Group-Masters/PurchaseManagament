@@ -45,5 +45,12 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _currencyService.GetAllCurrency();
             return Ok(entities);
         }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateCurrency([FromBody] UpdateCurrencyRM update)
+        {
+            var entity = await _currencyService.UpdateCurrency(update);
+            return Ok(entity);
+        }
     }
 }
