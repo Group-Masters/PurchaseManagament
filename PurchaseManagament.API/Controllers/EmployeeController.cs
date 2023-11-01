@@ -13,21 +13,20 @@ namespace PurchaseManagament.API.Controllers
             _service = service;
         }
 
-
         [HttpPost("create")]
-        public async Task<IActionResult> CreateEmployee(CreateEmployeeVM createEmployeeVM)
+        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeVM createEmployeeVM)
         {
            var entities = await _service.CreateEmployee(createEmployeeVM);
             return Ok(entities);
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
         {
             var entities = await _service.Login(loginVM);
             return Ok(entities);
         }
 
-        [HttpGet("GetAll/id")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllEmployee()
         {
             var entities = await _service.GetAllEmployes();
