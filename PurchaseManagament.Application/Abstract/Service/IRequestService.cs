@@ -19,6 +19,6 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteRequestPermanent(Int64 id);
 
         //GET METHODS
-        Task<Result<HashSet<ProductDto>>> GetAllProduct();
+        Task<Result<HashSet<RequestDTO>>> GetAllRequest();
     }
 }

@@ -52,7 +52,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<CompanyStock>().Delete(await entity);
+            _unitWork.GetRepository<Product>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
