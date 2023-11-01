@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
-using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
@@ -37,7 +35,6 @@ namespace PurchaseManagament.API.Controllers
             var result = await _currencyService.DeleteCurrencyPermanent(id);
             return Ok(result);
         }
-
 
         [HttpGet("GetAllCurrency")]
         public async Task<IActionResult> GetAllCurrency()

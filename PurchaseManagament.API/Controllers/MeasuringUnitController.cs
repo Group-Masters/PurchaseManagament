@@ -5,7 +5,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
-    [Route("measuringunit")]
+    [Route("MeasuringUnit")]
     public class MeasuringUnitController : Controller
     {
         private readonly IMeasuringUnitService _measuringUnitService;
@@ -15,7 +15,7 @@ namespace PurchaseManagament.API.Controllers
             _measuringUnitService = measuringUnitService;
         }
 
-        [HttpPost("CreateMeasuringUnit")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateMeasuringUnit([FromBody] CreateMeasuringUnitRM create)
         {
             var entity = await _measuringUnitService.CreateMeasuringUnit(create);
@@ -29,7 +29,7 @@ namespace PurchaseManagament.API.Controllers
         //    return Ok(entity);
         //}
 
-        [HttpGet("GetAllMeasuringUnit")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllMeasuringUnit()
         {
             var entities = await _measuringUnitService.GetAllMeasuringUnit();
