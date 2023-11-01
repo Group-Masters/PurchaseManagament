@@ -111,11 +111,11 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                             auditableEntity.CreatedIP = _loggedUserService.Ip ?? "admin";
                             break;
                         //delete
-                        case EntityState.Deleted:
-                            auditableEntity.ModifiedDate = DateTime.Now;
-                            auditableEntity.ModifiedBy = _loggedUserService.Username.ToString() ?? "admin";
-                            auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
-                            break;
+                        //case EntityState.Deleted:
+                        //    auditableEntity.ModifiedDate = DateTime.Now;
+                        //    auditableEntity.ModifiedBy = _loggedUserService.Username.ToString() ?? "admin";
+                        //    auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
+                        //    break;
                         default:
                             break;
                     }

@@ -62,6 +62,7 @@ builder.Services.AddDbContext<PurchaseManagamentContext>(a => a.UseSqlServer(@"S
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+
 builder.Services.AddScoped<IUnitWork, UnitWork>();
 //servicess
 builder.Services.AddScoped<ICompanyService, CompanyService>();
