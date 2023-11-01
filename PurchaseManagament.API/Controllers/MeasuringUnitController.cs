@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
+    [Route("measuringunit")]
     public class MeasuringUnitController : Controller
     {
         private readonly IMeasuringUnitService _measuringUnitService;
