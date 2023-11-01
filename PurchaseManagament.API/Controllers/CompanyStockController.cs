@@ -15,7 +15,7 @@ namespace PurchaseManagament.API.Controllers
             _companyStockService = companyStockService;
         }
 
-        [HttpPost("CreateCompanyStock")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCompanyStock([FromBody] CreateCompanyStockRM create)
         {
             var entity = await _companyStockService.CreateCompanyStock(create);

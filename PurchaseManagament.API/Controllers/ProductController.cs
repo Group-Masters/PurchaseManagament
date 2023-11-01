@@ -15,7 +15,7 @@ namespace PurchaseManagament.API.Controllers
             _productService = ProductService;
         }
 
-        [HttpPost("CreateProduct")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductRM createProductRM)
         {
             var entity = await _productService.CreateProduct(createProductRM);
@@ -29,7 +29,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetAllProduct")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllProduct()
         {
             var entities = await _productService.GetAllProduct();

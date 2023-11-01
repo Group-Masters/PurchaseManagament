@@ -5,7 +5,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
-    [Route("currency")]
+    [Route("Currency")]
     public class CurrencyController : Controller
     {
         private readonly ICurrencyService _currencyService;
@@ -15,7 +15,7 @@ namespace PurchaseManagament.API.Controllers
             _currencyService = currencyService;
         }
 
-        [HttpPost("CreateCurrency")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCurrency([FromBody] CreateCurrencyRM create)
         {
             var entity = await _currencyService.CreateCurrency(create);
@@ -36,7 +36,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAllCurrency")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllCurrency()
         {
             var entities = await _currencyService.GetAllCurrency();

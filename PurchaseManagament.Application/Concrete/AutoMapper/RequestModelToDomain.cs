@@ -11,6 +11,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -63,7 +64,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<UpdateRequestStateRM, Request>();
             CreateMap<UpdateRequestRM, Request>();
 
-
+            CreateMap<CreateSupplierRM,  Supplier>();
+            CreateMap<UpdateSupplierRM, Supplier>();
+            CreateMap<GetSupplierByIdRM, Supplier>();
         }
     }
 }

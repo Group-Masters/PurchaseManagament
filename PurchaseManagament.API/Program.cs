@@ -83,6 +83,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<IMeasuringUnitService, MeasuringUnitService>();
 
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+
 // CurrencyService Eklendi
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 

@@ -3,12 +3,12 @@ using PurchaseManagament.Domain.Enums;
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class Offer:AuditableEntity
+    public class Offer : AuditableEntity
     {
-        public long CurrencyId { get; set; }
-        public long SupplierId { get; set; }
-        public long RequestId { get; set; }
-        public long ApprovingEmployeeId { get; set; }
+        public Int64 CurrencyId { get; set; }
+        public Int64 SupplierId { get; set; }
+        public Int64 RequestId { get; set; }
+        public Int64 ApprovingEmployeeId { get; set; }
         public decimal OfferedPrice { get; set; }
         public string Details { get; set; }
 

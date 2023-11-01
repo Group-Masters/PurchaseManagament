@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
-using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
-    [Route("request")]
+    [Route("Request")]
     public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
@@ -17,7 +15,7 @@ namespace PurchaseManagament.API.Controllers
             _requestService = requestService;
         }
 
-        [HttpPost("CreateRequest")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateRequest([FromBody] CreateRequestRM createRequestRM)
         {
             var entity = await _requestService.CreateRequest(createRequestRM);

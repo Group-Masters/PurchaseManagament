@@ -30,7 +30,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<Currency, CurrencyDTO>();
 
             CreateMap<Request, RequestDTO>();
-        
+
+            CreateMap<Supplier, SupplierDto>();
         }
     }
 }
