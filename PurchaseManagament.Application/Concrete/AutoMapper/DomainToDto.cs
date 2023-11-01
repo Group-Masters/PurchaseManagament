@@ -24,6 +24,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<EmployeeRole, EmployeeRoleDto>();
 
             CreateMap<Role, RoleDto>();
+
+            CreateMap<Currency, CurrencyDTO>();
         
         }
     }

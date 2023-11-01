@@ -9,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -51,6 +52,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateMeasuringUnitRM, MeasuringUnit>();
             CreateMap<UpdateMeasuringUnitRM, MeasuringUnit>();
+
+            CreateMap<CreateCurrencyRM, Currency>();
+            CreateMap<UpdateCurrencyRM, Currency>();
 
         }
     }
