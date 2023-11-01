@@ -4,7 +4,8 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Employee
 {
     public class CreateEmployeeVM
     {
-        public long CompanyDepartmentId { get; set; }
+        public Int64 DepartmantId { get; set; }
+        public Int64 CompanyId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string IdNumber { get; set; }

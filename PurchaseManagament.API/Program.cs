@@ -85,6 +85,9 @@ builder.Services.AddScoped<IMeasuringUnitService, MeasuringUnitService>();
 // CurrencyService Eklendi
 builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
+// RequestService Eklendi
+builder.Services.AddScoped<IRequestService, RequestService>();
+
 
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 

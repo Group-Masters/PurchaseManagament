@@ -5,19 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PurchaseManagament.Application.Concrete.Models.Dtos
+namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Request
 {
-    public class RequestDTO
+    public class UpdateRequestStateRM
     {
         public Int64 Id { get; set; }
-        public long ProductId { get; set; }
 
-        public long ApprovingEmployeeId { get; set; }
-        public long RequestEmployeeId { get; set; }
-        public string Details { get; set; }
-        public double Quantity { get; set; }
 
-        public virtual Status State { get; set; } // Durum
+
+
+
+
+        public virtual Status State { get; set; }
 
         /* Status Durumlar
          * 

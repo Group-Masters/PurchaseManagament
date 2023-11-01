@@ -21,7 +21,11 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.IsDeleted)
                 .HasColumnName("IS_DELETED")
                 .HasDefaultValueSql("0");
-                
+
+            builder.Property(x => x.IsActive)
+                .HasColumnName("IS_ACTIVE")
+                .HasDefaultValueSql("0");
+
         }
     }
 }

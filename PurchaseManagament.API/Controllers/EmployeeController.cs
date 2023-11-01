@@ -13,7 +13,6 @@ namespace PurchaseManagament.API.Controllers
             _service = service;
         }
 
-
         [HttpPost("create")]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeVM createEmployeeVM)
         {

@@ -33,7 +33,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
 
         public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
-            Database.EnsureCreated();
+          Database.EnsureCreated();
             _loggedUserService = loggedService;
         }
 

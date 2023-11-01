@@ -38,6 +38,10 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
             }
 
+
+
+            var entityCD=await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.CompanyId == createEmployeeVM.CompanyId&&x.DepartmentId==createEmployeeVM.DepartmantId);
+
             // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
             //var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
 
@@ -50,7 +54,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
             var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
-
+            approvedEntity.Password = hashedPassword;
 
             employeeEntity.EmployeeDetail = approvedEntity;
             _uWork.GetRepository<Employee>().Add(employeeEntity);

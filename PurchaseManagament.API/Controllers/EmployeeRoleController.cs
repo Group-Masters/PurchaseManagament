@@ -17,7 +17,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Result<bool>>> CreateEmployeeRole(CreateEmployeeRoleRM createEmployeeRoleVM)
+        public async Task<ActionResult<Result<bool>>> CreateEmployeeRole([FromBody] CreateEmployeeRoleRM createEmployeeRoleVM)
         {
             var result = await _employeeRoleService.CreateEmployeeRole(createEmployeeRoleVM);
             return Ok(result);
@@ -62,14 +62,14 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("Delete")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRole(Int64 Id)
         {
-            var result = _employeeRoleService.DeleteEmployeeRole(Id);
+            var result = await _employeeRoleService.DeleteEmployeeRole(Id);
             return Ok(result);
         }
 
         [HttpDelete("DeletePermanent")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRolePermanent(Int64 Id)
         {
-            var result = _employeeRoleService.DeleteEmployeeRolePermanent(Id);
+            var result = await _employeeRoleService.DeleteEmployeeRolePermanent(Id);
             return Ok(result);
         }
     }
