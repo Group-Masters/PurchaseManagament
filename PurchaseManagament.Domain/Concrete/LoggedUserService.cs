@@ -24,7 +24,7 @@ namespace PurchaseManagament.Domain.Concrete
         public string Username => GetClaim(ClaimTypes.Name) != null ? GetClaim(ClaimTypes.Name) : null;
         public string Email => GetClaim(ClaimTypes.Email) != null ? GetClaim(ClaimTypes.Email) : null;
 
-     public string? Role => GetClaim(ClaimTypes.Role) != null ? GetClaim(ClaimTypes.Role) : null;
+     //public List<string>? Role => GetClaim(ClaimTypes.Role) != null ? GetClaimList(ClaimTypes.Role) : null;
 
         public string Ip => _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
 
@@ -32,5 +32,11 @@ namespace PurchaseManagament.Domain.Concrete
         {
             return _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimType)?.Value;
         }
+        //private List<string> GetClaimList(string claimType)
+        //{
+        //  var roles= _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimType)?.Value.Split(',');
+        //    return roles.ToList();
+        //}
+
     }
 }
