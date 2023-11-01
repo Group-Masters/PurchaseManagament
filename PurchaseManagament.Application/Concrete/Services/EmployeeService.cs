@@ -55,7 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
             var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
             approvedEntity.Password = hashedPassword;
-
+            employeeEntity.CompanyDepartment = entityCD;
             employeeEntity.EmployeeDetail = approvedEntity;
             _uWork.GetRepository<Employee>().Add(employeeEntity);
 

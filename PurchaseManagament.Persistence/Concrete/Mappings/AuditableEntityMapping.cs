@@ -49,7 +49,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.IsActive)
                 .HasColumnName("IS_ACTIVE")
                 .IsRequired(false)
-                ;
+                 .HasDefaultValueSql("1");
             builder.Property(x => x.IsDeleted)
                 .HasColumnName("IS_DELETED")
                 .HasDefaultValueSql("0");
