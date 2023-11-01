@@ -29,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteMeasuringUnit(long id)
+        public async Task<Result<bool>> DeleteMeasuringUnit(Int64 id)
         {
             var result = new Result<bool>();
             var entity = _unitWork.GetRepository<MeasuringUnit>().GetById(id);
