@@ -44,14 +44,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -68,7 +66,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -103,7 +101,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<long>("DepartmentId")
@@ -111,11 +109,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("DEPARTMENT_ID")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -132,7 +128,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.HasKey("Id");
@@ -167,14 +163,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -191,7 +185,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("ProductId")
@@ -230,14 +224,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -254,7 +246,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -289,14 +281,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -313,7 +303,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -353,7 +343,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<int>("Gender")
@@ -365,11 +355,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("EMPLOYEE_ID_NUMBER");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -386,7 +374,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -433,7 +421,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<string>("Email")
@@ -452,11 +440,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("EMPLOYEE_ID")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -473,7 +459,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Password")
@@ -517,18 +503,16 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<long>("EmployeeId")
                         .HasColumnType("bigint")
                         .HasColumnName("EMPLOYEE_ID");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -545,7 +529,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("RoleId")
@@ -579,14 +563,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -603,7 +585,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("OfferId")
@@ -640,14 +622,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -664,7 +644,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -698,7 +678,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<long>("CurrencyId")
@@ -708,11 +688,9 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -729,7 +707,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("OfferedPrice")
@@ -779,7 +757,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<string>("Description")
@@ -787,11 +765,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("DESCRIPTION")
                         .HasColumnOrder(4);
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -813,7 +789,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -837,7 +813,7 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ApprovingEmployeeId")
+                    b.Property<long?>("ApprovingEmployeeId")
                         .HasColumnType("bigint")
                         .HasColumnName("APPROVING_EMPLOYEE_ID")
                         .HasColumnOrder(4);
@@ -851,7 +827,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
                     b.Property<string>("Details")
@@ -859,11 +835,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("DETAILS")
                         .HasColumnOrder(6);
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -880,7 +854,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("ProductId")
@@ -932,14 +906,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -956,7 +928,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -991,14 +963,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1015,7 +985,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<long>("ProductId")
@@ -1063,14 +1033,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_DATE");
 
                     b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("CREATE_IP");
 
-                    b.Property<string>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasDefaultValueSql("0");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit")
+                        .HasColumnName("IS_ACTIVE");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1087,7 +1055,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_DATE");
 
                     b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
                     b.Property<string>("Name")
@@ -1248,7 +1216,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .WithMany("ApprovedRequests")
                         .HasForeignKey("ApprovingEmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
                         .HasConstraintName("REQUEST_APPROVING_EMPLOYEE");
 
                     b.HasOne("PurchaseManagament.Domain.Entities.Product", "Product")

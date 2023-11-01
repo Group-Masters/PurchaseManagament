@@ -18,6 +18,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.ApprovingEmployeeId)
                 .HasColumnOrder(4)
                 .HasColumnType("bigint")
+                .IsRequired(false)
                 .HasColumnName("APPROVING_EMPLOYEE_ID");
 
             builder.Property(x => x.RequestEmployeeId)

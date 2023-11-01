@@ -21,15 +21,14 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("CREATE_DATE")
                 ;
 
-            builder.Property(x => x.IsActive)
-                .HasColumnName("CREATED_BY_ID")
-                .HasColumnType("nvarchar(10)")
-                .IsRequired(false)
-                ;
-
             builder.Property(x => x.CreatedBy)
                 .HasColumnName("CREATED_BY_ID")
                 .HasColumnType("nvarchar(50)")
+                .IsRequired(false)
+                ;
+            builder.Property(x => x.CreatedIP)
+                .HasColumnName("CREATE_IP")
+                .HasColumnType("nvarchar(100)")
                 .IsRequired(false)
                 ;
 
@@ -41,33 +40,26 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("MODIFIED_BY_ID")
                 .HasColumnType("nvarchar(50)")
                 .IsRequired(false);
-
-            builder.Property(x => x.IsActive)
-                .HasColumnName("CREATED_BY_ID")
-                .HasColumnType("nvarchar(10)")
-                .IsRequired(false)
-                ;
-
             builder.Property(x => x.ModifiedIP)
                 .HasColumnName("MODIFIED_IP")
-                .HasColumnType("nvarchar(10)")
+                .HasColumnType("nvarchar(100)")
                 .IsRequired(false)
                 ;
 
-            builder.Property(x => x.CreatedIP)
-                .HasColumnName("CREATE_IP")
-                .HasColumnType("nvarchar(10)")
+            builder.Property(x => x.IsActive)
+                .HasColumnName("IS_ACTIVE")
                 .IsRequired(false)
                 ;
-
             builder.Property(x => x.IsDeleted)
                 .HasColumnName("IS_DELETED")
                 .HasDefaultValueSql("0");
 
-            builder.Property(x => x.IsActive)
-                .HasColumnName("IS_ACTIVE")
-                .HasDefaultValueSql("0");
-                ;
+
+
+
+
+
+
 
         }
     }
