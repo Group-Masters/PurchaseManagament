@@ -73,6 +73,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
             }
+            _mapper.Map(updateInvoiceRM, entity);
             _unitWork.GetRepository<Invoice>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
