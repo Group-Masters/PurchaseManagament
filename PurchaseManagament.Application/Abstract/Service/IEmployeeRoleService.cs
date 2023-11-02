@@ -8,11 +8,15 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         Task<Result<bool>> CreateEmployeeRole(CreateEmployeeRoleRM createEmployeeRoleRM);
         Task<Result<bool>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleRM);
+        Task<Result<bool>> DeleteEmployeeRole(Int64 Id);
+        Task<Result<bool>> DeleteEmployeeRolePermanent(Int64 Id);
+
         Task<Result<EmployeeRoleDto>> GetEmployeeRoleById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM);
         Task<Result<HashSet<EmployeeRoleDto>>> GetByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM);
         Task<Result<HashSet<EmployeeRoleDto>>> GetByRoleId(GetByRoleIdRM getByRoleIdRM);
         Task<Result<HashSet<EmployeeRoleDto>>> GetAllEmployeeRole();
-        Task<Result<bool>> DeleteEmployeeRole(Int64 Id);
-        Task<Result<bool>> DeleteEmployeeRolePermanent(Int64 Id);
+
+        Task<Result<EmployeeRoleDetailDto>> GetEmployeeRoleDetailById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM);
+        Task<Result<HashSet<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail();
     }
 }

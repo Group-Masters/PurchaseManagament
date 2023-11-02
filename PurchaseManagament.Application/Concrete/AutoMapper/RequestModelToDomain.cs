@@ -12,7 +12,6 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnit
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
-using PurchaseManagament.Application.Concrete.Models.Dtos;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -55,6 +54,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateCompanyStockRM, CompanyStock>();
             CreateMap<UpdateCompanyStockRM, CompanyStock>();
+            CreateMap<UpdateCompanyQuantityRM, CompanyStock>(); // adet güncelleme
 
             CreateMap<CreateMeasuringUnitRM, MeasuringUnit>();
             CreateMap<UpdateMeasuringUnitRM, MeasuringUnit>();
@@ -69,6 +69,16 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CreateSupplierRM,  Supplier>();
             CreateMap<UpdateSupplierRM, Supplier>();
             CreateMap<GetSupplierByIdRM, Supplier>();
+
+            CreateMap<CreateInvoiceRM, Invoice>();
+            CreateMap<UpdateInvoiceRM, Invoice>();
+
+            CreateMap<CreateOfferRM, Offer>();
+            CreateMap<UpdateOfferRM, Offer>();
+            CreateMap<UpdateOfferStateRM, Offer>();
+
+
+            CreateMap<StockOperationsDTO, StockOperations>();
         }
     }
 }

@@ -12,7 +12,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CompanyDepartment, CompanyDepartmentDto>();
             CreateMap<CompanyStock, CompanyStocksDto>();
 
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDto>()
+                .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name));
 
             CreateMap<MeasuringUnit, MeasuringUnitDto>();
 
@@ -28,6 +29,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
            
             CreateMap<EmployeeRole, EmployeeRoleDto>();
+            CreateMap<EmployeeRole, EmployeeRoleDetailDto>()
+                .ForMember(x => x.EmployeeName, y => y.MapFrom(z => z.Employee.Name))
+                .ForMember(x => x.EmployeeSurname, y => y.MapFrom(z => z.Employee.Surname))
+                .ForMember(x => x.EmployeeEmail, y => y.MapFrom(z => z.Employee.EmployeeDetail.Email))
+                .ForMember(x => x.RoleName, y => y.MapFrom(z => z.Role.Name));
 
             CreateMap<Role, RoleDto>();
 
@@ -36,6 +42,12 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<Request, RequestDTO>();
 
             CreateMap<Supplier, SupplierDto>();
+
+            CreateMap<Invoice, InvoiceDto>();
+
+            CreateMap<Offer, OfferDto>();
+
+            CreateMap<StockOperations,StockOperationsDTO>();
         }
     }
 }

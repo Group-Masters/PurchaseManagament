@@ -1,81 +1,80 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
-    public class ProductService : IProductService
+    public class InvoiceService : IInvoiceService
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
 
-        public ProductService(IMapper mapper, IUnitWork unitWork)
+        public InvoiceService(IMapper mapper, IUnitWork unitWork)
         {
             _mapper = mapper;
             _unitWork = unitWork;
         }
-
-        public async Task<Result<long>> CreateProduct(CreateProductRM createProductRM)
+        public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
             var result = new Result<long>();
-            var mappedEntity = _mapper.Map<Product>(createProductRM);
-            _unitWork.GetRepository<Product>().Add(mappedEntity);
+            var mappedEntity = _mapper.Map<Invoice>(create);
+            _unitWork.GetRepository<Invoice>().Add(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
             return result;
         }
 
-        public async Task<Result<bool>> DeleteProduct(long id)
+        public async Task<Result<bool>> DeleteInvoice(long id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Product>().GetById(id);
+            var entity = await _unitWork.GetRepository<Invoice>().GetById(id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
             entity.IsDeleted = true;
-            _unitWork.GetRepository<Product>().Update(entity);
+            _unitWork.GetRepository<Invoice>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
 
-        public async Task<Result<bool>> DeleteProductPermanent(long id)
+        public async Task<Result<bool>> DeleteInvoicePermanent(long id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Product>().GetById(id);
+            var entity = _unitWork.GetRepository<Invoice>().GetById(id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
             }
-            _unitWork.GetRepository<Product>().Delete(await entity);
+            _unitWork.GetRepository<Invoice>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
 
-        public async Task<Result<HashSet<ProductDto>>> GetAllProduct()
+        public async Task<Result<HashSet<InvoiceDto>>> GetAllInvoice()
         {
-            var result = new Result<HashSet<ProductDto>>();
-            var entities = _unitWork.GetRepository<Product>().GetAllAsync("MeasuringUnit");
-            var mappedEntities = _mapper.Map<HashSet<ProductDto>>(await entities);
+            var result = new Result<HashSet<InvoiceDto>>();
+            var entities = _unitWork.GetRepository<Invoice>().GetAllAsync();
+            var mappedEntities = _mapper.Map<HashSet<InvoiceDto>>(await entities);
             result.Data = mappedEntities;
             return result;
         }
 
-        public async Task<Result<long>> UpdateProduct(UpdateProductRM updateProductRM)
+        public async Task<Result<long>> UpdateInvoice(UpdateInvoiceRM updateInvoiceRM)
         {
             var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Product>().GetById(updateProductRM.Id);
+            var entity = await _unitWork.GetRepository<Invoice>().GetById(updateInvoiceRM.Id);
             if (entity is null)
             {
                 throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
             }
-            var mappedEntity = _mapper.Map(updateProductRM, entity);
-            _unitWork.GetRepository<Product>().Update(mappedEntity);
+            _mapper.Map(updateInvoiceRM, entity);
+            _unitWork.GetRepository<Invoice>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;

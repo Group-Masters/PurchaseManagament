@@ -83,5 +83,36 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
+
+
+        // Adet güncellenmesi
+        public async Task<Result<long>> UpdateCompanyStockQuantity(UpdateCompanyQuantityRM updateCompanyQuantityRM)
+        {
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<CompanyStock>().GetById(updateCompanyQuantityRM.Id);
+            if (entity is null)
+            {
+                throw new Exception("Adet güncellemesi için id eşleşmesi başarısız oldu.");
+            }
+            if (updateCompanyQuantityRM.ToplaCıkar == true && updateCompanyQuantityRM.ToplaCıkar is not null)
+            {
+                entity.Quantity = updateCompanyQuantityRM.Quantity + entity.Quantity;
+                _unitWork.GetRepository<CompanyStock>().Update(entity);
+            }
+            else if (updateCompanyQuantityRM.ToplaCıkar == false && updateCompanyQuantityRM.ToplaCıkar is not null)
+            {
+                entity.Quantity = entity.Quantity  - updateCompanyQuantityRM.Quantity;
+                _unitWork.GetRepository<CompanyStock>().Update(entity);
+            }
+            else
+            {
+                throw new Exception("Adet güncellemesi için Islem Secilmedi");
+            }
+
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
+
+        }
     }
 }

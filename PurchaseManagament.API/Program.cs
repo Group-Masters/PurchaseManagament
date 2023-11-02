@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -91,7 +90,11 @@ builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 // RequestService Eklendi
 builder.Services.AddScoped<IRequestService, RequestService>();
 
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
+builder.Services.AddScoped<IOfferService, OfferService>();
+
+//AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 
 // JWT kimlik doðrulama servisini ekleme
