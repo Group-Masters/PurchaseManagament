@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 
 namespace PurchaseManagament.API.Controllers
@@ -30,6 +31,13 @@ namespace PurchaseManagament.API.Controllers
         public async Task<IActionResult> GetAllEmployee()
         {
             var entities = await _service.GetAllEmployes();
+            return Ok(entities);
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeVM updateEmployeeVM)
+        {
+            var entities = await _service.UpdateEmployee(updateEmployeeVM);
             return Ok(entities);
         }
     }

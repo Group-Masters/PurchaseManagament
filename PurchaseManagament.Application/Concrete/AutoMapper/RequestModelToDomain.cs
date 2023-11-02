@@ -12,6 +12,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnit
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -50,6 +51,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateEmployeeVM, Employee>();
             CreateMap<CreateEmployeeVM, EmployeeDetail>();
+            CreateMap<UpdateEmployeeVM,EmployeeDetail>();
 
             CreateMap<CreateCompanyStockRM, CompanyStock>();
             CreateMap<UpdateCompanyStockRM, CompanyStock>();
