@@ -30,6 +30,13 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
+        [HttpPut("UpdateOfferState")]
+        public async Task<IActionResult> UpdateOfferState([FromBody] UpdateOfferStateRM update)
+        {
+            var entity = await _offerService.UpdateOffer(update);
+            return Ok(entity);
+        }
+
         [HttpGet("GetById")]
         public async Task<ActionResult<Result<OfferDto>>> GetOfferById(Int64 id)
         {

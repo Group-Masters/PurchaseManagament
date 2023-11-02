@@ -88,6 +88,22 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception($"{update.Id}'li teklif bulunamamıştır.");
             }
+            _mapper.Map(update, entity);
+            _unitWork.GetRepository<Offer>().Update(entity);
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
+        }
+
+        public async Task<Result<long>> UpdateOffer(UpdateOfferStateRM update)
+        {
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
+            if (entity is null)
+            {
+                throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
+            }
+            _mapper.Map(update, entity);
             _unitWork.GetRepository<Offer>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;

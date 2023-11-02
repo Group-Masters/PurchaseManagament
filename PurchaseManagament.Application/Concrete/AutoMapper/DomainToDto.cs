@@ -15,7 +15,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CompanyStock, CompanyStocksDto>();
 
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDto>()
+                .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name));
 
             CreateMap<MeasuringUnit, MeasuringUnitDto>();
 
@@ -47,12 +48,13 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<Supplier, SupplierDto>();
 
             CreateMap<Invoice, InvoiceDto>();
-
             CreateMap<Offer, OfferDto>()
                 .ForMember(x => x.CurrencyName, y => y.MapFrom(z => z.Currency.Name))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
                 .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovingEmployee.Name))
                 .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname));
+
+            CreateMap<StockOperations, StockOperationsDTO>();
         }
     }
 }
