@@ -85,6 +85,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             foreach (var employee in employeDtos)
             {
               var a=await  _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x=>x.Id==employee.CompanyDepartmentId,"Department");
+              var b=await  _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x=>x.EmployeeId==employee.Id,"Role");
+                // employee.Roles=
+                // b.ToList();
+                if (b != null)
+                {
+                    employee.Roles=b.Select(x=>x.Role.Name).ToList();
+                }
+             
+                
                 employee.DepartmentName=a.Department.Name;
                 employee.DepartmentName = a.Department.Name;
                
