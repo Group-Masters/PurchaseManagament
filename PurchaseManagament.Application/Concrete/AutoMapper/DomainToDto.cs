@@ -32,6 +32,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<Request, RequestDTO>();
 
             CreateMap<Supplier, SupplierDto>();
+
+            CreateMap<Invoice, InvoiceDto>();
+
+            CreateMap<Offer, OfferDto>();
         }
     }
 }
