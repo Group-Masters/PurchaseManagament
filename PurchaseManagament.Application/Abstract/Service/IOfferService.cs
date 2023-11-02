@@ -8,6 +8,8 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         Task<Result<long>> CreateOffer(CreateOfferRM create);
         Task<Result<long>> UpdateOffer(UpdateOfferRM update);
+        Task<Result<long>> UpdateOffer(UpdateOfferStateRM update);
+
         Task<Result<bool>> DeleteOffer(Int64 id);
         Task<Result<bool>> DeleteOfferPermanent(Int64 id);
 

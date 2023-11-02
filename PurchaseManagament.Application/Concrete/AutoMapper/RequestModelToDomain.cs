@@ -75,6 +75,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateOfferRM, Offer>();
             CreateMap<UpdateOfferRM, Offer>();
+            CreateMap<UpdateOfferStateRM, Offer>();
+
         }
     }
 }
