@@ -22,6 +22,9 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(builder => builder.Status)
                 .HasColumnName("STATUS");
 
+            builder.Property(builder => builder.ApprovingEmployeeId)
+                .HasColumnName("APPROVING_EMPLOYEE_ID")
+                .IsRequired(false);
 
 
             builder.Property(builder => builder.SupplierId)
@@ -37,7 +40,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasForeignKey(builder => builder.ApprovingEmployeeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-         
+            
 
             builder.HasOne(x => x.Currency)
                 .WithMany(x => x.Offers)
