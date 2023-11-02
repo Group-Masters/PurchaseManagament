@@ -12,7 +12,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CompanyDepartment, CompanyDepartmentDto>();
             CreateMap<CompanyStock, CompanyStocksDto>();
 
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDto>()
+                .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name));
 
             CreateMap<MeasuringUnit, MeasuringUnitDto>();
 
