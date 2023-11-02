@@ -79,7 +79,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new Exception("Böyle bir tedarikci silinmek için bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Supplier>().GetById(id);
             entity.IsDeleted = true;
@@ -94,7 +94,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new Exception("Böyle bir Tedarikci silinmek için bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Supplier>().GetById(id);
             _unitWork.GetRepository<Supplier>().Delete(entity);
