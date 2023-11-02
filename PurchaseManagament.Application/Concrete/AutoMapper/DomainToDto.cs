@@ -9,7 +9,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
         public DomainToDto()
         {
             CreateMap<Company, CompanyDto>();
-            CreateMap<CompanyDepartment, CompanyDepartmentDto>();
+            CreateMap<CompanyDepartment, CompanyDepartmentDto>()
+                .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.Company.Name))
+                .ForMember(x => x.DepartmentName, y => y.MapFrom(z => z.Department.Name));
+
             CreateMap<CompanyStock, CompanyStocksDto>();
 
             CreateMap<Product, ProductDto>()
@@ -39,15 +42,23 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<Currency, CurrencyDTO>();
 
-            CreateMap<Request, RequestDTO>();
+            CreateMap<Request, RequestDto>()
+                .ForMember(x => x.ProductName, y => y.MapFrom(z => z.Product.Name))
+                .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovedEmployee.Name))
+                .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovedEmployee.Surname))
+                .ForMember(x => x.RequestEmployeeName, y => y.MapFrom(z => z.RequestEmployee.Name))
+                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(z => z.RequestEmployee.Surname));
 
             CreateMap<Supplier, SupplierDto>();
 
             CreateMap<Invoice, InvoiceDto>();
+            CreateMap<Offer, OfferDto>()
+                .ForMember(x => x.CurrencyName, y => y.MapFrom(z => z.Currency.Name))
+                .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
+                .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovingEmployee.Name))
+                .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname));
 
-            CreateMap<Offer, OfferDto>();
-
-            CreateMap<StockOperations,StockOperationsDTO>();
+            CreateMap<StockOperations, StockOperationsDTO>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
@@ -19,6 +20,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteRequestPermanent(Int64 id);
 
         //GET METHODS
-        Task<Result<HashSet<RequestDTO>>> GetAllRequest();
+        Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById);
+        Task<Result<HashSet<RequestDto>>> GetAllRequest();
     }
 }

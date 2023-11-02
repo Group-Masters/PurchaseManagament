@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -36,12 +37,18 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-
-        [HttpGet("GetAllRequest")]
-        public async Task<IActionResult> GetAllRequest()
+        [HttpGet("GetById")]
+        public async Task<ActionResult<Result<RequestDto>>> GetRequestById(Int64 id)
         {
-            var entities = await _requestService.GetAllRequest();
-            return Ok(entities);
+            var result = await _requestService.GetRequestById(new GetRequestByIdRM { Id = id });
+            return Ok(result);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllDepartment()
+        {
+            var result = await _requestService.GetAllRequest();
+            return Ok(result);
         }
 
         [HttpPut("Delete/{id}")]
