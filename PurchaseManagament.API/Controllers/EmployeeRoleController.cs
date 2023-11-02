@@ -59,6 +59,20 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetDetailById")]
+        public async Task<ActionResult<Result<EmployeeRoleDto>>> GetEmployeeRoleDetailById(Int64 Id)
+        {
+            var result = await _employeeRoleService.GetEmployeeRoleDetailById(new GetEmployeeRoleByIdRM { Id = Id });
+            return Ok(result);
+        }
+
+        [HttpGet("GetAllDetail")]
+        public async Task<ActionResult<Result<EmployeeRoleDto>>> GetAllEmployeeRoleDetail()
+        {
+            var result = await _employeeRoleService.GetAllEmployeeRoleDetail();
+            return Ok(result);
+        }
+
         [HttpPut("Delete")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRole(Int64 Id)
         {
