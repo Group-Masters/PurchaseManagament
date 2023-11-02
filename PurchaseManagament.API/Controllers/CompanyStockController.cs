@@ -29,6 +29,14 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
+        // Adet güncellemesi
+        [HttpPut("UpdateQuantity")]
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityRM update)
+        {
+            var entity = await _companyStockService.UpdateCompanyStockQuantity(update);
+            return Ok(entity);
+        }
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllCompanyStock()
         {
