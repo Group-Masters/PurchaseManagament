@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using System.Collections.Generic;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -48,6 +50,35 @@ namespace PurchaseManagament.Application.Concrete.Services
             existEntity = _mapper.Map(updateEmployeeRoleRM, existEntity);
             _unitWork.GetRepository<EmployeeRole>().Update(existEntity);
 
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
+        public async Task<Result<bool>> DeleteEmployeeRolePermanent(Int64 Id)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
+            if (!existEntity)
+            {
+                throw new Exception($"Rol {Id} bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
+            _unitWork.GetRepository<EmployeeRole>().Delete(entity);
+            result.Data = await _unitWork.CommitAsync();
+            return result;
+        }
+
+        public async Task<Result<bool>> DeleteEmployeeRole(Int64 Id)
+        {
+            var result = new Result<bool>();
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
+            if (!existEntity)
+            {
+                throw new Exception($"Rol {Id} bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
+            entity.IsDeleted = true;
+            _unitWork.GetRepository<EmployeeRole>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
@@ -107,32 +138,30 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteEmployeeRolePermanent(Int64 Id)
+        public async Task<Result<EmployeeRoleDetailDto>> GetEmployeeRoleDetailById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
-            var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
-            if (!existEntity)
+            var result = new Result <EmployeeRoleDetailDto>();
+            var entityControl = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == getEmployeeRoleByIdRM.Id);
+            if(!entityControl)
             {
-                throw new Exception($"Rol {Id} bulunamadı.");
+                throw new Exception($"Çalışan Rol Kaydı Bulunamadı");
             }
-            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
-            _unitWork.GetRepository<EmployeeRole>().Delete(entity);
-            result.Data = await _unitWork.CommitAsync();
+
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetSingleByFilterAsync(x => x.Id == getEmployeeRoleByIdRM.Id, "Employee","Employee.EmployeeDetail", "Role");
+            var mappedEntity = _mapper.Map<EmployeeRoleDetailDto>(existEntity);
+            
+            result.Data = mappedEntity;
             return result;
         }
 
-        public async Task<Result<bool>> DeleteEmployeeRole(Int64 Id)
+        public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail()
         {
-            var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
-            if (!existEntity)
-            {
-                throw new Exception($"Rol {Id} bulunamadı.");
-            }
-            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
-            entity.IsDeleted = true;
-            _unitWork.GetRepository<EmployeeRole>().Update(entity);
-            result.Data = await _unitWork.CommitAsync();
+            var result = new Result<HashSet<EmployeeRoleDetailDto>>();
+
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetAllAsync( "Employee", "Employee.EmployeeDetail", "Role");
+            var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(existEntity);
+
+            result.Data = mappedEntity;
             return result;
         }
     }
