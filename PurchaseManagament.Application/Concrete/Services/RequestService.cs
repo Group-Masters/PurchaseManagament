@@ -94,7 +94,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<RequestDto>>> GetAllRequest()
         {
             var result = new Result<HashSet<RequestDto>>();
-            var entities = await _unitWork.GetRepository<Request>().GetAllAsync("Product", "Employee");
+            var entities = await _unitWork.GetRepository<Request>().GetAllAsync("Product", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -109,7 +109,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception($"{getRequestById.Id}'li talep bulunamamıştır.");
             }
 
-            var existEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getRequestById.Id, "Product", "Employee");
+            var existEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getRequestById.Id, "Product", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<RequestDto>(existEntity);
             result.Data = mappedEntity;
             return result;
