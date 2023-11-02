@@ -12,6 +12,9 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnit
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -78,7 +81,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<UpdateOfferStateRM, Offer>();
 
 
-            CreateMap<StockOperationsDTO, StockOperations>();
+            CreateMap<StockOperationsDto, StockOperations>();
         }
     }
 }

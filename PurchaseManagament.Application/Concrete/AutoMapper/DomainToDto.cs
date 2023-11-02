@@ -58,7 +58,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovingEmployee.Name))
                 .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname));
 
-            CreateMap<StockOperations, StockOperationsDTO>();
+            CreateMap<StockOperations, StockOperationsDto>();
         }
     }
 }

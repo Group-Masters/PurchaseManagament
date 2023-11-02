@@ -1,6 +1,4 @@
-﻿using System.Security.Principal;
-
-namespace PurchaseManagament.Application.Concrete.Models.Dtos
+﻿namespace PurchaseManagament.Application.Concrete.Models.Dtos
 {
     public class TokenDto
     {

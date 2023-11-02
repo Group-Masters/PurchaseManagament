@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
