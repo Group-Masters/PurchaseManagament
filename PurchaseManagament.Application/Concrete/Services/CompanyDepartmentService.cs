@@ -77,7 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<CompanyDepartmentDto>>> GetAllCompanyDepartment()
         {
             var result = new Result<HashSet<CompanyDepartmentDto>>();
-            var entities = await _unitWork.GetRepository<CompanyDepartment>().GetAllAsync();
+            var entities = await _unitWork.GetRepository<CompanyDepartment>().GetAllAsync("Company", "Department");
             var mappedEntity = _mapper.Map<HashSet<CompanyDepartmentDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -92,7 +92,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new Exception($"Departman ID {getCompanyDepartmentById.Id} bulunamadı.");
             }
 
-            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().GetById(getCompanyDepartmentById.Id);
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == getCompanyDepartmentById.Id, "Company", "Department");
             var mappedEntity = _mapper.Map<CompanyDepartmentDto>(existEntity);
             result.Data = mappedEntity;
             return result;

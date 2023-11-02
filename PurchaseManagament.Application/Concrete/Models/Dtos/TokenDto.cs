@@ -9,6 +9,5 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public Int64 DepartmentId { get; set; }
         public List<Int64> RolId { get; set; }
         public string Token { get; set; }
-
     }
 }

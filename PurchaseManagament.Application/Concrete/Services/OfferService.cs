@@ -35,7 +35,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Offer>().GetById(id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new Exception($"{id}'li teklif bulunamamıştır.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Offer>().Update(entity);
@@ -49,21 +49,36 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Offer>().GetById(id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new Exception($"{id}'li teklif bulunamamıştır.");
             }
             _unitWork.GetRepository<Offer>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-
         public async Task<Result<HashSet<OfferDto>>> GetAllOffer()
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = _unitWork.GetRepository<Offer>().GetAllAsync();
-            var mappedEntities = _mapper.Map<HashSet<OfferDto>>(await entities);
-            result.Data = mappedEntities;
+            var entities = await _unitWork.GetRepository<Offer>().GetAllAsync("Currency", "Supplier", "ApprovingEmployee");
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+            result.Data = mappedEntity;
             return result;
         }
+
+        public async Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById)
+        {
+            var result = new Result<OfferDto>();
+            var entityControl = await _unitWork.GetRepository<Offer>().AnyAsync(x => x.Id == getOfferById.Id);
+            if (!entityControl)
+            {
+                throw new Exception($"{getOfferById.Id}'li teklif bulunamamıştır.");
+            }
+
+            var existEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == getOfferById.Id, "Currency", "Supplier", "ApprovingEmployee");
+            var mappedEntity = _mapper.Map<OfferDto>(existEntity);
+            result.Data = mappedEntity;
+            return result;
+        }
+
 
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
@@ -71,7 +86,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
             if (entity is null)
             {
-                throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new Exception($"{update.Id}'li teklif bulunamamıştır.");
             }
             _unitWork.GetRepository<Offer>().Update(entity);
             await _unitWork.CommitAsync();

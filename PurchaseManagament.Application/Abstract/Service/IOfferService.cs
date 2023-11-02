@@ -12,6 +12,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteOfferPermanent(Int64 id);
 
         //GET METHODS
+        Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById);
         Task<Result<HashSet<OfferDto>>> GetAllOffer();
     }
 }
