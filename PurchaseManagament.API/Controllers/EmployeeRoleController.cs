@@ -66,8 +66,15 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetDetailByCompanyId")]
+        public async Task<ActionResult<Result<HashSet<EmployeeRoleDetailDto>>>> GetEmployeeRolesByCompanyId(Int64 Id)
+        {
+            var result = await _employeeRoleService.GetEmployeeRolesByCompanyId(new GetEmployeeRoleByIdRM { Id = Id });
+            return Ok(result);
+        }
+
         [HttpGet("GetAllDetail")]
-        public async Task<ActionResult<Result<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail()
+        public async Task<ActionResult<Result<HashSet<EmployeeRoleDetailDto>>>> GetAllEmployeeRoleDetail()
         {
             var result = await _employeeRoleService.GetAllEmployeeRoleDetail();
             return Ok(result);

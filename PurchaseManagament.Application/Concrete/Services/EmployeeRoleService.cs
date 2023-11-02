@@ -154,6 +154,18 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetEmployeeRolesByCompanyId(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
+        {
+            var result = new Result<HashSet<EmployeeRoleDetailDto>>();
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getEmployeeRoleByIdRM.Id, "Employee", "Employee.EmployeeDetail", "Role");
+            var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(entity);
+
+            result.Data = mappedEntity;
+            return result;
+            throw new Exception();
+        }
+
+
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail()
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
