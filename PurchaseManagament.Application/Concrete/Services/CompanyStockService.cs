@@ -7,6 +7,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -14,11 +15,13 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
+        private readonly IStockOperationsService _stockOperationsService;
 
-        public CompanyStockService(IMapper mapper, IUnitWork unitWork)
+        public CompanyStockService(IMapper mapper, IUnitWork unitWork, IStockOperationsService stockOperationsService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
+            _stockOperationsService = stockOperationsService;
         }
 
         public async Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM)
@@ -102,6 +105,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             else if (updateCompanyQuantityRM.ToplaCıkar == false && updateCompanyQuantityRM.ToplaCıkar is not null)
             {
                 entity.Quantity = entity.Quantity  - updateCompanyQuantityRM.Quantity;
+                await _stockOperationsService.CreateStockOperations(updateCompanyQuantityRM);
                 _unitWork.GetRepository<CompanyStock>().Update(entity);
             }
             else

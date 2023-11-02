@@ -9,10 +9,12 @@ namespace PurchaseManagament.API.Controllers
     public class CompanyStockController : Controller
     {
         private readonly ICompanyStockService _companyStockService;
+        private readonly IStockOperationsService _stockOperationsService;
 
-        public CompanyStockController(ICompanyStockService companyStockService)
+        public CompanyStockController(ICompanyStockService companyStockService, IStockOperationsService stockOperationsService)
         {
             _companyStockService = companyStockService;
+            _stockOperationsService = stockOperationsService;
         }
 
         [HttpPost("Create")]
@@ -34,6 +36,10 @@ namespace PurchaseManagament.API.Controllers
         public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityRM update)
         {
             var entity = await _companyStockService.UpdateCompanyStockQuantity(update);
+
+            
+
+
             return Ok(entity);
         }
 

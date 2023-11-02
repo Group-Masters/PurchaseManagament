@@ -2,7 +2,6 @@
 {
     public class StockOperationsDto
     {
-        public Int64 Id { get; set; }
         public long CompanyStockId { get; set; }
         public long ReceiverEmployeeId { get; set; }
         public long ProductId { get; set; }
