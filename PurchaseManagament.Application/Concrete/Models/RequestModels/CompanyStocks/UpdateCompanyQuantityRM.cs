@@ -11,6 +11,6 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanySt
         public Int64 Id { get; set; }
         public double Quantity { get; set; }
         public bool? ToplaCıkar { get; set; } // Topla => true / Cıkar => false  
-
+        public Int64 ReceiverEmployeeId { get; set; }
     }
 }

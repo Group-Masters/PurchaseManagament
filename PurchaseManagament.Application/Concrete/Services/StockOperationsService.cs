@@ -32,8 +32,10 @@ namespace PurchaseManagament.Application.Concrete.Services
                 CompanyStockId = companyStock.Id,
                 ProductId = companyStock.ProductId,
                 Quantity = updateCompanyQuantityRM.Quantity,
+                Notification = updateCompanyQuantityRM.Quantity.ToString() + " Adet Stoktan tedarik edildi",
+                //ReceiverEmployeeId = 1
 
-                ReceiverEmployeeId = 1
+                ReceiverEmployeeId = updateCompanyQuantityRM.ReceiverEmployeeId
 
             };
 
