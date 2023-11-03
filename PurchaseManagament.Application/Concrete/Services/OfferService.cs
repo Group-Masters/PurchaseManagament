@@ -64,6 +64,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
+        {
+            var result = new Result<HashSet<OfferDto>>();
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x=>x.RequestId==getOfferByRequestId.Id,"Currency", "Supplier", "ApprovingEmployee");
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+            result.Data = mappedEntity;
+            return result;
+        }
+
         public async Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById)
         {
             var result = new Result<OfferDto>();

@@ -43,6 +43,12 @@ namespace PurchaseManagament.API.Controllers
             var result = await _offerService.GetOfferById(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }
+        [HttpGet("GetByRequestId/{id}")]
+        public async Task<ActionResult<Result<OfferDto>>> GetAllOfferByRequestId(Int64 id)
+        {
+            var result = await _offerService.GetAllOfferByRequestId(new GetOfferByIdRM { Id = id });
+            return Ok(result);
+        }
 
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllDepartment()
