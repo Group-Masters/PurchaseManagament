@@ -9,7 +9,7 @@ namespace PurchaseManagament.API.Controllers
     [Route("Role")]
     public class RoleController : ControllerBase
     {
-        private IRoleService _roleService;
+        private readonly IRoleService _roleService;
 
         public RoleController(IRoleService roleService)
         {
@@ -30,7 +30,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<RoleDto>>> GetRoleById(Int64 id)
         {
             var result = await _roleService.GetRoleById(new GetRoleByIdRM { Id = id });

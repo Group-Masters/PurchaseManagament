@@ -37,7 +37,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<RequestDto>>> GetRequestById(Int64 id)
         {
             var result = await _requestService.GetRequestById(new GetRequestByIdRM { Id = id });

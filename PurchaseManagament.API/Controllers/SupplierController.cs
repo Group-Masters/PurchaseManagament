@@ -9,7 +9,7 @@ namespace PurchaseManagament.API.Controllers
     [Route("Supplier")]
     public class SupplierController : Controller
     {
-        private ISupplierService _supplierService;
+        private readonly ISupplierService _supplierService;
 
         public SupplierController(ISupplierService supplierService)
         {
@@ -29,7 +29,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<SupplierDto>>> GetSupplierById(Int64 id)
         {
             var result = await _supplierService.GetSupplierById(new GetSupplierByIdRM { Id = id });

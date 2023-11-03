@@ -30,7 +30,7 @@ namespace PurchaseManagament.API.Contdepartmanlers
             return Ok(entity);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<DepartmentDto>>> GetByIdDepartment(Int64 id)
         {
             var result = await _departmentService.GetDepartmentById(new GetByIdDepartmentRM { Id = id });

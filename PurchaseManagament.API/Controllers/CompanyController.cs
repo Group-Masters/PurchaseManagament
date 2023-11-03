@@ -9,7 +9,7 @@ namespace PurchaseManagament.API.Controllers
     [Route("Company")]
     public class CompanyController : Controller
     {
-        private ICompanyService _companyService;
+        private readonly ICompanyService _companyService;
 
         public CompanyController(ICompanyService companyService)
         {
@@ -29,7 +29,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<CompanyDto>>> GetCompanyById(Int64 id)
         {
             var result = await _companyService.GetCompanyById(new GetCompanyByIdRM { Id = id });

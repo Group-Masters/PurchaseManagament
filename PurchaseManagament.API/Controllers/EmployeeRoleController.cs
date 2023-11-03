@@ -9,7 +9,7 @@ namespace PurchaseManagament.API.Controllers
     [Route("EmployeeRole")]
     public class EmployeeRoleController : ControllerBase
     {
-        private IEmployeeRoleService _employeeRoleService;
+        private readonly IEmployeeRoleService _employeeRoleService;
 
         public EmployeeRoleController(IEmployeeRoleService employeeRoleService)
         {
@@ -31,21 +31,21 @@ namespace PurchaseManagament.API.Controllers
         //    return Ok(result);
         //}
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<EmployeeRoleDto>>> GetEmployeeRoleById(Int64 Id)
         {
             var result = await _employeeRoleService.GetEmployeeRoleById(new GetEmployeeRoleByIdRM { Id = Id });
             return Ok(result);
         }
 
-        [HttpGet("GetByEmployeeId")]
+        [HttpGet("GetByEmployeeId/{id}")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDto>>>> GetByEmployeeId(Int64 EmployeeId)
         {
             var result = await _employeeRoleService.GetByEmployeeId(new GetByEmployeeIdRM { EmployeeId = EmployeeId });
             return Ok(result);
         }
 
-        [HttpGet("GetByRoleId")]
+        [HttpGet("GetByRoleId/{id}")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDto>>>> GetByRoleId(Int64 RoleId)
         {
             var result = await _employeeRoleService.GetByRoleId(new GetByRoleIdRM { RoleId = RoleId });
@@ -59,7 +59,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetDetailById")]
+        [HttpGet("GetDetailById/{id}")]
         public async Task<ActionResult<Result<EmployeeRoleDetailDto>>> GetEmployeeRoleDetailById(Int64 Id)
         {
             var result = await _employeeRoleService.GetEmployeeRoleDetailById(new GetEmployeeRoleByIdRM { Id = Id });

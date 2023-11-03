@@ -37,7 +37,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<OfferDto>>> GetOfferById(Int64 id)
         {
             var result = await _offerService.GetOfferById(new GetOfferByIdRM { Id = id });
