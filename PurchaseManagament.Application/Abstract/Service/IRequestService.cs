@@ -13,6 +13,12 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteRequestPermanent(Int64 id);
 
         //GET METHODS
+
+        //get by employee
+        //get by companyId and departmentId
+
+        Task<Result<HashSet<RequestDto>>> GetRequestByEmployeeId(GetRequestByEmployeeIdRM getRequestByEmployeeIdRM);
+        Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
         Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById);
         Task<Result<HashSet<RequestDto>>> GetAllRequest();
     }

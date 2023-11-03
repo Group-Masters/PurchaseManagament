@@ -7,11 +7,9 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
-using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -74,9 +72,6 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
         }
-
-
-
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
         {
             var result = new Result<List<EmployeeDto>>();
@@ -108,19 +103,43 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDtos;
             return result;
         }
-
-
-
-        public Task<Result<EmployeeDto>> GetEmployee()
+        public async Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM)
         {
-            throw new NotImplementedException();
-        }
+            var result = new Result<List<EmployeeDto>>();
+            var employeEntity = await _uWork.GetRepository<Employee>().GetByFilterAsync(x => x.CompanyDepartment.CompanyId == getByIdVM.Id, "EmployeeDetail", "CompanyDepartment.Department");
 
+
+
+
+            var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
+
+            foreach (var employee in employeDtos)
+            {
+                // var a = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == employee.CompanyDepartmentId, "Department");
+                var b = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == employee.Id, "Role");
+                //employee.Roles =
+                //b.ToList();
+                if (b != null)
+                {
+                    employee.Roles = b.Select(x => x.Role.Name).ToList();
+                }
+
+
+                //employee.DepartmentName = a.Department.Name;
+
+
+            }
+
+
+            result.Data = employeDtos;
+            return result;
+
+        }
         public async Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM)
         {
 
             var result = new Result<EmployeeDto>();
-            var employeEntity = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync(x=>x.Id==getByIdVM.Id,"EmployeeDetail","CompanyDepartment.Department");
+            var employeEntity = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == getByIdVM.Id, "EmployeeDetail", "CompanyDepartment.Department");
             var employeDto = _mapper.Map<EmployeeDto>(employeEntity);
             // var a = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == employee.CompanyDepartmentId, "Department");
             var b = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == employeDto.Id, "Role");
@@ -132,9 +151,8 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             result.Data = employeDto;
             return result;
-       
-        }
 
+        }
         public async Task<Result<TokenDto>> Login(LoginVM loginVM)
         {
 
@@ -142,11 +160,16 @@ namespace PurchaseManagament.Application.Concrete.Services
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginVM.Password);
 
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
-                (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword, "EmployeeDetail");
+                (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
+                , "EmployeeDetail");
             if (existsEmployee == null)
 
             {
                 throw new NotFoundException("kullanıcı bulunamadı");
+            }
+            if (existsEmployee.IsActive!=true)
+            {
+                throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
             }
             var companyEntity = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == existsEmployee.CompanyDepartmentId);
             var role = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == existsEmployee.Id);
@@ -167,7 +190,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
             return result;
         }
-
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
         {
             var result = new Result<long>();
@@ -184,7 +206,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
 
         }
-
         public async Task<Result<long>> UpdateEmployeePassword(UpdatePasswordVM updatePasswordVM)
         {
             var result = new Result<long>();
@@ -195,7 +216,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             }
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], updatePasswordVM.Password);
-            if (existsEntity.Password != hashedPassword) 
+            if (existsEntity.Password != hashedPassword)
             {
                 throw new NotFoundException("şifre hatalı");
             }
@@ -208,9 +229,39 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = existsEntity.Id;
             return result;
         }
-      
-        
-        
+        public async Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM)
+        {
+            var result = new Result<List<EmployeeDto>>();
+            var employeEntity = await _uWork.GetRepository<Employee>().GetByFilterAsync(x => x.CompanyDepartment.CompanyId == getByIdVM.Id && x.IsActive == true, "EmployeeDetail", "CompanyDepartment.Department");
+
+
+
+
+            var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
+
+            foreach (var employee in employeDtos)
+            {
+                // var a = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == employee.CompanyDepartmentId, "Department");
+                var b = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == employee.Id, "Role");
+                //employee.Roles =
+                //b.ToList();
+                if (b != null)
+                {
+                    employee.Roles = b.Select(x => x.Role.Name).ToList();
+                }
+
+
+                //employee.DepartmentName = a.Department.Name;
+
+
+            }
+
+
+            result.Data = employeDtos;
+            return result;
+        }
+
+
         #region private methodlar
         private string GenerateJwtToken(Employee person, List<EmployeeRole> roles)
         {
@@ -251,6 +302,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+
         #endregion
     }
 }

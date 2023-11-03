@@ -68,6 +68,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CreateRequestRM, Request>();
             CreateMap<UpdateRequestStateRM, Request>();
             CreateMap<UpdateRequestRM, Request>();
+            CreateMap<GetRequestByEmployeeIdRM, Request>();
+            CreateMap<GetRequestByCIdDIdRM,  Request>();
 
             CreateMap<CreateSupplierRM,  Supplier>();
             CreateMap<UpdateSupplierRM, Supplier>();
