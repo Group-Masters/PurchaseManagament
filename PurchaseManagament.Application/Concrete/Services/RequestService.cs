@@ -60,6 +60,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Talep güncellemesi için id eşleşmesi başarısız oldu.");
             }
+            if(updateRequestStateRM.State==Status.Onay|| updateRequestStateRM.State == Status.Reddedildi)
+            {
+                entity.ApprovingEmployeeId = _loggedService.UserId;
+            }
             var mappedEntity = _mapper.Map(updateRequestStateRM, entity);
             _unitWork.GetRepository<Request>().Update(mappedEntity);
             await _unitWork.CommitAsync();
