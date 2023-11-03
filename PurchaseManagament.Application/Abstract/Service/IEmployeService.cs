@@ -7,7 +7,8 @@ namespace PurchaseManagament.Application.Abstract.Service
     public interface IEmployeService
     {
         Task<Result<List<EmployeeDto>>> GetAllEmployes();
-        Task<Result<EmployeeDto>> GetEmployee();
+        Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM);
+        Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM);
         Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM);
 
 
