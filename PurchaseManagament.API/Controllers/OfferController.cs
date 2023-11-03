@@ -33,7 +33,7 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("UpdateOfferState")]
         public async Task<IActionResult> UpdateOfferState([FromBody] UpdateOfferStateRM update)
         {
-            var entity = await _offerService.UpdateOffer(update);
+            var entity = await _offerService.UpdateOfferState(update);
             return Ok(entity);
         }
 

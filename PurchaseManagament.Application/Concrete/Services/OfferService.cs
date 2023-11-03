@@ -95,7 +95,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<long>> UpdateOffer(UpdateOfferStateRM update)
+        public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
             var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
