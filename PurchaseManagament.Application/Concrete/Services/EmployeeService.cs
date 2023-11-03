@@ -193,11 +193,12 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
         {
             var result = new Result<long>();
-            var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == updateEmployeeVM.EmployeeId);
+            var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == updateEmployeeVM.EmployeeId,"Employee");
             if (entity is null)
             {
                 new NotFoundException("kullanıcı bulunamadı");
             }
+            entity.Employee.IsActive = updateEmployeeVM.IsActive;
             var newEntity = _mapper.Map(updateEmployeeVM, entity);
             _uWork.GetRepository<EmployeeDetail>().Update(newEntity);
             await _uWork.CommitAsync();

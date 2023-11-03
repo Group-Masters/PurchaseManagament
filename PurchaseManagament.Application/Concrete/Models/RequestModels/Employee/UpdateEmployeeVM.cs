@@ -1,8 +1,8 @@
-﻿namespace PurchaseManagament.Application.Concrete.Models.Dtos
+﻿namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Employee
 {
     public class UpdateEmployeeVM
     {
-        public long  EmployeeId { get; set; }
+        public long EmployeeId { get; set; }
         public string Username { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }

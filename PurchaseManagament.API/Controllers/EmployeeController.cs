@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 
 namespace PurchaseManagament.API.Controllers
@@ -46,7 +45,8 @@ namespace PurchaseManagament.API.Controllers
         {
             var entities = await _service.GetEmployeesByCompany(new GetByIdVM { Id = id });
             return Ok(entities);
-        } [HttpGet("GetIsActiceByCompany/{id}")]
+        }
+        [HttpGet("GetIsActiceByCompany/{id}")]
         public async Task<IActionResult> GetEmployeeIsActiveByCompany(int id)
         {
             var entities = await _service.GetEmployeeIsActiveByCompany(new GetByIdVM { Id = id });
