@@ -16,5 +16,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         //GET METHODS
         Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById);
         Task<Result<HashSet<OfferDto>>> GetAllOffer();
+        Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId);
+
     }
 }
