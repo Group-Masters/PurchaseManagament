@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PurchaseManagament.Persistence.Concrete.Context;
 
@@ -11,9 +12,11 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    partial class PurchaseManagamentContextModelSnapshot : ModelSnapshot
+    [Migration("20231102120315_migKral")]
+    partial class migKral
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1018,9 +1021,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("ModifiedIP")
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
-
-                    b.Property<string>("Notification")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");

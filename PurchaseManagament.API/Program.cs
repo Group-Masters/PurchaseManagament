@@ -94,6 +94,9 @@ builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 builder.Services.AddScoped<IOfferService, OfferService>();
 
+// Stok Operasyon Service Eklendi
+builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
+
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 

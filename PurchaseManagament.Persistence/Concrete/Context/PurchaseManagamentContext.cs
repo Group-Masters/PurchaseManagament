@@ -36,7 +36,6 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             Database.EnsureCreated();
             _loggedUserService = loggedService;
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=PURCHASEMANAGAMENT_DB;Trusted_Connection=True;TrustServerCertificate=True");

@@ -13,7 +13,6 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
                 .HasColumnName("ID");
-               
 
             //Intercepter
             ConfigureDerivedEntityMapping(builder);
