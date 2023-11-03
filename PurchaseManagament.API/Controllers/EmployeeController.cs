@@ -33,6 +33,13 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.GetAllEmployes();
             return Ok(entities);
         }
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entities = await _service.GetEmployeeById(new GetByIdVM { Id=id});
+            return Ok(entities);
+        }
+
 
         [HttpPut("Update")]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeVM updateEmployeeVM)
@@ -40,5 +47,13 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.UpdateEmployee(updateEmployeeVM);
             return Ok(entities);
         }
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordVM updatePasswordVM)
+        {
+            var entities = await _service.UpdateEmployeePassword(updatePasswordVM);
+            return Ok(entities);
+        }
+
+
     }
 }

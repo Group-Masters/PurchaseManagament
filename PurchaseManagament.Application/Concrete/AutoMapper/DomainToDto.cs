@@ -27,10 +27,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Phone, y => y.MapFrom(z => z.EmployeeDetail.Phone))
                 .ForMember(x => x.Address, y => y.MapFrom(z => z.EmployeeDetail.Address))
                 .ForMember(x => x.DepartmentName, y => y.MapFrom(z => z.CompanyDepartment.Department.Name))
-                .ForMember(x => x.Roles, y => y.MapFrom(z => z.EmployeeRoles.Select(x=>x.Role).Select(x => x.Name).ToList()));
+               // .ForMember(x => x.Roles, y => y.MapFrom(z => z.EmployeeRoles.Select(x=>x.Role).Select(x => x.Name).ToList()));
+               .ForMember(x => x.Username, y => y.MapFrom(z => z.EmployeeDetail.Username));
 
 
-           
+
             CreateMap<EmployeeRole, EmployeeRoleDto>();
             CreateMap<EmployeeRole, EmployeeRoleDetailDto>()
                 .ForMember(x => x.EmployeeName, y => y.MapFrom(z => z.Employee.Name))
