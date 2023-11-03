@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -27,6 +28,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
+        [Authorize(Roles = "1")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllEmployee()
         {

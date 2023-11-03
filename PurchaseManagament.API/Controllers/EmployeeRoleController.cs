@@ -66,7 +66,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetDetailByCompanyId")]
+        [HttpGet("GetDetailByCompanyId/{id}")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDetailDto>>>> GetEmployeeRolesByCompanyId(Int64 Id)
         {
             var result = await _employeeRoleService.GetEmployeeRolesByCompanyId(new GetEmployeeRoleByIdRM { Id = Id });
@@ -87,7 +87,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("DeletePermanent")]
+        [HttpDelete("DeletePermanent/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteEmployeeRolePermanent(Int64 Id)
         {
             var result = await _employeeRoleService.DeleteEmployeeRolePermanent(Id);
