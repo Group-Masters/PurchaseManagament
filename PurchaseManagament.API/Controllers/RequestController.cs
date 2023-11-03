@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -76,6 +77,12 @@ namespace PurchaseManagament.API.Controllers
         public async Task<ActionResult<Result<bool>>> DeleteRequestPermanent(Int64 id)
         {
             var result = await _requestService.DeleteRequestPermanent(id);
+            return Ok(result);
+        }
+        [HttpGet("denemee")]
+        public async Task<IActionResult> Denemee()
+        {
+            var result = await _requestService.GetRequesApprovedtByCompany(new GetByIdVM { Id=1});
             return Ok(result);
         }
     }

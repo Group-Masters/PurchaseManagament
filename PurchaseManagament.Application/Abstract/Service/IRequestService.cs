@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -21,5 +22,6 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
         Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById);
         Task<Result<HashSet<RequestDto>>> GetAllRequest();
+        Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM);
     }
 }

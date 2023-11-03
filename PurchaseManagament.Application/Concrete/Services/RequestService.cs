@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
@@ -145,6 +147,17 @@ namespace PurchaseManagament.Application.Concrete.Services
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
             result.Data = mappedEntity;
             return result;
+        }
+
+        public async Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM)
+        {
+            var result = new Result<HashSet<RequestDto>>();
+            var entity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State == Status.Onay, "Product", "ApprovedEmployee", "RequestEmployee.CompanyDepartment");
+
+            var dtos = _mapper.Map<HashSet<RequestDto>>(entity);
+            result.Data = dtos;
+            return result;
+          
         }
     }
 }
