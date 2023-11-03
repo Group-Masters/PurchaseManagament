@@ -156,7 +156,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<HashSet<RequestDto>>();
-            var entity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State == Status.Onay, "Product", "ApprovedEmployee", "RequestEmployee.CompanyDepartment");
+            var entity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State == Status.Onay, "Product", "ApprovedEmployee", "RequestEmployee.CompanyDepartment", "Product.MeasuringUnit");
 
             var dtos = _mapper.Map<HashSet<RequestDto>>(entity);
             result.Data = dtos;

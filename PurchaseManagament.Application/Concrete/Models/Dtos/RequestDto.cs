@@ -7,6 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public Int64 Id { get; set; }
         public long ProductId { get; set; }
         public string ProductName { get; set; }
+        public string MeasuringUnitName{ get; set; }
 
         public long ApprovingEmployeeId { get; set; }
         public string ApprovingEmployeeName { get; set; }
