@@ -16,6 +16,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string RequestEmployeeSurname { get; set; }
         public string Details { get; set; }
         public double Quantity { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         public virtual Status State { get; set; } // Durum
 
