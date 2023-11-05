@@ -9,17 +9,20 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<CompanyStock> builder)
         {
             builder.Property(x => x.CompanyId)
+                .HasColumnName("COMPANY_ID")
                 .HasColumnOrder(2)
                 .HasColumnType("bigint")
-                .HasColumnName("COMPANY_ID")
+                .IsRequired();
+
+            builder.Property(x => x.ProductId)
+                .HasColumnName("PRODUCT_ID")
+                .HasColumnOrder(3)
                 .IsRequired();
 
             builder.Property(x => x.Quantity)
-                .HasColumnName("QUANTİTY")
+                .HasColumnName("QUANTITY")
+                .HasColumnOrder(4)
                 .IsRequired();
-            builder.Property(x => x.ProductId)
-                .HasColumnName("PRODUCT_ID")
-                .HasColumnOrder(3);
 
             builder.HasOne(x => x.Company)
                 .WithMany(x => x.CompanyStocks)

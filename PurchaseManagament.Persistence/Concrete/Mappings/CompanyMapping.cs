@@ -4,20 +4,21 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    internal class CompanyMapping : AuditableEntityMapping<Company>
+    public class CompanyMapping : AuditableEntityMapping<Company>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Company> builder)
         {
-            builder.ToTable("COMPANIES");
-
             builder.Property(x => x.Name)
-                .HasColumnName("COMPANY_NAME").HasColumnType("nvarchar(50)");
+                .HasColumnName("NAME")
+                .HasColumnOrder(2)
+                .HasColumnType("nvarchar(50)");
+
             builder.Property(x => x.Adress)
-              .HasColumnName("COMPANY_ADDRESS").HasColumnType("nvarchar(150)");
+              .HasColumnName("ADDRESS")
+              .HasColumnOrder(3)
+              .HasColumnType("nvarchar(150)");
 
-           
-
-           
+            builder.ToTable("COMPANIES");
         }
     }
 }

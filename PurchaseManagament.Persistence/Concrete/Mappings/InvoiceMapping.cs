@@ -9,13 +9,14 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Invoice> builder)
         {
             builder.Property(x => x.OfferId)
-                .HasColumnType("bigint")
+                .HasColumnName("OFFER_ID")
                 .HasColumnOrder(2)
+                .HasColumnType("bigint")
                 .IsRequired();
 
             builder.Property(x => x.UUID)
-                .HasColumnOrder(3)
                 .HasColumnType("UNIQUEIDENTIFIER")
+                .HasColumnOrder(3)
                 .IsRequired();
 
             builder.HasOne(x => x.Offer)
