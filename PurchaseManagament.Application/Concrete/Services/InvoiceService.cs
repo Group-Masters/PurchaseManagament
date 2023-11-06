@@ -3,7 +3,9 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
@@ -22,6 +24,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<long>();
             var mappedEntity = _mapper.Map<Invoice>(create);
+            var offerEntity= await _unitWork.GetRepository<Offer>().GetById(create.OfferId);
+            if (offerEntity is null)
+            {
+                throw new NotFoundException("Teklif bulunmadı.");
+            }
+            offerEntity.Status = Status.Tamamlandı;
+            _unitWork.GetRepository<Offer>().Update(offerEntity);
             _unitWork.GetRepository<Invoice>().Add(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
