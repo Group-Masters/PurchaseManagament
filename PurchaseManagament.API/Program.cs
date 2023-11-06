@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PurchaseManagament.API.Filters;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.AutoMapper;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Services;
+using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Persistence.Abstract.Repository;
@@ -13,6 +17,7 @@ using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Persistence.Concrete.Context;
 using PurchaseManagament.Persistence.Concrete.Repositories;
 using PurchaseManagament.Persistence.Concrete.UnitWork;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -99,6 +104,10 @@ builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
+
+// Validators Servieces
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCompanyDepartmanValidator));
+//builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 // JWT kimlik doðrulama servisini ekleme
 builder.Services.AddAuthentication(opt =>

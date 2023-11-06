@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
+using PurchaseManagament.Application.Concrete.Validators.Product;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -20,6 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        //[Validator(typeof(CreateProductValidator))]
         public async Task<Result<long>> CreateProduct(CreateProductRM createProductRM)
         {
             var result = new Result<long>();
@@ -66,6 +69,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateProductValidator))]
         public async Task<Result<long>> UpdateProduct(UpdateProductRM updateProductRM)
         {
             var result = new Result<long>();

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Validators.Offer;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
@@ -113,6 +115,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
             var result = new Result<long>();
@@ -128,6 +131,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateOfferStateValidator))]
         public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
