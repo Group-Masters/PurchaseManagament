@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
@@ -14,5 +15,8 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         //GET METHODS
         Task<Result<HashSet<MeasuringUnitDto>>> GetAllMeasuringUnit();
+        Task<Result<MeasuringUnitDto>> GetMeasuringUnitByProductId(Int64 id);
+
+
     }
 }

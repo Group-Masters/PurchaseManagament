@@ -36,6 +36,14 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
+        [HttpGet("GetUnitByProductId")]
+        public async Task<IActionResult> GetMeasuringUnitByProductId(Int64 id)
+        {
+            var entity = await _measuringUnitService.GetMeasuringUnitByProductId(id);
+            return Ok(entity);
+        }
+
+
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteMeasuringUnit(Int64 id)
         {
