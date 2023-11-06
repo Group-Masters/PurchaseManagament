@@ -8,11 +8,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Role> builder)
         {
+            builder.Property(x => x.Name)
+                .HasColumnName("ROLE_NAME")
+                .HasColumnOrder(2)
+                .HasColumnType("nvarchar(50)")
+                .IsRequired();
+
             builder.ToTable("ROLES");
-
-            builder.Property(x => x.Name).IsRequired().HasColumnName("ROLE_NAME").HasColumnType("nvarchar(20)");
-
-         
         }
     }
 }

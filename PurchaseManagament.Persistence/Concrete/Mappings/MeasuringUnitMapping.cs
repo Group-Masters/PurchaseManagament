@@ -9,6 +9,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<MeasuringUnit> builder)
         {
             builder.Property(x => x.Name)
+                .HasColumnName("NAME")
                 .HasColumnOrder(2)
                 .HasColumnType("nvarchar(20)")
                 .IsRequired();

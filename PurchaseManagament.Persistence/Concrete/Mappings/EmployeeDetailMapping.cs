@@ -9,41 +9,48 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<EmployeeDetail> builder)
         {
             builder.Property(x => x.EmployeeId)
-                .HasColumnOrder(2)
                 .HasColumnName("EMPLOYEE_ID")
+                .HasColumnOrder(2)
                 .IsRequired(); 
+
             builder.Property(x => x.Username)
-                
                 .HasColumnName("USERNAME")
+                .HasColumnOrder(3)
                 .IsRequired();
+
             builder.Property(x => x.Address)
-              
                 .HasColumnName("ADDRESS")
+                .HasColumnOrder(4)
                 .IsRequired();
            
             builder.Property(x => x.Email)
-                .IsRequired()
-                .HasColumnName("EMPLOYEE_EMAIL")
-                .HasColumnType("nvarchar(150)");
+                .HasColumnName("EMAIL")
+                .HasColumnOrder(5)
+                .HasColumnType("nvarchar(150)")
+                .IsRequired();
 
             builder.Property(x => x.Password)
-                .IsRequired()
-                .HasColumnName("EMPLOYEE_PASSWORD")
-                .HasColumnType("nvarchar(50)");
+                .HasColumnName("PASSWORD")
+                .HasColumnOrder(6)
+                .HasColumnType("nvarchar(50)")
+                .IsRequired();
          
             builder.Property(x => x.Phone)
-                .IsRequired()
-                .HasColumnName("EMPLOYEE_PHONE")
-                .HasColumnType("nvarchar(20)");
+                .HasColumnName("PHONE")
+                .HasColumnOrder(7)
+                .HasColumnType("nvarchar(20)")
+                .IsRequired();
 
             builder.Property(x => x.EmailOk)
+                .HasColumnName("EMAIL_OK")
+                .HasColumnOrder(8)
                 .HasColumnType("bit")
-                .HasDefaultValue(false)
-                .HasColumnOrder(3);
+                .HasDefaultValue(false);
 
             builder.Property(x => x.ApprovedCode)
-                .HasColumnType("nvarchar(15)")
-                .HasColumnOrder(4);
+                .HasColumnName("APPROVED_CODE")
+                .HasColumnOrder(9)
+                .HasColumnType("nvarchar(15)");
 
             builder.HasOne(x => x.Employee)
                 .WithOne(x => x.EmployeeDetail)
