@@ -88,7 +88,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM companyId)
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.ApprovedEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice <= 20000
