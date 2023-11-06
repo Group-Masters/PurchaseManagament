@@ -12,7 +12,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Role
     {
         public CreateRoleValidator()
         {
-            RuleFor(x => x.Name).NotNull().WithMessage("Lütfen Role Adı bilgisini boş bırakmayınız");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen Role Adı bilgisini boş bırakmayınız");
         }
     }
 }

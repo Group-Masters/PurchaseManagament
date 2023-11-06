@@ -12,7 +12,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Product
     {
         public CreateProductValidator()
         {
-            RuleFor(x => x.MeasuringUnitId).NotNull().WithMessage("Lütfen Ölçü birim bilgisini boş bırakmayınız");
+            RuleFor(x => x.MeasuringUnitId).NotEmpty().WithMessage("Lütfen Ölçü birim bilgisini boş bırakmayınız");
             RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen Ürün Adı bilgisini boş bırakmayınız");
         }
     }

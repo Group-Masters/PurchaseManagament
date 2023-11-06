@@ -7,8 +7,8 @@ namespace PurchaseManagament.Application.Concrete.Validators.Product
     {
         public UpdateProductValidator()
         {
-            RuleFor(x => x.Id).NotNull().WithMessage("Lütfen Ürün ID bilgisini boş bırakmayınız");
-            RuleFor(x => x.MeasuringUnitId).NotNull().WithMessage("Lütfen Ölçü birim bilgisini boş bırakmayınız");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Ürün ID bilgisini boş bırakmayınız");
+            RuleFor(x => x.MeasuringUnitId).NotEmpty().WithMessage("Lütfen Ölçü birim bilgisini boş bırakmayınız");
             RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen Ürün Adı bilgisini boş bırakmayınız");
         }
     }

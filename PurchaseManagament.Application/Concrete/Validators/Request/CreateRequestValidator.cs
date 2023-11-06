@@ -12,8 +12,8 @@ namespace PurchaseManagament.Application.Concrete.Validators.Request
     {
         public CreateRequestValidator()
         {
-            RuleFor(x => x.ProductId).NotNull().WithMessage("Lütfen Ürün Id bilgisini boş bırakmayınız");
-            RuleFor(x => x.Quantity).NotNull().WithMessage("Lütfen Adet/Ölcü bilgisini boş bırakmayınız");
+            RuleFor(x => x.ProductId).NotEmpty().WithMessage("Lütfen Ürün Id bilgisini boş bırakmayınız");
+            RuleFor(x => x.Quantity).NotEmpty().WithMessage("Lütfen Adet/Ölcü bilgisini boş bırakmayınız");
         }
     }
 }
