@@ -27,11 +27,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.HasOne(x => x.CompanyStock)
                 .WithMany(x => x.StockOperations)
                 .HasForeignKey(x => x.CompanyStockId)
+                .HasConstraintName("STOCK_OPERATIONS_COMPANY_STOCK")
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.CompanyDepartment)
                 .WithMany(x => x.StockOperations)
-                .HasForeignKey(x => x.CompanyDepartmentId);
+                .HasForeignKey(x => x.CompanyDepartmentId)
+                .HasConstraintName("STOCK_OPERATIONS_COMPANY_DEPARTMENT");
 
             builder.ToTable("STOCK_OPERATIONS");
         }
