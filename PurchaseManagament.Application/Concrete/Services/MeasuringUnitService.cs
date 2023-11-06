@@ -69,6 +69,16 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<MeasuringUnitDto>> GetMeasuringUnitByProductId(Int64 id)
+        {
+            var result = new Result<MeasuringUnitDto>();
+            var entity = await _unitWork.GetRepository<Product>().GetSingleByFilterAsync(q => q.Id == id);
+            var entityTwo = _unitWork.GetRepository<MeasuringUnit>().GetSingleByFilterAsync(q => q.Id == entity.MeasuringUnitId);
+            var mappedEntity = _mapper.Map<MeasuringUnitDto>(await entityTwo);
+            result.Data = mappedEntity;
+            return result;
+        }
+
         //[Validator(typeof(UpdateInvoiceValidator))]
         public async Task<Result<long>> UpdateMeasuringUnit(UpdateMeasuringUnitRM updateMeasuringUnitRM)
         {
@@ -83,5 +93,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
+
+
     }
 }
