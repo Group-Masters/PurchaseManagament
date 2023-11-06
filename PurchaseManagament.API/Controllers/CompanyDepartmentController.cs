@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Wrapper;
@@ -17,7 +18,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateDepartment([FromBody] UpdateCompanyDepartmentRM create)
+        public async Task<IActionResult> CreateDepartment([FromBody] CreateCompanyDepartmanRM create)
         {
             var entity = await _companyDepartmentService.CreateCompanyDepartment(create);
             return Ok(entity);

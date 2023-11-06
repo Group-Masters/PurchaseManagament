@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
+using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -20,8 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
-
-        //[Validator(typeof(CreateCompanyDepartmanRM))]
+        //[Validator(typeof(CreateCompanyDepartmanValidator))]
         public async Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmanRM createCompanyDepartmentRM)
         {
             var result = new Result<bool>();
@@ -32,7 +32,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateCompanyDepartmentRM))]
+        //[Validator(typeof(UpdateCompanyDepartmanValidator))]
         public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
         {
             var result = new Result<bool>();

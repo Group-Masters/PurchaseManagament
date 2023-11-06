@@ -12,8 +12,8 @@ namespace PurchaseManagament.Application.Concrete.Validators.CompanyDepartman
     {
         public CreateCompanyDepartmanValidator()
         {
-            RuleFor(x => x.DepartmentId).NotNull().WithMessage("Lütfen departman Id'yi boş bırakmayınız");
-            RuleFor(x => x.CompanyId).NotNull().WithMessage("Lütfen Şirket Id'yi boş bırakmayınız");
+            RuleFor(x => x.DepartmentId).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız");
+            RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Lütfen Şirket Id'yi boş bırakmayınız");
         }
     }
 }

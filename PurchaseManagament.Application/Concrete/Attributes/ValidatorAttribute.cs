@@ -24,7 +24,7 @@ namespace PurchaseManagament.Application.Concrete.Attributes
                 //Request model doğrulaması - Fluent Validation
                 var validateMethod = _validatorType.GetMethod("Validate", new Type[] { requestModel.GetType() });
                 var validatorInstance = Activator.CreateInstance(_validatorType); // new CreateCategoryValidator()
-                if (validateMethod != null)
+                if (validateMethod!=null)
                 {
                     var validationResult = (ValidationResult)validateMethod.Invoke(validatorInstance, new object[] { requestModel });
                     if (!validationResult.IsValid)

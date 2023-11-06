@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Validators.CompanyStock;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -25,7 +26,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _stockOperationsService = stockOperationsService;
         }
 
-        //[Validator(typeof(CreateCompanyStockRM))]
+        //[Validator(typeof(CreateCompanyStockValidator))]
         public async Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM)
         {
             var result = new Result<long>();
@@ -74,7 +75,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
-        //[Validator(typeof(UpdateCompanyStockRM))]
+        //[Validator(typeof(UpdateCompanyStockValidator))]
         public async Task<Result<long>> UpdateCompanyStock(UpdateCompanyStockRM updateCompanyStockRM)
         {
             var result = new Result<long>();
@@ -92,7 +93,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
         // Adet güncellenmesi
-        //[Validator(typeof (UpdateCompanyQuantityRM))]
+        //[Validator(typeof(UpdateCompanyStockQuantityValidator))]
         public async Task<Result<long>> UpdateCompanyStockQuantity(UpdateCompanyQuantityRM updateCompanyQuantityRM)
         {
             var result = new Result<long>();

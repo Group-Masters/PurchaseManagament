@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
+using PurchaseManagament.Application.Concrete.Validators.Departman;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -20,7 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
         }
 
-        //[Validator(typeof(CreateDepartmentRM))]
+        //[Validator(typeof(CreateDepartmanValidator))]
         public async Task<Result<bool>> CreateDepartment(CreateDepartmentRM createDepartmentRM)
         {
             var result = new Result<bool>();
@@ -101,7 +102,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateDepartmentRM))]
+        //[Validator(typeof(UpdateDepartmanValidator))]
         public async Task<Result<bool>> UpdateDepartment(UpdateDepartmentRM updateDepartmentRM)
         {
             var result = new Result<bool>();
