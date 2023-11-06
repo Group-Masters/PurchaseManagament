@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
-using PurchaseManagament.Application.Concrete.Validators.CompanyStock;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -68,21 +64,29 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStock()
         {
             var result = new Result<HashSet<CompanyStocksDto>>();
-            var entities = _unitWork.GetRepository<CompanyStock>().GetAllAsync();
+            var entities = _unitWork.GetRepository<CompanyStock>().GetAllAsync("Product.MeasuringUnit");
             var mappedEntities = _mapper.Map<HashSet<CompanyStocksDto>>(await entities);
             result.Data = mappedEntities;
             return result;
 
         }
 
-        public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(Int64 id)
+        public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(GetByIdVM getByIdVM)
         {
             var result = new Result<HashSet<CompanyStocksDto>>();
-            var entities = _unitWork.GetRepository<CompanyStock>().GetByFilterAsync(q => q.CompanyId == id, "Product");
+            var entities = _unitWork.GetRepository<CompanyStock>().GetByFilterAsync(q => q.CompanyId == getByIdVM.Id, "Product.MeasuringUnit");
             var mappedEntities = _mapper.Map<HashSet<CompanyStocksDto>>(await entities);
             result.Data = mappedEntities;
             return result;
-
+        }        
+        
+        public async Task<Result<CompanyStocksDto>> GetCompanyStockById(GetByIdVM getByIdVM)
+        {
+            var result = new Result<CompanyStocksDto>();
+            var entities = _unitWork.GetRepository<CompanyStock>().GetByFilterAsync(q => q.Id == getByIdVM.Id, "Product.MeasuringUnit");
+            var mappedEntities = _mapper.Map<CompanyStocksDto>(await entities);
+            result.Data = mappedEntities;
+            return result;
         }
 
         //[Validator(typeof(UpdateCompanyStockValidator))]
