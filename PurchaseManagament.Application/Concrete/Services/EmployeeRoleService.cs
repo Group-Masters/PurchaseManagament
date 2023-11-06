@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Validators.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -19,6 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        //[Validator(typeof(CreateEmployeeRoleValidator))]
         public async Task<Result<bool>> CreateEmployeeRole(CreateEmployeeRoleRM createEmployeeRoleRM)
         {
             var result = new Result<bool>();
@@ -35,6 +39,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+
+        //[Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<bool>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleRM)
         {
             var result = new Result<bool>();
@@ -81,6 +87,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+
+        //[Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDto>>();
@@ -96,6 +104,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(GetByRoleIdValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByRoleId(GetByRoleIdRM getByRoleIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDto>>();
@@ -111,7 +120,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-
+        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<EmployeeRoleDto>> GetEmployeeRoleById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result<EmployeeRoleDto>();
@@ -136,6 +145,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<EmployeeRoleDetailDto>> GetEmployeeRoleDetailById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result <EmployeeRoleDetailDto>();
@@ -152,6 +162,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetEmployeeRolesByCompanyId(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
