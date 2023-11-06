@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class EmployeeMapping : AuditableEntityMapping<Employee>
+    public class EmployeeMapping : BaseEntityMapping<Employee>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Employee> builder)
         {
