@@ -12,6 +12,9 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteInvoicePermanent(Int64 id);
 
         //GET METHODS
+
+        Task<Result<InvoiceDto>> GetInvoiceById(GetInvoiceByIdRM getInvoiceById);
+        Task<Result<HashSet<InvoiceDto>>> GetInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById);
         Task<Result<HashSet<InvoiceDto>>> GetAllInvoice();
     }
 }

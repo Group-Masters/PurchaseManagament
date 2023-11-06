@@ -54,7 +54,17 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<Supplier, SupplierDto>();
 
-            CreateMap<Invoice, InvoiceDto>();
+            CreateMap<Invoice, InvoiceDto>()
+                .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.CompanyDepartment.Company.Name))
+                .ForMember(x => x.CompanyAddress, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.CompanyDepartment.Company.Adress))
+                .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Offer.Supplier.Name))
+                .ForMember(x => x.SupplierAddress, y => y.MapFrom(z => z.Offer.Supplier.Address))
+                .ForMember(x => x.ProductName, y => y.MapFrom(z => z.Offer.Request.Product.Name))
+                .ForMember(x => x.Quantity, y => y.MapFrom(z => z.Offer.Request.Quantity))
+                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(z => z.Offer.Request.Product.MeasuringUnit))
+                .ForMember(x => x.OfferedPrice, y => y.MapFrom(z => z.Offer.OfferedPrice));
+
+
             CreateMap<Offer, OfferDto>()
                 .ForMember(x => x.CurrencyName, y => y.MapFrom(z => z.Currency.Name))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
@@ -62,7 +72,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname))
                 .ForMember(x => x.ProductName, y => y.MapFrom(x => x.Request.Product.Name))
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Request.Quantity))
-                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(x => x.Request.Product.MeasuringUnit));
+                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(x => x.Request.Product.MeasuringUnit.Name))
+                .ForMember(x => x.RequestEmployeeName, y => y.MapFrom(x => x.Request.RequestEmployee.Name))
+                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname));
 
 
             CreateMap<StockOperations, StockOperationsDto>();

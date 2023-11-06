@@ -67,6 +67,12 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = await _offerService.GetOfferByChairman(new GetOfferByIdRM { Id = id });
             return Ok(result);
+        }  
+        [HttpGet("GetByAproved/{id}")]
+        public async Task<IActionResult> GetOfferByAproved(int id)
+        {
+            var result = await _offerService.GetOfferByAproved(new GetOfferByIdRM { Id = id });
+            return Ok(result);
         }
 
         [HttpPut("Delete/{id}")]
