@@ -6,5 +6,6 @@
         public double Quantity { get; set; }
         public long CompanyId { get; set; }
         public long ProductId { get; set; }
+        public string ProductName { get; set; } 
     }
 }

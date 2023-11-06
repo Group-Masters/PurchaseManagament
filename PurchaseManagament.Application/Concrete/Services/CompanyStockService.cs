@@ -78,7 +78,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(Int64 id)
         {
             var result = new Result<HashSet<CompanyStocksDto>>();
-            var entities = _unitWork.GetRepository<CompanyStock>().GetByFilterAsync(q => q.CompanyId == id);
+            var entities = _unitWork.GetRepository<CompanyStock>().GetByFilterAsync(q => q.CompanyId == id, "Product");
             var mappedEntities = _mapper.Map<HashSet<CompanyStocksDto>>(await entities);
             result.Data = mappedEntities;
             return result;
