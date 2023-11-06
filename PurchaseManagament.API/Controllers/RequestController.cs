@@ -79,6 +79,7 @@ namespace PurchaseManagament.API.Controllers
             var result = await _requestService.DeleteRequestPermanent(id);
             return Ok(result);
         }
+
         [HttpGet("GetApprovedtByCompany/{id}")]
         public async Task<IActionResult> GetRequesApprovedtByCompany(Int64 id)
         {

@@ -2,8 +2,16 @@
 {
     public class InvoiceDto
     {
-        public long Id { get; set; }
-        public Int64 OfferId { get; set; }
+        public Int64 Id { get; set; }
         public Guid UUID { get; set; }
+        public Int64 OfferId { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyAddress { get; set; }
+        public string SupplierName { get; set; }
+        public string SupplierAddress { get; set; }
+        public string ProductName { get; set; }
+        public double Quantity { get; set; }
+        public double MeasuringUnit { get; set; }
+        public decimal OfferedPrice { get; set; }
     }
 }
