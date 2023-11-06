@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
-using System.Collections.Generic;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -162,7 +160,6 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             result.Data = mappedEntity;
             return result;
-            throw new Exception();
         }
 
 

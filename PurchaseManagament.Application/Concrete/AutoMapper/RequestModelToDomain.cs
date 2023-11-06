@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
-using PurchaseManagament.Domain.Entities;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
-using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
+using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -75,6 +75,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateInvoiceRM, Invoice>();
             CreateMap<UpdateInvoiceRM, Invoice>();
+            CreateMap<GetInvoiceByIdRM, Invoice>();
 
             CreateMap<CreateOfferRM, Offer>();
             CreateMap<UpdateOfferRM, Offer>();
