@@ -17,6 +17,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById);
         Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM companyId);
         Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM companyId);
+        Task<Result<HashSet<OfferDto>>> GetOfferByAproved(GetOfferByIdRM companyId);
 
         Task<Result<HashSet<OfferDto>>> GetAllOffer();
         Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId);

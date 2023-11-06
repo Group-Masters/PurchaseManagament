@@ -81,8 +81,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.ApprovedEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice >= 20000
-            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice >= 20000
+            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product.MeasuringUnit");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -91,8 +91,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.ApprovedEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice <= 20000
-            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product.MeasuringUnit");
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice <= 20000
+            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product.MeasuringUnit", "Request.RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -142,6 +142,16 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork.GetRepository<Offer>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
+            return result;
+        }
+
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByAproved(GetOfferByIdRM company)
+        {
+            var result = new Result<HashSet<OfferDto>>();
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimOnay 
+            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product.MeasuringUnit");
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+            result.Data = mappedEntity;
             return result;
         }
     }
