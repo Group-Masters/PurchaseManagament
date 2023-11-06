@@ -22,6 +22,66 @@ namespace PurchaseManagament.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<Guid?>("AuditMetaDataHashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuditMetaDataSchemaTable")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("DateTimeOffset")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("EntityState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+
+                    b.ToTable("AUDITS", (string)null);
+                });
+
+            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+                {
+                    b.Property<Guid>("HashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SchemaTable")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReadablePrimaryKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Schema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Table")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("HashPrimaryKey", "SchemaTable");
+
+                    b.ToTable("AUDIT_META_DATAS", (string)null);
+                });
+
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>
                 {
                     b.Property<long>("Id")
@@ -1103,6 +1163,15 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.ToTable("SUPPLIERS", (string)null);
                 });
 
+            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+                {
+                    b.HasOne("EFCore.Audit.AuditMetaDataEntity", "AuditMetaData")
+                        .WithMany("AuditChanges")
+                        .HasForeignKey("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+
+                    b.Navigation("AuditMetaData");
+                });
+
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
                 {
                     b.HasOne("PurchaseManagament.Domain.Entities.Company", "Company")
@@ -1299,6 +1368,11 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ReceiverEmployee");
+                });
+
+            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+                {
+                    b.Navigation("AuditChanges");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>

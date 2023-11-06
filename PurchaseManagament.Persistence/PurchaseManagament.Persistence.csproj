@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EFCore.Audit\EFCore.Audit.csproj" />
     <ProjectReference Include="..\PurchaseManagament.Domain\PurchaseManagament.Domain.csproj" />
   </ItemGroup>
 

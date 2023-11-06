@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231102120315_migKral")]
-    partial class migKral
+    [Migration("20231106124834_auditTest")]
+    partial class auditTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,66 @@ namespace PurchaseManagament.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<Guid?>("AuditMetaDataHashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuditMetaDataSchemaTable")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("DateTimeOffset")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("EntityState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+
+                    b.ToTable("AUDITS", (string)null);
+                });
+
+            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+                {
+                    b.Property<Guid>("HashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SchemaTable")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReadablePrimaryKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Schema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Table")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("HashPrimaryKey", "SchemaTable");
+
+                    b.ToTable("AUDIT_META_DATAS", (string)null);
+                });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>
                 {
@@ -1022,6 +1082,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
+                    b.Property<string>("Notification")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
@@ -1101,6 +1164,15 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SUPPLIERS", (string)null);
+                });
+
+            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+                {
+                    b.HasOne("EFCore.Audit.AuditMetaDataEntity", "AuditMetaData")
+                        .WithMany("AuditChanges")
+                        .HasForeignKey("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+
+                    b.Navigation("AuditMetaData");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -1299,6 +1371,11 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ReceiverEmployee");
+                });
+
+            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+                {
+                    b.Navigation("AuditChanges");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>

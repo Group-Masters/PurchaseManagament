@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCore.Audit;
+using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Common;
-using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Concrete.Mappings;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
-    public class PurchaseManagamentContext : DbContext
+    public class PurchaseManagamentContext : AuditDbContextBase<PurchaseManagamentContext>
     {
+        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, IAuditUserProvider auditUserProvider) : base(options, auditUserProvider) { }
+
         //Tables => Db deki tablo şemaları
         //public DbSet<> Table { get; set; }
 
@@ -33,7 +35,6 @@ namespace PurchaseManagament.Persistence.Concrete.Context
 
         public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
-            Database.EnsureCreated();
             _loggedUserService = loggedService;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -76,6 +77,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.Entity<Role>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Supplier>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<StockOperations>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
+            base.OnModelCreating(modelBuilder);
         }
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {

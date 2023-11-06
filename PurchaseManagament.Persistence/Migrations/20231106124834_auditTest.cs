@@ -6,11 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class mig444 : Migration
+    public partial class auditTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AUDIT_META_DATAS",
+                columns: table => new
+                {
+                    HashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SchemaTable = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReadablePrimaryKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Schema = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Table = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AUDIT_META_DATAS", x => new { x.HashPrimaryKey, x.SchemaTable });
+                });
+
             migrationBuilder.CreateTable(
                 name: "COMPANIES",
                 columns: table => new
@@ -19,7 +35,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     COMPANY_NAME = table.Column<string>(type: "nvarchar(50)", nullable: true),
                     COMPANY_ADDRESS = table.Column<string>(type: "nvarchar(150)", nullable: true),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -41,7 +57,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CURRENCY_NAME = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     CURRENCY_Rate = table.Column<double>(type: "float", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -62,7 +78,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DEPARTMENT_NAME = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -83,7 +99,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -104,7 +120,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ROLE_NAME = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -126,7 +142,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     SUPLIER_ADDRESS = table.Column<string>(type: "nvarchar(150)", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -141,6 +157,29 @@ namespace PurchaseManagament.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AUDITS",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OldValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NewValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTimeOffset = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EntityState = table.Column<int>(type: "int", nullable: false),
+                    ByUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AuditMetaDataHashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AuditMetaDataSchemaTable = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AUDITS", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_AUDITS_AUDIT_META_DATAS_AuditMetaDataHashPrimaryKey_AuditMetaDataSchemaTable",
+                        columns: x => new { x.AuditMetaDataHashPrimaryKey, x.AuditMetaDataSchemaTable },
+                        principalTable: "AUDIT_META_DATAS",
+                        principalColumns: new[] { "HashPrimaryKey", "SchemaTable" });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "COMPANY_DEPARTMENTS",
                 columns: table => new
                 {
@@ -148,7 +187,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     DEPARTMENT_ID = table.Column<long>(type: "bigint", nullable: false),
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -183,7 +222,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     DESCRIPTION = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -215,7 +254,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     EMPLOYEE_ID_NUMBER = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BIRTH_YEAR = table.Column<string>(type: "nvarchar(4)", nullable: false),
                     GENDER = table.Column<int>(type: "int", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -243,7 +282,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     QUANTİTY = table.Column<double>(type: "float", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -283,7 +322,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     EMPLOYEE_PHONE = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     EMPLOYEE_EMAIL = table.Column<string>(type: "nvarchar(150)", nullable: false),
                     EMPLOYEE_PASSWORD = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -310,7 +349,7 @@ namespace PurchaseManagament.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EMPLOYEE_ID = table.Column<long>(type: "bigint", nullable: false),
                     ROLE_ID = table.Column<long>(type: "bigint", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -346,7 +385,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     STATUS = table.Column<int>(type: "int", nullable: false),
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -386,7 +425,8 @@ namespace PurchaseManagament.Persistence.Migrations
                     RECEIVER_EMPLOYEE_ID = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     QUANTITY = table.Column<double>(type: "float", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    Notification = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -426,11 +466,11 @@ namespace PurchaseManagament.Persistence.Migrations
                     CURRENCY_ID = table.Column<long>(type: "BigInt", nullable: false),
                     SUPLIER_ID = table.Column<long>(type: "BigInt", nullable: false),
                     REQUEST_ID = table.Column<long>(type: "BigInt", nullable: false),
-                    ApprovingEmployeeId = table.Column<long>(type: "bigint", nullable: false),
+                    APPROVING_EMPLOYEE_ID = table.Column<long>(type: "bigint", nullable: true),
                     OFFERED_PRICE = table.Column<long>(type: "BigInt", nullable: false),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     STATUS = table.Column<int>(type: "int", nullable: false),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -448,8 +488,8 @@ namespace PurchaseManagament.Persistence.Migrations
                         principalTable: "CURRENCIES",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_OFFERS_EMPLOYEES_ApprovingEmployeeId",
-                        column: x => x.ApprovingEmployeeId,
+                        name: "FK_OFFERS_EMPLOYEES_APPROVING_EMPLOYEE_ID",
+                        column: x => x.APPROVING_EMPLOYEE_ID,
                         principalTable: "EMPLOYEES",
                         principalColumn: "ID");
                     table.ForeignKey(
@@ -472,7 +512,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     UUID = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     ID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true),
+                    IS_ACTIVE = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "1"),
                     IS_DELETED = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "0"),
                     CREATE_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MODIFIED_DATE = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -490,6 +530,11 @@ namespace PurchaseManagament.Persistence.Migrations
                         principalTable: "OFFERS",
                         principalColumn: "ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AUDITS_AuditMetaDataHashPrimaryKey_AuditMetaDataSchemaTable",
+                table: "AUDITS",
+                columns: new[] { "AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_COMPANY_DEPARTMENTS_COMPANY_ID",
@@ -539,9 +584,9 @@ namespace PurchaseManagament.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OFFERS_ApprovingEmployeeId",
+                name: "IX_OFFERS_APPROVING_EMPLOYEE_ID",
                 table: "OFFERS",
-                column: "ApprovingEmployeeId");
+                column: "APPROVING_EMPLOYEE_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OFFERS_CURRENCY_ID",
@@ -598,6 +643,9 @@ namespace PurchaseManagament.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AUDITS");
+
+            migrationBuilder.DropTable(
                 name: "EMPLOYEE_DETAILS");
 
             migrationBuilder.DropTable(
@@ -608,6 +656,9 @@ namespace PurchaseManagament.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "STOCK_OPERATIONS");
+
+            migrationBuilder.DropTable(
+                name: "AUDIT_META_DATAS");
 
             migrationBuilder.DropTable(
                 name: "ROLES");
