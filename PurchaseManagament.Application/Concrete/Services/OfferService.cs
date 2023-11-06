@@ -15,6 +15,7 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
+        private readonly ILoggedService _loggedService;
 
         public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService)
         {
