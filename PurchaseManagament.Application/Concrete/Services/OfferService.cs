@@ -82,7 +82,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<OfferDto>>();
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.ApprovedEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice >= 20000
-            , "Currency", "Supplier", "ApprovingEmployee");
+            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -92,7 +92,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<OfferDto>>();
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.ApprovedEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice <= 20000
-            , "Currency", "Supplier", "ApprovingEmployee");
+            , "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
