@@ -17,7 +17,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateDepartment([FromBody] CreateCompanyDepartmentRM create)
+        public async Task<IActionResult> CreateDepartment([FromBody] UpdateCompanyDepartmentRM create)
         {
             var entity = await _companyDepartmentService.CreateCompanyDepartment(create);
             return Ok(entity);

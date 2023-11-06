@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
 using PurchaseManagament.Application.Concrete.Wrapper;
@@ -19,6 +20,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        //[Validator(typeof(CreateSupplierRM))]
         public async Task<Result<bool>> CreateSupplier(CreateSupplierRM createSupplierRM)
         {
             var result = new Result<bool>();
@@ -58,6 +60,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateSupplierRM))]
         public async Task<Result<bool>> UpdateSupplier(UpdateSupplierRM updateSupplierRM)
         {
             var result = new Result<bool>();

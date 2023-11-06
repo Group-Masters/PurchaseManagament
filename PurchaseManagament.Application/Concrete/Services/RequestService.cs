@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
@@ -26,6 +27,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
+        //[Validator(typeof(CreateRequestRM))]
         public async Task<Result<long>> CreateRequest(CreateRequestRM createRequestRM)
         {
             var result = new Result<long>();
@@ -37,6 +39,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateRequestRM))]
         public async Task<Result<long>> UpdateRequest(UpdateRequestRM updateRequestRM)
         {
             var result = new Result<long>();
@@ -52,6 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateRequestStateRM))]
         public async Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM)
         {
             var result = new Result<long>();

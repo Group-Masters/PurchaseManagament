@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
@@ -23,6 +24,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
+        //[Validator(typeof(CreateOfferRM))]
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
         {
             var result = new Result<long>();
@@ -93,6 +95,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
 
+        //[Validator(typeof(UpdateOfferRM))]
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
             var result = new Result<long>();
@@ -108,6 +111,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateOfferStateRM))]
         public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
