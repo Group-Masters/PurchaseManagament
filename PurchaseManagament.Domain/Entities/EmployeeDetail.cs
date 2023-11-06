@@ -2,7 +2,7 @@
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class EmployeeDetail:AuditableEntity
+    public class EmployeeDetail : BaseEntity
     {
         public string Username { get; set; }
         public string Address { get; set; }

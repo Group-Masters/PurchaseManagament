@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class SupplierMapping : AuditableEntityMapping<Supplier>
+    public class SupplierMapping : BaseEntityMapping<Supplier>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Supplier> builder)
         {

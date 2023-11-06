@@ -18,15 +18,15 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             //Interceptor
             ConfigureDerivedEntityMapping(builder);
 
-            builder.Property(x => x.IsDeleted)
-                .HasColumnName("IS_DELETED")
-                .HasColumnOrder(48)
-                .HasDefaultValueSql("0");
-
             builder.Property(x => x.IsActive)
                 .HasColumnName("IS_ACTIVE")
                 .HasColumnOrder(49)
                 .HasDefaultValueSql("1");
+
+            builder.Property(x => x.IsDeleted)
+                .HasColumnName("IS_DELETED")
+                .HasColumnOrder(50)
+                .HasDefaultValueSql("0");
         }
     }
 }

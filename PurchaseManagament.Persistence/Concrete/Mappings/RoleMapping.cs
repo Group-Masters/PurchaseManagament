@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class RoleMapping : AuditableEntityMapping<Role>
+    public class RoleMapping : BaseEntityMapping<Role>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Role> builder)
         {

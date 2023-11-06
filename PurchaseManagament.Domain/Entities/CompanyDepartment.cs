@@ -3,10 +3,8 @@
 namespace PurchaseManagament.Domain.Entities
 {
     // Şirket ve Departman Ara Tablo
-    public class CompanyDepartment:AuditableEntity
+    public class CompanyDepartment : BaseEntity
     {
-
-
         // Nav Prop
         public long CompanyId { get; set; }
         public long DepartmentId { get; set; }

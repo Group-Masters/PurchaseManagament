@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class CurrencyMapping : AuditableEntityMapping<Currency>
+    public class CurrencyMapping : BaseEntityMapping<Currency>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Currency> builder)
         {

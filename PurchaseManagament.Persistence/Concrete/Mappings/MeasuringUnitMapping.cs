@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class MeasuringUnitMapping : AuditableEntityMapping<MeasuringUnit>
+    public class MeasuringUnitMapping : BaseEntityMapping<MeasuringUnit>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<MeasuringUnit> builder)
         {

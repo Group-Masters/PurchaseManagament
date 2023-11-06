@@ -2,13 +2,12 @@
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class Employee : AuditableEntity
+    public class Employee : BaseEntity
     {
         public long CompanyDepartmentId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string IdNumber { get; set; }
-       
         public string BirthYear { get; set; }
         public Gender Gender { get; set; }
 
@@ -19,7 +18,6 @@ namespace PurchaseManagament.Domain.Entities
         public virtual IEnumerable<Request> EmployeeRequests { get; set; }
         public virtual IEnumerable<Request> ApprovedRequests { get; set; }
         public virtual IEnumerable<StockOperations> StockOperations { get; set; }
-              
     }
     public  enum Gender
     {

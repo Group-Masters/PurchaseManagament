@@ -3,10 +3,9 @@ using PurchaseManagament.Domain.Enums;
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class Request:AuditableEntity
+    public class Request : AuditableEntity
     {
         public long ProductId { get; set; }
-  
         public long? ApprovingEmployeeId { get; set; }
         public long RequestEmployeeId { get; set; }
         public string Details { get; set; }
@@ -18,12 +17,5 @@ namespace PurchaseManagament.Domain.Entities
         public virtual IEnumerable<Offer> Offers { get; set; }
 
         public virtual Status State { get; set; } // Durum
-
-
-
     }
-
-
-
-
 }

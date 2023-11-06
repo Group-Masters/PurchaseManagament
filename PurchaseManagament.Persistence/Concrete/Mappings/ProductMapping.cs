@@ -4,7 +4,7 @@ using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Persistence.Concrete.Mappings
 {
-    public class ProductMapping : AuditableEntityMapping<Product>
+    public class ProductMapping : BaseEntityMapping<Product>
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Product> builder)
         {

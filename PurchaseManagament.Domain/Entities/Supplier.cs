@@ -2,7 +2,7 @@
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class Supplier:AuditableEntity
+    public class Supplier : BaseEntity
     {
         public string Name { get; set; }
         public string Address { get; set; }

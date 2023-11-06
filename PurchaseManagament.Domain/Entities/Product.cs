@@ -2,7 +2,7 @@
 
 namespace PurchaseManagament.Domain.Entities
 {
-    public class Product:AuditableEntity
+    public class Product : BaseEntity
     {
         public long MeasuringUnitId { get; set; }
         public string Name { get; set; }
@@ -11,6 +11,5 @@ namespace PurchaseManagament.Domain.Entities
         public virtual IEnumerable<CompanyStock> CompanyStocks { get; set; }
         public virtual IEnumerable<Request> Requests { get; set; }
         public virtual IEnumerable<StockOperations> StockOperations { get; set; }
-
     }
 }
