@@ -25,7 +25,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
-        //[Validator(typeof(CreateOfferValidator))]
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
         {
             var result = new Result<long>();
