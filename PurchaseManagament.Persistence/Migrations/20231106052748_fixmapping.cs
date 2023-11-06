@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class fixmappings : Migration
+    public partial class fixmapping : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

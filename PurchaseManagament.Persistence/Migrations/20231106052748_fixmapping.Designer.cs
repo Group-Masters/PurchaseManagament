@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231105223840_fixmappings")]
-    partial class fixmappings
+    [Migration("20231106052748_fixmapping")]
+    partial class fixmapping
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
