@@ -24,6 +24,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(builder => builder.ApprovingEmployeeId)
                 .HasColumnName("APPROVING_EMPLOYEE_ID")
+               
                 .IsRequired(false);
 
 

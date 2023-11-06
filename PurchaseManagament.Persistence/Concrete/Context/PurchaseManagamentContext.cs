@@ -28,6 +28,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
+        public virtual DbSet<logged> Logs { get; set; }
 
         private readonly ILoggedService _loggedUserService;
 
@@ -42,6 +43,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new LoggedMapping());
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
             modelBuilder.ApplyConfiguration(new CompanyMapping());
             modelBuilder.ApplyConfiguration(new CompanyStockMapping());

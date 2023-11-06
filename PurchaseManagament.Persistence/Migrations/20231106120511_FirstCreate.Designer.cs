@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231102120315_migKral")]
-    partial class migKral
+    [Migration("20231106120511_FirstCreate")]
+    partial class FirstCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1022,6 +1022,9 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("MODIFIED_IP");
 
+                    b.Property<string>("Notification")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
@@ -1101,6 +1104,41 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SUPPLIERS", (string)null);
+                });
+
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.logged", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("COMPANY_ID");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LOG_DATE");
+
+                    b.Property<long>("DepartmentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("DEPARTMENT_ID");
+
+                    b.Property<long>("EmployeeId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("EMPLOYEE_ID");
+
+                    b.Property<string>("detail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("DETAIL");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LOGGED", (string)null);
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>

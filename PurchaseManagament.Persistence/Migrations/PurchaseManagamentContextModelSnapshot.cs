@@ -1103,6 +1103,41 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.ToTable("SUPPLIERS", (string)null);
                 });
 
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.logged", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("COMPANY_ID");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LOG_DATE");
+
+                    b.Property<long>("DepartmentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("DEPARTMENT_ID");
+
+                    b.Property<long>("EmployeeId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("EMPLOYEE_ID");
+
+                    b.Property<string>("detail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("DETAIL");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LOGGED", (string)null);
+                });
+
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
                 {
                     b.HasOne("PurchaseManagament.Domain.Entities.Company", "Company")
