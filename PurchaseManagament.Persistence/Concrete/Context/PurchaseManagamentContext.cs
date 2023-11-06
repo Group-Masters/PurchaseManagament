@@ -33,7 +33,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
 
         public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
-            //Silince Runtime'da hata veriliyor dendi, hata durumunda yorum satırından kaldırmayı dene
+            //Silince Runtime'da hata veriliyor dendi, hata durumunda yorum satırından çıkarmayı dene
             //Database.EnsureCreated();
             _loggedUserService = loggedService;
         }
