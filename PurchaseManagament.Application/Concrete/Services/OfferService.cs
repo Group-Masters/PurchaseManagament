@@ -71,7 +71,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.RequestId == getOfferByRequestId.Id, "Currency", "Supplier", "ApprovingEmployee");
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.RequestId == getOfferByRequestId.Id, "Currency", "Supplier", "ApprovingEmployee","Request.Product");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
