@@ -12,19 +12,21 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
-                .HasColumnName("ID");
+                .HasColumnName("ID")
+                .HasColumnOrder(1);
 
-            //Intercepter
+            //Interceptor
             ConfigureDerivedEntityMapping(builder);
 
             builder.Property(x => x.IsDeleted)
                 .HasColumnName("IS_DELETED")
+                .HasColumnOrder(48)
                 .HasDefaultValueSql("0");
 
             builder.Property(x => x.IsActive)
                 .HasColumnName("IS_ACTIVE")
-                .HasDefaultValueSql("0");
-
+                .HasColumnOrder(49)
+                .HasDefaultValueSql("1");
         }
     }
 }

@@ -8,13 +8,14 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<EmployeeRole> builder)
         {
-            builder.ToTable("EMPLOYEE_ROLES");
 
             builder.Property(x => x.EmployeeId)
-                .HasColumnName("EMPLOYEE_ID");
+                .HasColumnName("EMPLOYEE_ID")
+                .HasColumnOrder(2);
 
             builder.Property(x => x.RoleId)
-                .HasColumnName("ROLE_ID");
+                .HasColumnName("ROLE_ID")
+                .HasColumnOrder(3);
 
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.EmployeeRoles)
@@ -25,6 +26,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .WithMany(x => x.EmployeeRoles)
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.ToTable("EMPLOYEE_ROLES");
         }
     }
 }

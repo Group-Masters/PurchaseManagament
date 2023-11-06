@@ -8,14 +8,18 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Currency> builder)
         {
-            builder.ToTable("CURRENCIES");
-
             builder.Property(x => x.Name)
-                .IsRequired().HasColumnName("CURRENCY_NAME").HasColumnType("nvarchar(20)");
-            builder.Property(x => x.Rate)
-               .IsRequired().HasColumnName("CURRENCY_Rate");
+                .HasColumnName("CURRENCY_NAME")
+                .HasColumnOrder(2)
+                .HasColumnType("nvarchar(50)")
+                .IsRequired();
 
+            builder.Property(x => x.Rate)
+               .HasColumnName("CURRENCY_RATE")
+               .HasColumnOrder(3)
+               .IsRequired();
             
+            builder.ToTable("CURRENCIES");
         }
     }
 }
