@@ -14,9 +14,11 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public Int64 ApprovingEmployeeId { get; set; }
         public string ApprovingEmployeeName { get; set; }
         public string ApprovingEmployeeSurname { get; set; }
+
         public decimal OfferedPrice { get; set; }
         public string ProductName { get; set; }
         public double Quantity { get; set; }
+        public string MeasuringUnit { get; set; }
         public string Details { get; set; }
     }
 }
