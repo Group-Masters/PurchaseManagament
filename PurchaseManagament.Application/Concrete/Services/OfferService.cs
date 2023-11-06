@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -12,11 +13,14 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
+        private readonly ILoggedService _loggedService;
 
-        public OfferService(IMapper mapper, IUnitWork unitWork)
+
+        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
+            _loggedService = loggedService;
         }
 
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
@@ -112,7 +116,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
             }
+           
             _mapper.Map(update, entity);
+            entity.ApprovingEmployeeId =(Int64)_loggedService.UserId;
             _unitWork.GetRepository<Offer>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
