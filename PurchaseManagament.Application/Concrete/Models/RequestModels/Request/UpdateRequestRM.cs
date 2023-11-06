@@ -10,7 +10,7 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Request
     {
         public Int64 Id { get; set; }
         public long ProductId { get; set; }
-        public string Details { get; set; }
+        public string? Details { get; set; }
         public double Quantity { get; set; }
     }
 }

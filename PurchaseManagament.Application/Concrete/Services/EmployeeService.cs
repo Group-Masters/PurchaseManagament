@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -30,6 +32,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
+        //[Validator(typeof(CreateEmployeeValidator))]
         public async Task<Result<long>> CreateEmployee(CreateEmployeeVM createEmployeeVM)
         {
             var result = new Result<Int64>();
@@ -103,6 +106,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDtos;
             return result;
         }
+
+        //[Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<List<EmployeeDto>>();
@@ -135,6 +140,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
 
         }
+
+        //[Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM)
         {
 
@@ -153,6 +160,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
 
         }
+
+        //[Validator(typeof(CreateEmployeeValidator))]
         public async Task<Result<TokenDto>> Login(LoginVM loginVM)
         {
 
@@ -190,6 +199,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
             return result;
         }
+
+        //[Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
         {
             var result = new Result<long>();
@@ -207,6 +218,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
 
         }
+
+        //[Validator(typeof(UpdatePasswordEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployeePassword(UpdatePasswordVM updatePasswordVM)
         {
             var result = new Result<long>();
@@ -230,6 +243,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = existsEntity.Id;
             return result;
         }
+
+        //[Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<List<EmployeeDto>>();

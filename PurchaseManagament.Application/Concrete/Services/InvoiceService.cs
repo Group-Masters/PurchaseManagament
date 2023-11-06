@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Validators.Employees;
+using PurchaseManagament.Application.Concrete.Validators.Invoices;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -20,6 +23,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
+
+        //[Validator(typeof(CreateInvoiceValidator))]
         public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
             var result = new Result<long>();
@@ -37,6 +42,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateInvoiceValidator))]
         public async Task<Result<long>> UpdateInvoice(UpdateInvoiceRM updateInvoiceRM)
         {
             var result = new Result<long>();
@@ -89,6 +95,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateInvoiceValidator))]
         public async Task<Result<InvoiceDto>> GetInvoiceById(GetInvoiceByIdRM getInvoiceById)
         {
             var result = new Result<InvoiceDto>();
@@ -105,6 +112,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateInvoiceValidator))]
         public async Task<Result<HashSet<InvoiceDto>>> GetInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById)
         {
             var result = new Result<HashSet<InvoiceDto>>();
