@@ -74,7 +74,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Request.Quantity))
                 .ForMember(x => x.MeasuringUnit, y => y.MapFrom(x => x.Request.Product.MeasuringUnit.Name))
                 .ForMember(x => x.RequestEmployeeName, y => y.MapFrom(x => x.Request.RequestEmployee.Name))
-                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname));
+                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname))
+                .ForMember(x => x.CompanyAddress, y => y.MapFrom(x => x.Request.RequestEmployee.CompanyDepartment.Company.Adress))
+                .ForMember(x => x.SupplierAddress, y => y.MapFrom(x => x.Supplier.Address));
+
 
 
             CreateMap<StockOperations, StockOperationsDto>();
