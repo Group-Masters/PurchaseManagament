@@ -50,7 +50,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
-        [HttpGet("GetAllByCompanyId")]
+        [HttpGet("GetAllByCompanyId/{id}")]
         public async Task<IActionResult> GetAllCompanyStockByCompanyId(Int64 id)
         {
             var entities = await _companyStockService.GetAllCompanyStockByCompanyId(id);
