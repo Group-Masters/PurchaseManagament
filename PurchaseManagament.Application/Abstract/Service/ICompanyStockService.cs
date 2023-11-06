@@ -16,5 +16,6 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         //GET METHODS
         Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStock();
+        Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(Int64 id);
     }
 }

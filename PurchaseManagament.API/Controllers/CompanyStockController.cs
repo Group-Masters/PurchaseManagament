@@ -50,6 +50,13 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
+        [HttpGet("GetAllByCompanyId")]
+        public async Task<IActionResult> GetAllCompanyStockByCompanyId(Int64 id)
+        {
+            var entities = await _companyStockService.GetAllCompanyStockByCompanyId(id);
+            return Ok(entities);
+        }
+
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteCompanyStock(Int64 id)
         {
