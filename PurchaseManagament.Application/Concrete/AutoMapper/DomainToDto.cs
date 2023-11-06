@@ -69,7 +69,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.CurrencyName, y => y.MapFrom(z => z.Currency.Name))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
                 .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovingEmployee.Name))
-                .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname));
+                .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname))
+                .ForMember(x => x.ProductName, y => y.MapFrom(x => x.Request.Product.Name))
+                .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Request.Quantity))
+                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(x => x.Request.Product.MeasuringUnit));
+
 
             CreateMap<StockOperations, StockOperationsDto>();
         }

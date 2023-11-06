@@ -6,7 +6,6 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Offers
     {
         public long Id { get; set; }
         public virtual Status Status { get; set; }
-        public Int64 ApprovingEmployeeId { get; set; }
 
         /*
          
