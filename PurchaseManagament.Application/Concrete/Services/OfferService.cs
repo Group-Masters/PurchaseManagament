@@ -15,7 +15,6 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
-        private readonly ILoggedService _loggedService;
 
         public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService)
         {
@@ -136,7 +135,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
             }
+           
             _mapper.Map(update, entity);
+            entity.ApprovingEmployeeId =(Int64)_loggedService.UserId;
             _unitWork.GetRepository<Offer>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
