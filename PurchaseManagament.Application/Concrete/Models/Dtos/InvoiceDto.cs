@@ -11,7 +11,10 @@
         public string SupplierAddress { get; set; }
         public string ProductName { get; set; }
         public double Quantity { get; set; }
-        public double MeasuringUnit { get; set; }
+        public string MeasuringUnit { get; set; }
         public decimal OfferedPrice { get; set; }
+        public string Currency {  get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime RequestCreatedDate { get; set; }
     }
 }

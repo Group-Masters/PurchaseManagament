@@ -61,6 +61,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateCompanyValidator))]
         public async Task<Result<bool>> UpdateCompany(UpdateCompanyRM updateCompanyRM)
         {
             var result = new Result<bool>();
