@@ -97,19 +97,11 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 if (entry.Entity is AuditableEntity auditableEntity)
                 {
                     switch (entry.State)
-                    {
-                        //update
-                        case EntityState.Modified:
-                            auditableEntity.ModifiedDate = DateTime.Now;
-                            auditableEntity.ModifiedBy = _loggedUserService.Username ?? "admin";
-                            auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
-                            break;
-                            
+                    {                            
                         //insert
                         case EntityState.Added:
                             auditableEntity.CreatedDate = DateTime.Now;
                             auditableEntity.CreatedBy = _loggedUserService.UserId.ToString() ?? "admin";
-                            auditableEntity.CreatedIP = _loggedUserService.Ip ?? "admin";
                             break;
                         //delete
                         //case EntityState.Deleted:

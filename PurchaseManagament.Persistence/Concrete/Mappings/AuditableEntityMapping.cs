@@ -25,8 +25,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             
             builder.Property(x => x.CreatedDate)
                 .HasColumnName("CREATED_DATE")
-                .HasColumnOrder(47)
-                .IsRequired(false);
+                .HasColumnOrder(48);
 
             builder.Property(x => x.IsActive)
                 .HasColumnName("IS_ACTIVE")

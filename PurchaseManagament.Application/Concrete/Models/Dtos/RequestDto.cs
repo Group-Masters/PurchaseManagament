@@ -8,7 +8,6 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public long ProductId { get; set; }
         public string ProductName { get; set; }
         public string MeasuringUnitName{ get; set; }
-
         public long ApprovingEmployeeId { get; set; }
         public string ApprovingEmployeeName { get; set; }
         public string ApprovingEmployeeSurname { get; set; }

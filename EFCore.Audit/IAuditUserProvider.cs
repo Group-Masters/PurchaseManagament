@@ -1,7 +1,12 @@
-﻿namespace EFCore.Audit
+﻿using System;
+
+namespace EFCore.Audit
 {
     public interface IAuditUserProvider
     {
-        string GetUser();
+        Int64? UserId { get; }
+        // List< string>? Role { get; }
+        string Username { get; }
+        string Email { get; }
     }
 }

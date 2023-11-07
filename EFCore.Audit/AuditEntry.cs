@@ -44,7 +44,7 @@ namespace EFCore.Audit
             DisplayName = entry.Metadata.DisplayName();
             SchemaName = entry.Metadata.GetSchema();
             EntityState = entry.State;
-            ByUser = auditUserProvider == default ? "Unknown" : auditUserProvider.GetUser();
+            ByUser = auditUserProvider.UserId.ToString() ?? "admin";
 
             foreach (PropertyEntry property in entry.Properties)
             {
