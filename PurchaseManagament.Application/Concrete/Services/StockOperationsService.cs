@@ -24,35 +24,39 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task CreateStockOperations(UpdateCompanyQuantityRM updateCompanyQuantityRM)
         {
 
-            // Company Stok Id & Product Id
-            var companyStock = await _unitWork.GetRepository<CompanyStock>().GetSingleByFilterAsync(q => q.Id == updateCompanyQuantityRM.Id);
+            //// Company Stok Id & Product Id
+            //var companyStock = await _unitWork.GetRepository<CompanyStock>().GetSingleByFilterAsync(q => q.Id == updateCompanyQuantityRM.Id);
 
-            StockOperationsDto stockOperationsDto = new StockOperationsDto()
-            {
-                CompanyStockId = companyStock.Id,
-                ProductId = companyStock.ProductId,
-                Quantity = updateCompanyQuantityRM.Quantity,
-                Notification = updateCompanyQuantityRM.Quantity.ToString() + " Adet Stoktan tedarik edildi",
-                //ReceiverEmployeeId = 1
+            //StockOperationsDto stockOperationsDto = new StockOperationsDto()
+            //{
+            //    CompanyStockId = companyStock.Id,
+            //    ProductId = companyStock.ProductId,
+            //    Quantity = updateCompanyQuantityRM.Quantity,
+            //    Notification = updateCompanyQuantityRM.Quantity.ToString() + " Adet Stoktan tedarik edildi",
+            //    //ReceiverEmployeeId = 1
 
-                ReceiverEmployeeId = updateCompanyQuantityRM.ReceiverEmployeeId
+            //    ReceiverEmployeeId = updateCompanyQuantityRM.ReceiverEmployeeId
 
-            };
-
-            StockOperations stockOperations = new StockOperations();
-            _mapper.Map(stockOperationsDto, stockOperations);
-
-
-            _unitWork.GetRepository<StockOperations>().Add(stockOperations);
+            //};
 
 
 
-            //var result = new Result<long>();
-            //var mappedEntity = _mapper.Map<MeasuringUnit>(createMeasuringUnitRM);
-            //_unitWork.GetRepository<MeasuringUnit>().Add(mappedEntity);
-            //await _unitWork.CommitAsync();
-            //result.Data = mappedEntity.Id;
-            //return result;
+            //StockOperations stockOperations = new StockOperations();
+            //_mapper.Map(stockOperationsDto, stockOperations);
+
+
+            //_unitWork.GetRepository<StockOperations>().Add(stockOperations);
+
+
+
+            ////var result = new Result<long>();
+            ////var mappedEntity = _mapper.Map<MeasuringUnit>(createMeasuringUnitRM);
+            ////_unitWork.GetRepository<MeasuringUnit>().Add(mappedEntity);
+            ////await _unitWork.CommitAsync();
+            ////result.Data = mappedEntity.Id;
+            ////return result;
+            ///
+            throw new NotImplementedException();
         }
 
         public Task<Result<HashSet<StockOperationsDto>>> GetAllStockOperations()
