@@ -8,7 +8,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Currencies
         public CreateCurrencyValidator()
         {
             RuleFor(x => x.Rate).NotEmpty().WithMessage("Baskınlığı boş bırakalamaz");
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Para biriminin ismi boş olamaz");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Para biriminin ismi boş olamaz").MaximumLength(20).WithMessage("Para Birim Adı 20 Karakterden Fazla Olamaz");
 
         }
     }
