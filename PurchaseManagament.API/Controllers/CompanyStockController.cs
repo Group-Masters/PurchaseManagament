@@ -34,13 +34,18 @@ namespace PurchaseManagament.API.Controllers
         }
 
         // Adet güncellemesi
-        [HttpPut("UpdateQuantity")]
-        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityRM update)
+        [HttpPut("UpdateQuantityAdd")]
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityAddRM updateCompanyQuantityAddRM)
         {
-            var entity = await _companyStockService.UpdateCompanyStockQuantity(update);
+            var entity = await _companyStockService.UpdateCompanyStockQuantityAdd(updateCompanyQuantityAddRM);
 
-            
-
+            return Ok(entity);
+        }
+        // Adet güncellemesi
+        [HttpPut("UpdateQuantityReduce")]
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
+        {
+            var entity = await _companyStockService.UpdateCompanyStockQuantityReduce(updateCompanyQuantityReduceRM);
 
             return Ok(entity);
         }
@@ -57,8 +62,8 @@ namespace PurchaseManagament.API.Controllers
         {
             var entities = await _companyStockService.GetAllCompanyStockByCompanyId(new GetByIdVM { Id = id });
             return Ok(entities);
-        }        
-        
+        }
+
         [HttpGet("GetById")]
         public async Task<IActionResult> GetCompanyStockById(Int64 id)
         {

@@ -8,27 +8,40 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Offer> builder)
         {
-            builder.ToTable("OFFERS");
 
             builder.Property(x => x.CurrencyId)
-                .HasColumnName("CURRENCY_ID").HasColumnType("BigInt");
+                .HasColumnName("CURRENCY_ID")
+                .HasColumnOrder(2)
+                .HasColumnType("BigInt");
 
-            builder.Property(builder => builder.OfferedPrice)
-                .HasColumnName("OFFERED_PRICE").HasColumnType("BigInt");
+            builder.Property(x => x.SupplierId)
+                .HasColumnName("SUPPLIER_ID")
+                .HasColumnOrder(3)
+                .HasColumnType("BigInt");
+            
+            builder.Property(x => x.RequestId)
+                .HasColumnName("REQUEST_ID")
+                .HasColumnOrder(4)
+                .HasColumnType("BigInt");
 
-            builder.Property(builder => builder.RequestId)
-                .HasColumnName("REQUEST_ID").HasColumnType("BigInt");
-           
-            builder.Property(builder => builder.Status)
-                .HasColumnName("STATUS");
-
-            builder.Property(builder => builder.ApprovingEmployeeId)
+            builder.Property(x => x.ApprovingEmployeeId)
                 .HasColumnName("APPROVING_EMPLOYEE_ID")
+                .HasColumnOrder(5)
                 .IsRequired(false);
 
+            builder.Property(x => x.OfferedPrice)
+                .HasColumnName("OFFERED_PRICE")
+                .HasColumnOrder(6)
+                .HasColumnType("BigInt");
 
-            builder.Property(builder => builder.SupplierId)
-                .HasColumnName("SUPLIER_ID").HasColumnType("BigInt");
+            builder.Property(x => x.Details)
+                .HasColumnName("DETAILS")
+                .HasColumnOrder(7)
+                .HasColumnType("nvarchar(250)");
+
+            builder.Property(x => x.Status)
+                .HasColumnName("STATUS")
+                .HasColumnOrder(8);
 
             builder.HasOne(x => x.Supplier)
                 .WithMany(x => x.Offers)
@@ -37,17 +50,20 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.HasOne(x => x.ApprovingEmployee)
                 .WithMany(x => x.Offers)
-                .HasForeignKey(builder => builder.ApprovingEmployeeId)
+                .HasForeignKey(x => x.ApprovingEmployeeId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            
 
             builder.HasOne(x => x.Currency)
                 .WithMany(x => x.Offers)
-                .HasForeignKey(x => x.CurrencyId).OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(x => x.CurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Request)
-                .WithMany (x => x.Offers).HasForeignKey(x => x.RequestId).OnDelete(DeleteBehavior.NoAction);
+                .WithMany (x => x.Offers)
+                .HasForeignKey(x => x.RequestId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.ToTable("OFFERS");
         }
     }
 }

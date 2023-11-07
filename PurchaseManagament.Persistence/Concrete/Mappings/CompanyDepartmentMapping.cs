@@ -9,15 +9,16 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<CompanyDepartment> builder)
         {
             builder.Property(x => x.CompanyId)
+                .HasColumnName("COMPANY_ID")
                 .HasColumnOrder(2)
                 .HasColumnType("bigint")
-                .HasColumnName("COMPANY_ID")
                 .IsRequired();
 
             builder.Property(x => x.DepartmentId)     
                 .HasColumnName("DEPARTMENT_ID")
-                .HasColumnOrder(3);
-
+                .HasColumnOrder(3)
+                .HasColumnType("bigint")
+                .IsRequired();
 
             builder.HasOne(x => x.Company)
                 .WithMany(x => x.CompanyDepartments)

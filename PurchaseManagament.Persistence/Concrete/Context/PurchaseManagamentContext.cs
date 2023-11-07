@@ -33,7 +33,8 @@ namespace PurchaseManagament.Persistence.Concrete.Context
 
         public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
-            Database.EnsureCreated();
+            //Silince Runtime'da hata veriliyor dendi, hata durumunda yorum satırından çıkarmayı dene
+            //Database.EnsureCreated();
             _loggedUserService = loggedService;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

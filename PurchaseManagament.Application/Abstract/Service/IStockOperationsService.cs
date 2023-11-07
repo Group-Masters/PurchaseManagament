@@ -6,7 +6,7 @@ namespace PurchaseManagament.Application.Abstract.Service
 {
     public interface IStockOperationsService
     {
-        Task    CreateStockOperations(UpdateCompanyQuantityRM updateCompanyQuantityRM);
+        Task CreateStockOperations(UpdateCompanyQuantityAddRM updateCompanyQuantityRM);
         Task<Result<HashSet<StockOperationsDto>>> GetAllStockOperations();
     }
 }

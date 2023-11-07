@@ -8,7 +8,6 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("PRODUCTS");
 
             builder.Property(x => x.MeasuringUnitId)
                 .HasColumnName("MEASURING_UNIT_ID")
@@ -27,6 +26,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.MeasuringUnitId)
                 .HasConstraintName("PRODUCT_MEASURING_UNITS");
+
+            builder.ToTable("PRODUCTS");
         }
     }
 }

@@ -8,24 +8,34 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
     {
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<StockOperations> builder)
         {
-            builder.ToTable("STOCK_OPERATIONS");
 
-            builder.Property(x  => x.Quantity).IsRequired().HasColumnName("QUANTITY");
-            builder.Property(x => x.CompanyStockId).IsRequired().HasColumnName("COMPANYSTOCK_ID");
-            builder.Property(x => x.ReceiverEmployeeId).IsRequired().HasColumnName("RECEIVER_EMPLOYEE_ID");
+            builder.Property(x => x.CompanyStockId)
+                .HasColumnName("COMPANY_STOCK_ID")
+                .HasColumnOrder(2)
+                .IsRequired();
+
+            builder.Property(x => x.CompanyDepartmentId)
+                .HasColumnName("COMPANY_DEPARTMENT_ID")
+                .HasColumnOrder(3)
+                .IsRequired();
+
+            builder.Property(x => x.Quantity)
+                .HasColumnName("QUANTITY")
+                .HasColumnOrder(4)
+                .IsRequired();
 
             builder.HasOne(x => x.CompanyStock)
-                .WithMany(x => x.StockOperations).HasForeignKey(x => x.CompanyStockId)
+                .WithMany(x => x.StockOperations)
+                .HasForeignKey(x => x.CompanyStockId)
+                .HasConstraintName("STOCK_OPERATIONS_COMPANY_STOCK")
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.Product)
+            builder.HasOne(x => x.CompanyDepartment)
                 .WithMany(x => x.StockOperations)
-                .HasForeignKey(x => x.ProductId); 
-           
-            builder.HasOne(x => x.ReceiverEmployee)
-                .WithMany(x => x.StockOperations)
-                .HasForeignKey(x => x.ReceiverEmployeeId);
-          
+                .HasForeignKey(x => x.CompanyDepartmentId)
+                .HasConstraintName("STOCK_OPERATIONS_COMPANY_DEPARTMENT");
+
+            builder.ToTable("STOCK_OPERATIONS");
         }
     }
 }

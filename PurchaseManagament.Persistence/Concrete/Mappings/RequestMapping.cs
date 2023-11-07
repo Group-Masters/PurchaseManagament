@@ -9,41 +9,37 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
         public override void ConfigureDerivedEntityMapping(EntityTypeBuilder<Request> builder)
         {
             builder.Property(x => x.ProductId)
+                .HasColumnName("PRODUCT_ID")
                 .HasColumnOrder(2)
-                .HasColumnType("bigint")
-                .HasColumnName("PRODUCT_ID");
-
-
+                .HasColumnType("bigint");
 
             builder.Property(x => x.ApprovingEmployeeId)
-                .HasColumnOrder(4)
+                .HasColumnName("APPROVING_EMPLOYEE_ID")
+                .HasColumnOrder(3)
                 .HasColumnType("bigint")
-                .IsRequired(false)
-                .HasColumnName("APPROVING_EMPLOYEE_ID");
+                .IsRequired(false);
 
             builder.Property(x => x.RequestEmployeeId)
-                .HasColumnOrder(5)
-                .HasColumnType("bigint")
-                .HasColumnName("REQUEST_EMPLOYEE_ID");
+                .HasColumnName("REQUEST_EMPLOYEE_ID")
+                .HasColumnOrder(4)
+                .HasColumnType("bigint");
 
             builder.Property(x => x.Details)
                 .HasColumnName("DETAILS")
-                .HasColumnOrder(6);
+                .HasColumnOrder(5);
 
             builder.Property(x => x.Quantity)
                 .HasColumnName("QUANTITY")
-                .HasColumnOrder(7);
+                .HasColumnOrder(6);
           
             builder.Property(x => x.State)
-              .HasColumnName("STATUS")
-              .HasColumnOrder(8);
+                .HasColumnName("STATUS")
+                .HasColumnOrder(7);
 
             builder.HasOne(x => x.Product)
                 .WithMany(x => x.Requests)
                 .HasForeignKey(x => x.ProductId)
                 .HasConstraintName("REQUEST_PRODUCTS");
-
-           
 
             builder.HasOne(x => x.ApprovedEmployee)
                 .WithMany(x => x.ApprovedRequests)
@@ -56,6 +52,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasForeignKey(x => x.RequestEmployeeId)
                 .HasConstraintName("REQUEST_REQUEST_EMPLOYEE")
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.ToTable("REQUESTS");
         }
     }
 }
