@@ -137,12 +137,12 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var sOparetionEntity = new StockOperations
             {
-                CompanyStock = entity,
+                CompanyStockId = entity.Id,
                 Quantity = updateCompanyQuantityReduceRM.Quantity,
-                CompanyDepartmentId=updateCompanyQuantityReduceRM.CompanyDepartmentId
+                CompanyDepartmentId = updateCompanyQuantityReduceRM.CompanyDepartmentId
 
             };
-            _mapper.Map<CompanyStock>(updateCompanyQuantityReduceRM);
+            _mapper.Map<CompanyStock>(entity);
             _unitWork.GetRepository<StockOperations>().Add(sOparetionEntity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;

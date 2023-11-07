@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,10 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.CompanySt
     public class UpdateCompanyQuantityReduceRM
     {
         public Int64 Id { get; set; }
+      
+        public long CompanyDepartmentId { get; set; }
         public double Quantity { get; set; }
-        public Int64 CompanyDepartmentId { get; set; }
+    
+    
     }
 }
