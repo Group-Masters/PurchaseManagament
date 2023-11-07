@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Application.Concrete.Validators.Departman
 {
-    public class CreateDepartmanValidator : AbstractValidator<CreateDepartmentRM>
+    public class GetByIdDepartmanValidator : AbstractValidator<GetByIdDepartmentRM>
     {
-        public CreateDepartmanValidator()
+        public GetByIdDepartmanValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen departman ismini boş bırakmayınız").MaximumLength(50).WithMessage("Departman Adı Bilgisi 50 Karakterden Fazla Olamaz");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız");
+
         }
     }
 }

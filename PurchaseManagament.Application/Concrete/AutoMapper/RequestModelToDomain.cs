@@ -57,7 +57,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateCompanyStockRM, CompanyStock>();
             CreateMap<UpdateCompanyStockRM, CompanyStock>();
-            CreateMap<UpdateCompanyQuantityRM, CompanyStock>(); // adet güncelleme
+            CreateMap<UpdateCompanyQuantityAddRM, CompanyStock>(); // adet güncelleme
 
             CreateMap<CreateMeasuringUnitRM, MeasuringUnit>();
             CreateMap<UpdateMeasuringUnitRM, MeasuringUnit>();

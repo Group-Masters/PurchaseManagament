@@ -9,6 +9,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Request
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Talep ID bilgisini boş bırakmayınız");
             RuleFor(x => x.State).NotEmpty().WithMessage("Lütfen Talep Durum bilgisini boş bırakmayınız");
+
         }
     }
 }

@@ -3,11 +3,10 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
 
 namespace PurchaseManagament.Application.Concrete.Validators.Role
 {
-    public class UpdateRoleValidator : AbstractValidator<UpdateRoleRM>
+    public class GetRoleByNameValidator : AbstractValidator<GetRoleByNameRM>
     {
-        public UpdateRoleValidator()
+        public GetRoleByNameValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Role ID bilgisini boş bırakmayınız");
             RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen Role Adı bilgisini boş bırakmayınız").MaximumLength(20).WithMessage("Rol Adı Bilgisi 20 Karakterden Fazla Olamaz");
         }
     }

@@ -21,7 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
 
-        public async Task CreateStockOperations(UpdateCompanyQuantityRM updateCompanyQuantityRM)
+        public async Task CreateStockOperations(UpdateCompanyQuantityAddRM updateCompanyQuantityRM)
         {
 
             //// Company Stok Id & Product Id
