@@ -13,7 +13,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.Company.Name))
                 .ForMember(x => x.DepartmentName, y => y.MapFrom(z => z.Department.Name));
 
-            CreateMap<CompanyStock, CompanyStocksDto>();
+            CreateMap<CompanyStock, CompanyStocksDto>()
+                .ForMember(x => x.ProductName, y => y.MapFrom(z => z.Product.Name))
+                .ForMember(x => x.MeasuringUnitName, y => y.MapFrom(z => z.Product.MeasuringUnit.Name));
 
             CreateMap<Product, ProductDto>()
                 .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name));
@@ -56,13 +58,15 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<Invoice, InvoiceDto>()
                 .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.CompanyDepartment.Company.Name))
-                .ForMember(x => x.CompanyAddress, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.CompanyDepartment.Company.Adress))
+                .ForMember(x => x.CompanyAddress, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.CompanyDepartment.Company.Address))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Offer.Supplier.Name))
                 .ForMember(x => x.SupplierAddress, y => y.MapFrom(z => z.Offer.Supplier.Address))
                 .ForMember(x => x.ProductName, y => y.MapFrom(z => z.Offer.Request.Product.Name))
                 .ForMember(x => x.Quantity, y => y.MapFrom(z => z.Offer.Request.Quantity))
-                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(z => z.Offer.Request.Product.MeasuringUnit))
-                .ForMember(x => x.OfferedPrice, y => y.MapFrom(z => z.Offer.OfferedPrice));
+                .ForMember(x => x.MeasuringUnit, y => y.MapFrom(z => z.Offer.Request.Product.MeasuringUnit.Name))
+                .ForMember(x => x.OfferedPrice, y => y.MapFrom(z => z.Offer.OfferedPrice))
+                .ForMember(x => x.Currency, y => y.MapFrom(z => z.Offer.Currency.Name))
+                .ForMember(x => x.RequestCreatedDate, y => y.MapFrom(z => z.Offer.Request.CreatedDate));
 
 
             CreateMap<Offer, OfferDto>()
@@ -74,7 +78,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Request.Quantity))
                 .ForMember(x => x.MeasuringUnit, y => y.MapFrom(x => x.Request.Product.MeasuringUnit.Name))
                 .ForMember(x => x.RequestEmployeeName, y => y.MapFrom(x => x.Request.RequestEmployee.Name))
-                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname));
+                .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname))
+                .ForMember(x => x.CompanyAddress, y => y.MapFrom(x => x.Request.RequestEmployee.CompanyDepartment.Company.Address))
+                .ForMember(x => x.SupplierAddress, y => y.MapFrom(x => x.Supplier.Address));
+
 
 
             CreateMap<StockOperations, StockOperationsDto>();

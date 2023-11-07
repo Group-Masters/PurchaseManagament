@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Abstract.Service
     public interface ICompanyDepartmentService
     {
         //CRUD
-        Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmentRM createCompanyDepartmentRM);
+        Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmanRM createCompanyDepartmentRM);
         Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM);
         Task<Result<bool>> DeleteCompanyDepartmentPermanent(Int64  id);
         Task<Result<bool>> DeleteCompanyDepartment(Int64 id);

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
@@ -47,6 +49,20 @@ namespace PurchaseManagament.API.Controllers
         public async Task<IActionResult> GetAllCompanyStock()
         {
             var entities = await _companyStockService.GetAllCompanyStock();
+            return Ok(entities);
+        }
+
+        [HttpGet("GetAllByCompanyId")]
+        public async Task<IActionResult> GetAllCompanyStockByCompanyId(Int64 id)
+        {
+            var entities = await _companyStockService.GetAllCompanyStockByCompanyId(new GetByIdVM { Id = id });
+            return Ok(entities);
+        }        
+        
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetCompanyStockById(Int64 id)
+        {
+            var entities = await _companyStockService.GetCompanyStockById(new GetByIdVM { Id = id });
             return Ok(entities);
         }
 

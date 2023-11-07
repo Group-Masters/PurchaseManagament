@@ -8,7 +8,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Companies
         public CreateCompanyValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Lütfen şirket ismini boş bırakmayınız");
-            RuleFor(x => x.Adress).NotEmpty().WithMessage("Lütfen şirket adresini boş bırakmayınız");
+            RuleFor(x => x.Address).NotEmpty().WithMessage("Lütfen şirket adresini boş bırakmayınız");
 
         }
     }

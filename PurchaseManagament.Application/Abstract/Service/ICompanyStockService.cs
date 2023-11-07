@@ -1,5 +1,6 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.Application.Abstract.Service
@@ -16,5 +17,7 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         //GET METHODS
         Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStock();
+        Task<Result<CompanyStocksDto>> GetCompanyStockById(GetByIdVM getByIdVM);
+        Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(GetByIdVM getByIdVM);
     }
 }

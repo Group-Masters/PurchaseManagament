@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
+using PurchaseManagament.Application.Concrete.Validators.Supplier;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -19,6 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        //[Validator(typeof(CreateSupplierValidator))]
         public async Task<Result<bool>> CreateSupplier(CreateSupplierRM createSupplierRM)
         {
             var result = new Result<bool>();
@@ -58,6 +61,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateSupplierValidator))]
         public async Task<Result<bool>> UpdateSupplier(UpdateSupplierRM updateSupplierRM)
         {
             var result = new Result<bool>();

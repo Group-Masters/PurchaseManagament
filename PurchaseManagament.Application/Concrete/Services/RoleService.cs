@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
+using PurchaseManagament.Application.Concrete.Validators.Role;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -19,6 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        //[Validator(typeof(CreateRoleValidator))]
         public async Task<Result<bool>> CreateRole(CreateRoleRM createRoleRM)
         {
             var result = new Result<bool>();
@@ -88,6 +91,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(UpdateRoleValidator))]
         public async Task<Result<bool>> UpdateRole(UpdateRoleRM updateRoleRM)
         {
             var result = new Result<bool>();

@@ -42,7 +42,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .IsRequired();
 
             builder.HasOne(x => x.CompanyDepartment)
-                .WithMany(x => x.Employes)
+                .WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyDepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
             

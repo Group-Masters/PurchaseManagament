@@ -2,11 +2,9 @@
 {
     public class StockOperationsDto
     {
+        public Int64 Id { get; set; }
         public long CompanyStockId { get; set; }
-        public long ReceiverEmployeeId { get; set; }
-        public long ProductId { get; set; }
+        public long CompanyDepartmentId { get; set; }
         public double Quantity { get; set; }
-        public string? Notification { get; set; }
-
     }
 }
