@@ -44,8 +44,6 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
             }
 
-
-
             var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
 
             // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
@@ -72,8 +70,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             _uWork.Dispose();
             result.Data = employeeEntity.Id;
             return result;
-
-
         }
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
         {

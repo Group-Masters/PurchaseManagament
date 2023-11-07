@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AuditTest : Migration
+    public partial class Audit1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,16 +15,14 @@ namespace PurchaseManagament.Persistence.Migrations
                 name: "AUDIT_META_DATAS",
                 columns: table => new
                 {
-                    HashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SchemaTable = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ReadablePrimaryKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Schema = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Table = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    READABLE_PRIMARY_KEY = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TABLE = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DISPLAY_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AUDIT_META_DATAS", x => new { x.HashPrimaryKey, x.SchemaTable });
+                    table.PrimaryKey("PK_AUDIT_META_DATAS", x => x.HashPrimaryKey);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,22 +125,22 @@ namespace PurchaseManagament.Persistence.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OldValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NewValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateTimeOffset = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EntityState = table.Column<int>(type: "int", nullable: false),
-                    ByUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuditMetaDataHashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    AuditMetaDataSchemaTable = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    OLD_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NEW_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATE_TIME = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ENTITY_STATE = table.Column<int>(type: "int", nullable: false),
+                    USER_ID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USER_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AuditMetaDataHashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AUDITS", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_AUDITS_AUDIT_META_DATAS_AuditMetaDataHashPrimaryKey_AuditMetaDataSchemaTable",
-                        columns: x => new { x.AuditMetaDataHashPrimaryKey, x.AuditMetaDataSchemaTable },
+                        name: "FK_AUDITS_AUDIT_META_DATAS_AuditMetaDataHashPrimaryKey",
+                        column: x => x.AuditMetaDataHashPrimaryKey,
                         principalTable: "AUDIT_META_DATAS",
-                        principalColumns: new[] { "HashPrimaryKey", "SchemaTable" });
+                        principalColumn: "HashPrimaryKey");
                 });
 
             migrationBuilder.CreateTable(
@@ -446,9 +444,9 @@ namespace PurchaseManagament.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AUDITS_AuditMetaDataHashPrimaryKey_AuditMetaDataSchemaTable",
+                name: "IX_AUDITS_AuditMetaDataHashPrimaryKey",
                 table: "AUDITS",
-                columns: new[] { "AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable" });
+                column: "AuditMetaDataHashPrimaryKey");
 
             migrationBuilder.CreateIndex(
                 name: "IX_COMPANY_DEPARTMENTS_COMPANY_ID",

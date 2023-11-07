@@ -1,19 +1,23 @@
-﻿using EFCore.Audit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Domain.Concrete.Audits;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Entities.Audits;
+using PurchaseManagament.Persistence.Concrete.Audits;
 using PurchaseManagament.Persistence.Concrete.Mappings;
+using PurchaseManagament.Persistence.Concrete.Mappings.Audits;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
-    public class PurchaseManagamentContext : AuditDbContextBase<PurchaseManagamentContext>
+    public class PurchaseManagamentContext : DbContext
     {
-        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, IAuditUserProvider auditUserProvider) : base(options, auditUserProvider) { }
-
         //Tables => Db deki tablo şemaları
         //public DbSet<> Table { get; set; }
 
+        public virtual DbSet<Audit> Audits { get; set; }
+        public virtual DbSet<AuditMetaData> AuditMetaData { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyDepartment> CompanyDepartments { get; set; }
         public virtual DbSet<CompanyStock> CompanyStocks { get; set; }
@@ -37,12 +41,19 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         {
             _loggedUserService = loggedService;
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=PURCHASEMANAGAMENT_DB;Trusted_Connection=True;TrustServerCertificate=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Audit>()
+                .HasOne(ae => ae.AuditMetaData)
+                .WithMany(amde => amde.Audits);
+
+            modelBuilder.ApplyConfiguration(new AuditMapping());
+            modelBuilder.ApplyConfiguration(new AuditMetaDataMapping());
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
             modelBuilder.ApplyConfiguration(new CompanyMapping());
             modelBuilder.ApplyConfiguration(new CompanyStockMapping());
@@ -79,44 +90,120 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.Entity<StockOperations>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             base.OnModelCreating(modelBuilder);
         }
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            IEnumerable<AuditEntry> entityAudits = OnBeforeSaveChanges();
+            int result = base.SaveChanges(acceptAllChangesOnSuccess);
+            OnAfterSaveChanges(entityAudits);
+
+            return result;
+        }
+
+
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             //Herhangi bir kayıt işleminde yapılan işlem ekleme ise CreateDate ve CreatedBy bilgileri otomatik olarak set edilir.
-            //Herhangi bir kayıt işleminde yapılan işlem güncelleme ise ModifiedDate ve ModifiedBy bilgileri otomatik olarak set edilir.
 
             var entries = ChangeTracker.Entries<BaseEntity>().ToList();
+            IEnumerable<AuditEntry> entityAudits = OnBeforeSaveChanges();
 
             foreach (var entry in entries)
             {
-                //if (entry.State == EntityState.Deleted)
-                //{
-                //    entry.Entity.IsDeleted = true;
-                //    entry.State = EntityState.Modified;
-                //}
-
                 if (entry.Entity is AuditableEntity auditableEntity)
                 {
                     switch (entry.State)
-                    {                            
-                        //insert
+                    {
                         case EntityState.Added:
                             auditableEntity.CreatedDate = DateTime.Now;
                             auditableEntity.CreatedBy = _loggedUserService.UserId.ToString() ?? "admin";
                             break;
-                        //delete
-                        //case EntityState.Deleted:
-                        //    auditableEntity.ModifiedDate = DateTime.Now;
-                        //    auditableEntity.ModifiedBy = _loggedUserService.Username.ToString() ?? "admin";
-                        //    auditableEntity.ModifiedIP = _loggedUserService.Ip ?? "admin";
-                        //    break;
                         default:
                             break;
                     }
                 }
-
             }
 
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            int result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            await OnAfterSaveChangesAsync(entityAudits);
+
+            return result;
+        }
+
+        private IEnumerable<AuditEntry> OnBeforeSaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            List<AuditEntry> auditEntries = new List<AuditEntry>();
+            foreach (EntityEntry entry in ChangeTracker.Entries())
+            {
+                if (!entry.ShouldBeAudited())
+                {
+                    continue;
+                }
+
+                auditEntries.Add(new AuditEntry(entry, _loggedUserService));
+            }
+
+            BeginTrackingAuditEntries(auditEntries.Where(_ => !_.HasTemporaryProperties));
+
+            // keep a list of entries where the value of some properties are unknown at this step
+            return auditEntries.Where(_ => _.HasTemporaryProperties);
+        }
+
+        private void OnAfterSaveChanges(IEnumerable<AuditEntry> auditEntries)
+        {
+            if (auditEntries == null || auditEntries.Count() == 0)
+                return;
+
+            BeginTrackingAuditEntries(auditEntries);
+
+            base.SaveChanges();
+        }
+
+        private async Task OnAfterSaveChangesAsync(IEnumerable<AuditEntry> auditEntries)
+        {
+            if (auditEntries == null || auditEntries.Count() == 0)
+                return;
+
+            await BeginTrackingAuditEntriesAsync(auditEntries);
+
+            await base.SaveChangesAsync();
+        }
+
+        private void BeginTrackingAuditEntries(IEnumerable<AuditEntry> auditEntries)
+        {
+            foreach (var auditEntry in auditEntries)
+            {
+                auditEntry.Update();
+                AuditMetaData auditMetaDataEntity = auditEntry.ToAuditMetaData();
+                AuditMetaData existedAuditMetaDataEntity = AuditMetaData.FirstOrDefault(x => x.HashPrimaryKey == auditMetaDataEntity.HashPrimaryKey);
+                if (existedAuditMetaDataEntity == default)
+                {
+                    Add(auditEntry.ToAudit(auditMetaDataEntity));
+                }
+                else
+                {
+                    Add(auditEntry.ToAudit(existedAuditMetaDataEntity));
+                }
+            }
+        }
+
+        private async Task BeginTrackingAuditEntriesAsync(IEnumerable<AuditEntry> auditEntries)
+        {
+            foreach (var auditEntry in auditEntries)
+            {
+                auditEntry.Update();
+                AuditMetaData auditMetaData = auditEntry.ToAuditMetaData();
+                AuditMetaData existedAuditMetaData = await AuditMetaData.FirstOrDefaultAsync(x => x.HashPrimaryKey == auditMetaData.HashPrimaryKey);
+                if (existedAuditMetaData == default)
+                {
+                    await AddAsync(auditEntry.ToAudit(auditMetaData));
+                }
+                else
+                {
+                    await AddAsync(auditEntry.ToAudit(existedAuditMetaData));
+                }
+            }
         }
     }
 }

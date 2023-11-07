@@ -1,4 +1,4 @@
-﻿using EFCore.Audit;
+﻿using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Common
 {

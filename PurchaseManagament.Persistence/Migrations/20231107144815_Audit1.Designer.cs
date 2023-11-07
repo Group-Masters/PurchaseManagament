@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231107064218_AuditTest")]
-    partial class AuditTest
+    [Migration("20231107144815_Audit1")]
+    partial class Audit1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,62 +25,76 @@ namespace PurchaseManagament.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.Audit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ID");
+                        .HasColumnName("ID")
+                        .HasColumnOrder(1);
 
                     b.Property<Guid?>("AuditMetaDataHashPrimaryKey")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AuditMetaDataSchemaTable")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ByUser")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTimeOffset>("DateTimeOffset")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("DATE_TIME")
+                        .HasColumnOrder(4);
 
                     b.Property<int>("EntityState")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ENTITY_STATE")
+                        .HasColumnOrder(5);
 
                     b.Property<string>("NewValues")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NEW_VALUES")
+                        .HasColumnOrder(3);
 
                     b.Property<string>("OldValues")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("OLD_VALUES")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("USER_ID")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("USER_NAME")
+                        .HasColumnOrder(7);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+                    b.HasIndex("AuditMetaDataHashPrimaryKey");
 
                     b.ToTable("AUDITS", (string)null);
                 });
 
-            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", b =>
                 {
                     b.Property<Guid>("HashPrimaryKey")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SchemaTable")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("DISPLAY_NAME")
+                        .HasColumnOrder(4);
 
                     b.Property<string>("ReadablePrimaryKey")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Schema")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("READABLE_PRIMARY_KEY")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("Table")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TABLE")
+                        .HasColumnOrder(3);
 
-                    b.HasKey("HashPrimaryKey", "SchemaTable");
+                    b.HasKey("HashPrimaryKey");
 
                     b.ToTable("AUDIT_META_DATAS", (string)null);
                 });
@@ -917,11 +931,11 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.ToTable("SUPPLIERS", (string)null);
                 });
 
-            modelBuilder.Entity("EFCore.Audit.AuditEntity", b =>
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.Audit", b =>
                 {
-                    b.HasOne("EFCore.Audit.AuditMetaDataEntity", "AuditMetaData")
-                        .WithMany("AuditChanges")
-                        .HasForeignKey("AuditMetaDataHashPrimaryKey", "AuditMetaDataSchemaTable");
+                    b.HasOne("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", "AuditMetaData")
+                        .WithMany("Audits")
+                        .HasForeignKey("AuditMetaDataHashPrimaryKey");
 
                     b.Navigation("AuditMetaData");
                 });
@@ -1122,9 +1136,9 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("CompanyStock");
                 });
 
-            modelBuilder.Entity("EFCore.Audit.AuditMetaDataEntity", b =>
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", b =>
                 {
-                    b.Navigation("AuditChanges");
+                    b.Navigation("Audits");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>

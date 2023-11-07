@@ -14,6 +14,22 @@ namespace EFCore.Audit
             #region Configuration
             builder.ToTable("AUDIT_META_DATAS");
             builder.HasKey(x => new { x.HashPrimaryKey, x.SchemaTable });
+
+            builder.Property(x => x.ReadablePrimaryKey)
+                .HasColumnName("READABLE_PRIMARY_KEY")
+                .HasColumnOrder(2);
+
+            builder.Property(x => x.Schema)
+                .HasColumnName("SCHEMA")
+                .HasColumnOrder(3);
+
+            builder.Property(x => x.Table)
+                .HasColumnName("TABLE")
+                .HasColumnOrder(4);
+
+            builder.Property(x => x.DisplayName)
+                .HasColumnName("DISPLAY_NAME")
+                .HasColumnOrder(5);
             #endregion
         }
     }

@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EFCore.Audit\EFCore.Audit.csproj" />
     <ProjectReference Include="..\PurchaseManagament.Domain\PurchaseManagament.Domain.csproj" />
+    <ProjectReference Include="..\PurchaseManagament.Utils\PurchaseManagament.Utils.csproj" />
   </ItemGroup>
 
 </Project>
