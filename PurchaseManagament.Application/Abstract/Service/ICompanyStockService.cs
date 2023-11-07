@@ -12,12 +12,15 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteCompanyStockPermanent(Int64 id);
         Task<Result<bool>> DeleteCompanyStock(Int64 id);
 
-        Task<Result<long>> UpdateCompanyStockQuantity(UpdateCompanyQuantityRM updateCompanyQuantityRM);
 
 
         //GET METHODS
         Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStock();
         Task<Result<CompanyStocksDto>> GetCompanyStockById(GetByIdVM getByIdVM);
         Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(GetByIdVM getByIdVM);
+
+
+        Task<Result<long>> UpdateCompanyStockQuantityAdd(UpdateCompanyQuantityAddRM updateCompanyQuantityRM);
+        Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM);
     }
 }

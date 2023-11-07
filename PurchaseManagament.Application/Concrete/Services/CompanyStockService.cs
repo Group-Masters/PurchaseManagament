@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -105,37 +106,53 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-
-        // Adet güncellenmesi
-        //[Validator(typeof(UpdateCompanyStockQuantityValidator))]
-        public async Task<Result<long>> UpdateCompanyStockQuantity(UpdateCompanyQuantityRM updateCompanyQuantityRM)
+        public async Task<Result<long>> UpdateCompanyStockQuantityAdd(UpdateCompanyQuantityAddRM updateCompanyQuantityRM)
         {
             var result = new Result<long>();
             var entity = await _unitWork.GetRepository<CompanyStock>().GetById(updateCompanyQuantityRM.Id);
             if (entity is null)
             {
-                throw new Exception("Adet güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Stok BuluNamdı");
             }
-            if (updateCompanyQuantityRM.ToplaCıkar == true && updateCompanyQuantityRM.ToplaCıkar is not null)
-            {
-                entity.Quantity = updateCompanyQuantityRM.Quantity + entity.Quantity;
-                _unitWork.GetRepository<CompanyStock>().Update(entity);
-            }
-            else if (updateCompanyQuantityRM.ToplaCıkar == false && updateCompanyQuantityRM.ToplaCıkar is not null)
-            {
-                entity.Quantity = entity.Quantity  - updateCompanyQuantityRM.Quantity;
-                await _stockOperationsService.CreateStockOperations(updateCompanyQuantityRM);
-                _unitWork.GetRepository<CompanyStock>().Update(entity);
-            }
-            else
-            {
-                throw new Exception("Adet güncellemesi için Islem Secilmedi");
-            }
-
+            entity.Quantity += updateCompanyQuantityRM.Quantity;
+            _unitWork.GetRepository<CompanyStock>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;
 
+
         }
+
+        public async Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
+        {
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<CompanyStock>().GetById(updateCompanyQuantityReduceRM.Id);
+            if (entity is null)
+            {
+                throw new NotFoundException("Stok BuluNamdı");
+            }
+            entity.Quantity -= updateCompanyQuantityReduceRM.Quantity;
+            _unitWork.GetRepository<CompanyStock>().Update(entity);
+
+
+            var sOparetionEntity = new StockOperations
+            {
+                CompanyStock = entity,
+                Quantity = updateCompanyQuantityReduceRM.Quantity,
+                CompanyDepartmentId=updateCompanyQuantityReduceRM.CompanyDepartmentId
+
+            };
+            _mapper.Map<CompanyStock>(updateCompanyQuantityReduceRM);
+            _unitWork.GetRepository<StockOperations>().Add(sOparetionEntity);
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
+        }
+
+
+        // Adet güncellenmesi
+        //[Validator(typeof(UpdateCompanyStockQuantityValidator))]
+
+
     }
 }
