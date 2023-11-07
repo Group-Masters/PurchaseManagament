@@ -19,8 +19,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(x => x.CreatedBy)
                 .HasColumnName("CREATED_BY_ID")
-                .HasColumnOrder(48)
+                .HasColumnOrder(47)
                 .HasColumnType("nvarchar(50)")
+                .IsRequired(false);            
+            
+            builder.Property(x => x.CreatedDate)
+                .HasColumnName("CREATED_DATE")
+                .HasColumnOrder(47)
                 .IsRequired(false);
 
             builder.Property(x => x.IsActive)
