@@ -29,7 +29,27 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<ReportDto>>();
             var entities = await _uWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.Id == getByIdVM.Id && x.Status==Domain.Enums.Status.Tamamlandı
-            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company","Invoice");
+            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company", "Request.RequestEmployee.CompanyDepartment.Department", "Invoice");
+            var mappedEntity = _mapper.Map<HashSet<ReportDto>>(entities);
+            result.Data = mappedEntity;
+            return result;
+
+        }
+        public async Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetByIdVM getByIdVM)
+        {
+            var result = new Result<HashSet<ReportDto>>();
+            var entities = await _uWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartmentId == getByIdVM.Id && x.Status == Domain.Enums.Status.Tamamlandı
+            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company", "Request.RequestEmployee.CompanyDepartment.Department", "Invoice");
+            var mappedEntity = _mapper.Map<HashSet<ReportDto>>(entities);
+            result.Data = mappedEntity;
+            return result;
+
+        }
+        public async Task<Result<HashSet<ReportDto>>> GetReportByCompanyId(GetByIdVM getByIdVM)
+        {
+            var result = new Result<HashSet<ReportDto>>();
+            var entities = await _uWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.Status == Domain.Enums.Status.Tamamlandı
+            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company", "Request.RequestEmployee.CompanyDepartment.Department", "Invoice");
             var mappedEntity = _mapper.Map<HashSet<ReportDto>>(entities);
             result.Data = mappedEntity;
             return result;

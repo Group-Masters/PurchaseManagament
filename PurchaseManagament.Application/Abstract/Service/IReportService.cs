@@ -13,6 +13,8 @@ namespace PurchaseManagament.Application.Abstract.Service
     public interface IReportService
     {
         Task<Result<HashSet<ReportDto>>> GetReportByEmployeeId(GetByIdVM getByIdVM);
+        Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetByIdVM getByIdVM);
+        Task<Result<HashSet<ReportDto>>> GetReportByCompanyId(GetByIdVM getByIdVM);
 
     }
 }
