@@ -17,9 +17,7 @@ namespace PurchaseManagament.Domain.Entities
         public virtual IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
         public virtual IEnumerable<Offer> Offers { get; set; }
         public virtual IEnumerable<Request> EmployeeRequests { get; set; }
-        public virtual IEnumerable<Request> ApprovedRequests { get; set; }
-        public virtual IEnumerable<StockOperations> StockOperations { get; set; }
-              
+        public virtual IEnumerable<Request> ApprovedRequests { get; set; }              
     }
     public  enum Gender
     {

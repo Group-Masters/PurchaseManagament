@@ -14,7 +14,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(2)
                 .IsRequired();
 
-            builder.Property(x => x.CompanyDepartment)
+            builder.Property(x => x.CompanyDepartmentId)
                 .HasColumnName("COMPANY_DEPARTMENT_ID")
                 .HasColumnOrder(3)
                 .IsRequired();
