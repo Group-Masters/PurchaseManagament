@@ -1,23 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using QuestPDF.Previewer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PurchaseManagament.Application.Concrete.Services.PDFServices
 {
     public class ReportToPdfService
     {
-        public void GeneratePDF(HashSet<ReportDto> reportDtos)
-        {
-            QuestPDF.Settings.License = LicenseType.Community;
+        private readonly IReportService _reportService;
 
+        public ReportToPdfService(IReportService reportService)
+        {
+            _reportService = reportService;
+        }
+
+        
+        public void GeneratePDF(GetByIdVM getByIdVM)
+        {
+            var erenDeneme = _reportService.GetReportByEmployeeId(getByIdVM);
+           
+            QuestPDF.Settings.License = LicenseType.Community;
+           var reportDtos = erenDeneme.Result.Data;
             Document.Create(container =>
             {
                 container.Page(page =>

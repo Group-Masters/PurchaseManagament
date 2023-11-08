@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Services.PDFServices;
 
@@ -16,9 +17,9 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("GenerateRequestToPDF")]
-        public void GenerateToPDF([FromBody] HashSet<ReportDto> reportDtos)
+        public void GenerateToPDF(Int64 id)
         {
-            _reportToPdfService.GeneratePDF(reportDtos);
+            _reportToPdfService.GeneratePDF(new GetByIdVM { Id = id});
         }
     }
 }
