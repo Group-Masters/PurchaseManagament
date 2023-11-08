@@ -3,9 +3,9 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepart
 
 namespace PurchaseManagament.Application.Concrete.Validators.CompanyDepartman
 {
-    public class GetCompanyDepartmanByIdValidator : AbstractValidator<GetCompanyDepartmentByIdRM>
+    public class DeleteCompanyDepartmentValidator : AbstractValidator<DeleteCompanyDepartmentRM>
     {
-        public GetCompanyDepartmanByIdValidator()
+        public DeleteCompanyDepartmentValidator()
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız");
         }

@@ -107,7 +107,7 @@ builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 
 // Validators Servieces
-builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCompanyDepartmanValidator));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCompanyDepartmentValidator));
 //builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 // JWT kimlik doðrulama servisini ekleme

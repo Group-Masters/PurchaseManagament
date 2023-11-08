@@ -21,7 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
-        //[Validator(typeof(CreateCompanyDepartmanValidator))]
+        [Validator(typeof(CreateCompanyDepartmentValidator))]
         public async Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmanRM createCompanyDepartmentRM)
         {
             var result = new Result<bool>();
@@ -32,7 +32,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateCompanyDepartmanValidator))]
+        [Validator(typeof(UpdateCompanyDepartmentValidator))]
         public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
         {
             var result = new Result<bool>();
