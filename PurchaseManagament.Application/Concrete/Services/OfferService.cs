@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens.Saml2;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
@@ -140,7 +141,33 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
             }
+            if(update.Status==Status.YönetimBekleme)
+            {
+              var requestEntity= await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = update.Status;
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+            }
+            else if (update.Status==Status.YönetimOnay)
+            {
+                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = update.Status;
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+            }
+            else if (update.Status == Status.YönetimRed)
+            {
+                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = update.Status;
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+
+            }else if(update.Status==Status.FaturaEklendi)
+            {
+                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = update.Status;
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+            }
            
+
+
             _mapper.Map(update, entity);
             entity.ApprovingEmployeeId =(Int64)_loggedService.UserId;
             _unitWork.GetRepository<Offer>().Update(entity);
