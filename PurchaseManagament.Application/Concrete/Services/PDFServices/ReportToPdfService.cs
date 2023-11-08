@@ -130,7 +130,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
 
                 });
             })
-        .GeneratePdf(@$"C:\Users\sefa\Source\Repos\PurchaseManagament\PurchaseManagament.Application\Concrete\Services\PDFServices\PDFFiles\{DateTime.Now.ToString().Replace(" ", "").Replace(".", "I").Replace(":", "I")}.pdf");
+        .GeneratePdf(@$"C:\Users\Mustafa Yılman\Downloads\{DateTime.Now.ToString().Replace(" ", "").Replace(".", "I").Replace(":", "I")}.pdf");
 
 
         }
