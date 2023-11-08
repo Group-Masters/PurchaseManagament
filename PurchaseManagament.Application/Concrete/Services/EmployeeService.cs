@@ -130,18 +130,26 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = false;
             if (existsEmployee == null)
 
-            {  
-                throw new NotFoundException("kullanıcı bulunamadı");
+            {
+                result.Success = false;
+                result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
+                return result;
+
             }
             if (existsEmployee.IsActive != true)
             {
-              
-                throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                result.Success = false;
+                result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                return result;
+
+                
             }
-             var deger = RandomNumberUtils.CreateRandom(0, 999999);
+
+            // onay kodu gönderimi son aşamada tekrar acılacak
+             //var deger = RandomNumberUtils.CreateRandom(0, 999999);
             var employedetails = existsEmployee.EmployeeDetail;
-            employedetails.ApprovedCode = deger;
-            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+           // employedetails.ApprovedCode = deger;
+           // _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
            var ok= await _uWork.CommitAsync();
             if (ok)
             {
@@ -163,10 +171,11 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.ApprovedCode == loginVM.OkCode
                 , "EmployeeDetail");
+
             if (existsEmployee == null)
 
             {
-                throw new NotFoundException("kullanıcı bulunamadı");
+                throw new NotFoundException("Hatalı Giriş yaptınız.");
             }
             if (existsEmployee.IsActive != true)
             {
