@@ -29,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<long>();
             var mappedEntity = _mapper.Map<Invoice>(create);
-            var offerEntity= await _unitWork.GetRepository<Offer>().GetById(create.OfferId);
+            var offerEntity = await _unitWork.GetRepository<Offer>().GetById(create.OfferId);
             if (offerEntity is null)
             {
                 throw new NotFoundException("Teklif bulunmadı.");
@@ -126,6 +126,27 @@ namespace PurchaseManagament.Application.Concrete.Services
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
 
             result.Data = mappedEntity;
+            return result;
+        }
+
+        public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
+        {
+            var result = new Result<long>();
+            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x=>x.Id==update.Id,"Offer.Request");
+            if (update is null)
+            {
+                throw new NotFoundException("Fatura bilgisi bulunamadı.");
+            }
+            var entity = _mapper.Map(update, entityInvoice);
+            if (entity.Status == Status.Tamamlandı)
+            {
+                entity.Offer.Status = Status.Tamamlandı;
+                entity.Offer.Request.State = Status.Tamamlandı;
+                _unitWork.GetRepository<Invoice>().Update(entity);
+
+            }
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
             return result;
         }
     }
