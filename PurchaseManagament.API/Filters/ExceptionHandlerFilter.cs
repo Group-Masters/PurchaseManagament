@@ -12,12 +12,12 @@ namespace PurchaseManagament.API.Filters
             var result = new Result<dynamic> { Success = false };
             if (context.Exception is NotFoundException notFoundException)
             {
-                result.Errors = new List<string> { context.Exception.Message };
+                result.Errors = new List<string> { notFoundException.Message };
 
             }
             else if (context.Exception is NotMatchException notMatchException)
             {
-                result.Errors = new List<string> { context.Exception.Message };
+                result.Errors = new List<string> { notMatchException.Message };
 
             }
             else if (context.Exception is AlreadyExistsException alreadyExistsException)

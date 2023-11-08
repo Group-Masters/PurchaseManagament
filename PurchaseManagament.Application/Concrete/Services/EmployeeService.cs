@@ -127,13 +127,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
                 , "EmployeeDetail");
+            result.Data = false;
             if (existsEmployee == null)
 
-            {
+            {  
                 throw new NotFoundException("kullanıcı bulunamadı");
             }
             if (existsEmployee.IsActive != true)
             {
+              
                 throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
             }
              var deger = RandomNumberUtils.CreateRandom(0, 999999);
@@ -147,6 +149,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
             else
             {
+              
                 throw new NotFoundException("Lütfen Daha sonra tekrar Deneyiniz");
             }
             result.Data = true;
