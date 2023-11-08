@@ -81,7 +81,19 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(x => x.Request.RequestEmployee.Surname))
                 .ForMember(x => x.CompanyAddress, y => y.MapFrom(x => x.Request.RequestEmployee.CompanyDepartment.Company.Address))
                 .ForMember(x => x.SupplierAddress, y => y.MapFrom(x => x.Supplier.Address));
-
+            CreateMap<Offer,ReportDto>()
+                .ForMember(x => x.RequestId, y => y.MapFrom(z => z.Request.Id))
+                .ForMember(x => x.Status, y => y.MapFrom(z => z.Request.State))
+                .ForMember(x => x.Requestby, y => y.MapFrom(z => $"{z.Request.RequestEmployee.Name} {z.Request.RequestEmployee.Surname}"))
+                .ForMember(x => x.Companydepartment, y => y.MapFrom(z => $"{z.Request.RequestEmployee.CompanyDepartment.Company.Name}- {z.Request.RequestEmployee.CompanyDepartment.Department.Name}"))
+                .ForMember(x => x.product, y => y.MapFrom(x => $"{x.Request.Product.Name}-{x.Request.Product.MeasuringUnit.Name}"))
+                .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Request.Quantity))
+                .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.Request.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => $"{z.Request.ApprovedEmployee.Name} {z.Request.ApprovedEmployee.Surname}"))
+                .ForMember(x => x.Prices, y => y.MapFrom(x =>$"{x.OfferedPrice} {x.Currency.Name}"))
+                .ForMember(x => x.supplier, y => y.MapFrom(x => x.Supplier.Name))
+                .ForMember(x => x.supplyDate, y => y.MapFrom(x => x.Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Invoice.Id));
 
 
             CreateMap<StockOperations, StockOperationsDto>();

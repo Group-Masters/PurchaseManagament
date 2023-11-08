@@ -70,6 +70,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitWork, UnitWork>();
 //servicess
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
