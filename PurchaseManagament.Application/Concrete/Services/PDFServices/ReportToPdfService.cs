@@ -17,12 +17,12 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
         }
 
         
-        public void GeneratePDF(GetByIdVM getByIdVM)
+        public async Task GeneratePDF(GetByIdVM getByIdVM)
         {
-            var erenDeneme = _reportService.GetReportByEmployeeId(getByIdVM);
+            var employeReports = await _reportService.GetReportByEmployeeId(getByIdVM);
            
             QuestPDF.Settings.License = LicenseType.Community;
-           var reportDtos = erenDeneme.Result.Data;
+           var reportDtos = employeReports.Data;
             Document.Create(container =>
             {
                 container.Page(page =>

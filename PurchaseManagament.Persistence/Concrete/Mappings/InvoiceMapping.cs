@@ -19,6 +19,10 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(3)
                 .IsRequired();
 
+            builder.Property(x => x.Status)
+                .HasColumnName("STATUS")
+                .HasColumnOrder(4);
+
             builder.HasOne(x => x.Offer)
                 .WithOne(x => x.Invoice)
                 .HasForeignKey<Invoice>(x => x.OfferId)
