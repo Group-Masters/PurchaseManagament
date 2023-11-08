@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PurchaseManagament.Utils
 {
-    public static class RandomNuberUtils
+    public static class RandomNumberUtils
     {
         public static string CreateRandom(int startNumber, int EndNumber)
         {

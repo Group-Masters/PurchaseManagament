@@ -13,7 +13,10 @@ namespace PurchaseManagament.Application.Abstract.Service
 
 
         Task<Result<long>> CreateEmployee(CreateEmployeeVM createEmployeeVM);
-        Task<Result<TokenDto>> Login(LoginVM loginVM);
+
+
+        Task<Result<TokenDto>> Login2FK(LoginVM2 loginVM);
+        Task<Result<bool>> Login(LoginVM loginVM);
         Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM);
         Task<Result<long>> UpdateEmployeePassword(UpdatePasswordVM updatePasswordVM);
     }

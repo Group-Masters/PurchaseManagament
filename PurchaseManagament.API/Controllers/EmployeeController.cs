@@ -26,6 +26,12 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.Login(loginVM);
             return Ok(entities);
         }
+        [HttpPost("Login2fk")]
+        public async Task<IActionResult> Login_2f([FromBody] LoginVM2 loginVM)
+        {
+            var entities = await _service.Login2FK(loginVM);
+            return Ok(entities);
+        }
 
         [Authorize(Roles = "1")]
         [HttpGet("GetAll")]

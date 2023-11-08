@@ -118,15 +118,47 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDto;
             return result;
 
-        }
-
-        //[Validator(typeof(CreateEmployeeValidator))]
-        public async Task<Result<TokenDto>> Login(LoginVM loginVM)
+        }  
+        
+        public async Task<Result<bool>> Login(LoginVM loginVM)
         {
-            var result = new Result<TokenDto>();
+            var result = new Result<bool>();
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginVM.Password);
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
+                , "EmployeeDetail");
+            if (existsEmployee == null)
+
+            {
+                throw new NotFoundException("kullanıcı bulunamadı");
+            }
+            if (existsEmployee.IsActive != true)
+            {
+                throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+            }
+             var deger = RandomNumberUtils.CreateRandom(0, 999999);
+            var employedetails = existsEmployee.EmployeeDetail;
+            employedetails.ApprovedCode = deger;
+            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+           var ok= await _uWork.CommitAsync();
+            if (ok)
+            {
+                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+            }
+            else
+            {
+                throw new NotFoundException("Lütfen Daha sonra tekrar Deneyiniz");
+            }
+            result.Data = true;
+            return result;
+        }
+
+        //[Validator(typeof(CreateEmployeeValidator))]
+        public async Task<Result<TokenDto>> Login2FK (LoginVM2 loginVM)
+        {
+            var result = new Result<TokenDto>();
+            var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
+                (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.ApprovedCode == loginVM.OkCode
                 , "EmployeeDetail");
             if (existsEmployee == null)
 
@@ -155,6 +187,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
             return result;
         }
+
 
         //[Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
@@ -258,6 +291,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+      
 
 
         #endregion
