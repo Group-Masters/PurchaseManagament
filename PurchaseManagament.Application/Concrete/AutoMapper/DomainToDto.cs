@@ -97,6 +97,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
 
             CreateMap<StockOperations, StockOperationsDto>();
+
+            CreateMap<ImgProduct, ImgProductDto>();
         }
     }
 }
