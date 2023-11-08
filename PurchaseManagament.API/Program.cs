@@ -9,6 +9,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.AutoMapper;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Services;
+using PurchaseManagament.Application.Concrete.Services.PDFServices;
 using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Concrete;
@@ -102,6 +103,9 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 
 // Stok Operasyon Service Eklendi
 builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
+
+// RequestToPDF Service Eklendi
+builder.Services.AddScoped(typeof(ReportToPdfService));
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
