@@ -1,13 +1,25 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.Dtos.AuditHistory;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Entities.Audits;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
     public class DomainToDto : Profile
     {
         public DomainToDto()
-        {
+        {            
+            CreateMap<Audit, AuditHistoryDto>()
+                .ForMember(x => x.HashPrimaryKey, y => y.MapFrom(z => z.AuditMetaData.HashPrimaryKey))
+                .ForMember(x => x.ReadablePrimaryKey, y => y.MapFrom(z => z.AuditMetaData.ReadablePrimaryKey))
+                .ForMember(x => x.Table, y => y.MapFrom(z => z.AuditMetaData.Table));
+            
+            CreateMap<Audit, AuditSmallDto>()
+                .ForMember(x => x.HashPrimaryKey, y => y.MapFrom(z => z.AuditMetaData.HashPrimaryKey))
+                .ForMember(x => x.ReadablePrimaryKey, y => y.MapFrom(z => z.AuditMetaData.ReadablePrimaryKey))
+                .ForMember(x => x.Table, y => y.MapFrom(z => z.AuditMetaData.Table));
+
             CreateMap<Company, CompanyDto>();
             CreateMap<CompanyDepartment, CompanyDepartmentDto>()
                 .ForMember(x => x.CompanyName, y => y.MapFrom(z => z.Company.Name))

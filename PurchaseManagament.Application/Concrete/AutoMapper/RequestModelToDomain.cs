@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.AuditHistory;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
@@ -15,6 +16,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Entities.Audits;
 
 namespace PurchaseManagament.Application.Concrete.AutoMapper
 {
@@ -22,6 +24,10 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
     {
         public RequestModelToDomain()
         {
+            CreateMap<GetAuditsByTableRM, Audit>();
+            CreateMap<GetAuditsSpecifiedRM, Audit>();
+            CreateMap<GetByIdAuditRM, Audit>();
+
             CreateMap<CreateCompanyRM, Company>();
             CreateMap<UpdateCompanyRM, Company>();
             CreateMap<DeleteCompanyRM, Company>();

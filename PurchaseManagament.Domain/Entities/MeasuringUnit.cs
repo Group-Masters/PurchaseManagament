@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
