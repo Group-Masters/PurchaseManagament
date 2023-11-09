@@ -200,9 +200,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
 
 
-            // Txt Login Log
+            //Txt Login Log
             TxtLogla txtLogla = new TxtLogla();
-            await txtLogla.Logla(existsEmployee);
+                await txtLogla.Logla(existsEmployee);
 
             return result;
         }
