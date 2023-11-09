@@ -83,6 +83,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
 
             CreateMap<StockOperationsDto, StockOperations>();
+
+            CreateMap<UpdateInvoiceStatusRM, Invoice>();
         }
     }
 }
