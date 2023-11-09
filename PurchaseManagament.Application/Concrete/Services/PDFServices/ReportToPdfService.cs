@@ -463,19 +463,18 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                         int sayac = 0;
                         for (uint i = 0; i < reportDtos.Count; i++)
                         {
-
-                            table.Cell().Row(i + 1).Column(1).Element(CellStyle).Text(deneme[sayac].RequestId.ToString());
-                            table.Cell().Row(i + 1).Column(2).Element(CellStyle).Text(deneme[sayac].Status.ToString());
-                            table.Cell().Row(i + 1).Column(3).Element(CellStyle).Text(deneme[sayac].Requestby.ToString());
-                            table.Cell().Row(i + 1).Column(4).Element(CellStyle).Text(deneme[sayac].Companydepartment.ToString());
-                            table.Cell().Row(i + 1).Column(5).Element(CellStyle).Text(deneme[sayac].product.ToString());
-                            table.Cell().Row(i + 1).Column(6).Element(CellStyle).Text(deneme[sayac].Quantity.ToString());
-                            table.Cell().Row(i + 1).Column(7).Element(CellStyle).Text(deneme[sayac].CreateDate.ToString());
-                            table.Cell().Row(i + 1).Column(8).Element(CellStyle).Text(deneme[sayac].ApprovedEmployee.ToString());
-                            table.Cell().Row(i + 1).Column(9).Element(CellStyle).Text(deneme[sayac].Prices);
-                            table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].supplier);
-                            table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].supplyDate);
-                            table.Cell().Row(i + 1).Column(12).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString());
+                            table.Cell().Row(i + 1).Column(1).Element(CellStyle).Text(deneme[sayac].RequestId.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(2).Element(CellStyle).Text(deneme[sayac].Status.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(3).Element(CellStyle).Text(deneme[sayac].Requestby.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(4).Element(CellStyle).Text(deneme[sayac].Companydepartment.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(5).Element(CellStyle).Text(deneme[sayac].product.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(6).Element(CellStyle).Text(deneme[sayac].Quantity.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(7).Element(CellStyle).Text(deneme[sayac].CreateDate.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(8).Element(CellStyle).Text(deneme[sayac].ApprovedEmployee.ToString() ?? "-");
+                            table.Cell().Row(i + 1).Column(9).Element(CellStyle).Text(deneme[sayac].Prices ?? "-");
+                            table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].supplier ?? "-");
+                            table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].supplyDate ?? "-");
+                            table.Cell().Row(i + 1).Column(12).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString() ?? "-");
 
                             sayac++;
                         }
