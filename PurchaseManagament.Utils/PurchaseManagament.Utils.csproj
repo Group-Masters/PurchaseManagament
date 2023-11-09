@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PurchaseManagament.Domain\PurchaseManagament.Domain.csproj" />
     <ProjectReference Include="..\PurchaseManagament.Insfracture\PurchaseManagament.Insfracture.csproj" />
   </ItemGroup>
 
