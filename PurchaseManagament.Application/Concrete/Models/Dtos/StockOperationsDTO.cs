@@ -4,7 +4,7 @@
     {
         public Int64 Id { get; set; }
         public long CompanyStockId { get; set; }
-        public long CompanyDepartmentId { get; set; }
+        public long ReceivingEmployeeId { get; set; }
         public double Quantity { get; set; }
     }
 }

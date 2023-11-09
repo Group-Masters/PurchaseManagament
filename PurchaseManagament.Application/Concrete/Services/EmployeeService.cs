@@ -12,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
+using PurchaseManagament.Utils.LogServices.LoginLogServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -197,6 +198,12 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Token = tokenString,
 
             };
+
+
+            //Txt Login Log
+            TxtLogla txtLogla = new TxtLogla();
+                await txtLogla.Logla(existsEmployee);
+
             return result;
         }
 
