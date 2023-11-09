@@ -107,6 +107,9 @@ builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
 // RequestToPDF Service Eklendi
 builder.Services.AddScoped(typeof(ReportToPdfService));
 
+// ImgProduct Service Eklendi
+builder.Services.AddScoped<IImgProductService, ImgProductService>();
+
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 
