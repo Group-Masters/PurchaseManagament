@@ -132,7 +132,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
+            var entity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==update.Id, "Supplier");
             if (entity is null)
             {
                 throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
@@ -142,6 +142,14 @@ namespace PurchaseManagament.Application.Concrete.Services
               var requestEntity= await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
+            }
+            else if (entity.SupplierId == 1)
+            {
+                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = Status.FaturaEklendi;
+
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+                update.Status= Status.FaturaEklendi;
             }
             else if (update.Status==Status.YönetimOnay)
             {
