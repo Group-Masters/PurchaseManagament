@@ -12,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
+using PurchaseManagament.Utils.LogServices.LoginLogServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -153,7 +154,7 @@ namespace PurchaseManagament.Application.Concrete.Services
            var ok= await _uWork.CommitAsync();
             if (ok)
             {
-                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+              //  SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
             }
             else
             {
@@ -197,6 +198,12 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Token = tokenString,
 
             };
+
+
+            //Txt Login Log
+            TxtLogla txtLogla = new TxtLogla();
+                await txtLogla.Logla(existsEmployee);
+
             return result;
         }
 

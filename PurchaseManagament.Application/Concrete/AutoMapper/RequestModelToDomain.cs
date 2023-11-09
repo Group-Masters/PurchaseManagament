@@ -7,6 +7,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
@@ -83,6 +84,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
 
             CreateMap<StockOperationsDto, StockOperations>();
+
+            CreateMap<UpdateInvoiceStatusRM, Invoice>();
+
+            CreateMap<CreateImgProductRM, ImgProduct>();
+            CreateMap<ImgProductDto, ImgProduct>();
         }
     }
 }

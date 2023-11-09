@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PurchaseManagament.API.Filters;
+using PurchaseManagament.API.Middleware;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.AutoMapper;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
@@ -18,12 +19,24 @@ using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Persistence.Concrete.Context;
 using PurchaseManagament.Persistence.Concrete.Repositories;
 using PurchaseManagament.Persistence.Concrete.UnitWork;
+using Serilog;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Logging
+var configuration = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .Build();
+Log.Logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(configuration)
+        .CreateLogger();
+
+Log.Logger.Information("Program Started...");
 
 builder.Services.AddControllers(opt =>
 {
@@ -107,6 +120,9 @@ builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
 // RequestToPDF Service Eklendi
 builder.Services.AddScoped(typeof(ReportToPdfService));
 
+// ImgProduct Service Eklendi
+builder.Services.AddScoped<IImgProductService, ImgProductService>();
+
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
 
@@ -135,6 +151,9 @@ builder.Services.AddAuthentication(opt =>
    });
 
 var app = builder.Build();
+
+// GlobalExceptionMiddleware With Log eklendi
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

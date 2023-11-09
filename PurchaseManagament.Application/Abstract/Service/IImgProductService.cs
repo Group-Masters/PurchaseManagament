@@ -1,4 +1,5 @@
-﻿using PurchaseManagament.Application.Concrete.Wrapper;
+﻿using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
+using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace PurchaseManagament.Application.Abstract.Service
 {
     public interface IImgProductService
     {
-        Task<Result<bool>> CreateImgProduct(ImgProduct ımgProduct);
+        Task<Result<long>> CreateImgProduct(CreateImgProductRM ımgProduct);
     }
 }
