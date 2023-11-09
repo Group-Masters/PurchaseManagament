@@ -147,6 +147,14 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
+            else if (entity.SupplierId == 1)
+            {
+                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                requestEntity.State = Status.FaturaEklendi;
+
+                _unitWork.GetRepository<Request>().Update(requestEntity);
+                update.Status= Status.FaturaEklendi;
+            }
             else if (update.Status==Status.YönetimOnay)
             {
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
@@ -164,13 +172,6 @@ namespace PurchaseManagament.Application.Concrete.Services
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
-            }else if (entity.SupplierId == 1)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = Status.FaturaEklendi;
-
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-                update.Status= Status.FaturaEklendi;
             }
            
 
