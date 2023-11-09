@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Services.PDFServices;
 
@@ -33,6 +34,12 @@ namespace PurchaseManagament.API.Controllers
         public async Task GenerateReportToPDFByDepartman(Int64 id)
         {
             await _reportToPdfService.GenerateReportToPDFByDepartman(new GetByIdVM { Id = id });
+        }
+
+        [HttpPost("GenerateReportToPDFByProduct")]
+        public async Task GenerateReportToPDFByProduct(GetReportProductVM getReportProductVM)
+        {
+            await _reportToPdfService.GenerateReportToPDFByProduct(new GetReportProductVM { CompanyId = getReportProductVM.CompanyId, ProductId = getReportProductVM.ProductId });
         }
     }
 }
