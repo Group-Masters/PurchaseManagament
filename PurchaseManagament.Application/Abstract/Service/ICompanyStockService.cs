@@ -22,5 +22,6 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         Task<Result<long>> UpdateCompanyStockQuantityAdd(UpdateCompanyQuantityAddRM updateCompanyQuantityRM);
         Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM);
+        Task<Result<long>> ReturnProductToStock(ReturnProductToStockRM returnProductToStockRM);
     }
 }

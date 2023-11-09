@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Domain.Enums;
 
 namespace PurchaseManagament.Domain.Entities
 {
@@ -7,6 +8,7 @@ namespace PurchaseManagament.Domain.Entities
     {
         public Int64 OfferId { get; set; }
         public Guid UUID { get; set; }
+        public Status Status { get; set; }
         public virtual Offer Offer { get; set; }
     }
 }

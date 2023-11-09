@@ -41,11 +41,21 @@ namespace PurchaseManagament.API.Controllers
 
             return Ok(entity);
         }
+
         // Adet güncellemesi
         [HttpPut("UpdateQuantityReduce")]
         public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
         {
             var entity = await _companyStockService.UpdateCompanyStockQuantityReduce(updateCompanyQuantityReduceRM);
+
+            return Ok(entity);
+        }
+
+        // Adet güncellemesi
+        [HttpPut("ReturnStock")]
+        public async Task<IActionResult> ReturnProductToStock([FromBody] ReturnProductToStockRM returnProductToStockRM)
+        {
+            var entity = await _companyStockService.ReturnProductToStock(returnProductToStockRM);
 
             return Ok(entity);
         }

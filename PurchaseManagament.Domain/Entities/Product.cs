@@ -10,8 +10,7 @@ namespace PurchaseManagament.Domain.Entities
         public virtual MeasuringUnit MeasuringUnit { get; set; }
         public virtual IEnumerable<CompanyStock> CompanyStocks { get; set; }
         public virtual IEnumerable<Request> Requests { get; set; }
-        public virtual IEnumerable<StockOperations> StockOperations { get; set; }
-
+        public virtual ImgProduct ImgProduct { get; set; }
 
     }
 }

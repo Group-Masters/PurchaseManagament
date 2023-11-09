@@ -12,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
+using PurchaseManagament.Utils.LogServices.LoginLogServices;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -132,20 +133,64 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDto;
             return result;
 
-        }
-
-        //[Validator(typeof(CreateEmployeeValidator))]
-        public async Task<Result<TokenDto>> Login(LoginVM loginVM)
+        }  
+        
+        public async Task<Result<bool>> Login(LoginVM loginVM)
         {
-            var result = new Result<TokenDto>();
+            var result = new Result<bool>();
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginVM.Password);
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
                 , "EmployeeDetail");
+            result.Data = false;
             if (existsEmployee == null)
 
             {
-                throw new NotFoundException("kullanıcı bulunamadı");
+                result.Success = false;
+                result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
+                return result;
+
+            }
+            if (existsEmployee.IsActive != true)
+            {
+                result.Success = false;
+                result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                return result;
+
+                
+            }
+
+            // onay kodu gönderimi son aşamada tekrar acılacak
+             //var deger = RandomNumberUtils.CreateRandom(0, 999999);
+            var employedetails = existsEmployee.EmployeeDetail;
+           // employedetails.ApprovedCode = deger;
+           // _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+           var ok= await _uWork.CommitAsync();
+            if (ok)
+            {
+              //  SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+            }
+            else
+            {
+              
+                throw new NotFoundException("Lütfen Daha sonra tekrar Deneyiniz");
+            }
+            result.Data = true;
+            return result;
+        }
+
+        //[Validator(typeof(CreateEmployeeValidator))]
+        public async Task<Result<TokenDto>> Login2FK (LoginVM2 loginVM)
+        {
+            var result = new Result<TokenDto>();
+            var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
+                (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.ApprovedCode == loginVM.OkCode
+                , "EmployeeDetail");
+
+            if (existsEmployee == null)
+
+            {
+                throw new NotFoundException("Hatalı Giriş yaptınız.");
             }
             if (existsEmployee.IsActive != true)
             {
@@ -167,8 +212,15 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Token = tokenString,
 
             };
+
+
+            //Txt Login Log
+            TxtLogla txtLogla = new TxtLogla();
+                await txtLogla.Logla(existsEmployee);
+
             return result;
         }
+
 
         //[Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
@@ -272,6 +324,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+      
 
 
         #endregion

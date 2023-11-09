@@ -11,6 +11,6 @@ namespace PurchaseManagament.Domain.Entities
         public virtual Company Company { get; set; }
         public virtual Department Department { get; set; }
         public virtual IEnumerable<Employee> Employees { get; set; }
-        public virtual IEnumerable<StockOperations> StockOperations { get; set; }
+        //public virtual IEnumerable<StockOperations> StockOperations { get; set; }
     }
 }

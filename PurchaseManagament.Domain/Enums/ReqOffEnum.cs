@@ -9,6 +9,7 @@
         YönetimBekleme = 3,
         YönetimOnay = 4,
         YönetimRed = 5,
+        FaturaEklendi=6,
 
 
 

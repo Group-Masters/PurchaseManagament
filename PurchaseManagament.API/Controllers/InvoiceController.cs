@@ -32,6 +32,12 @@ namespace PurchaseManagament.API.Controllers
             var entity = await _invoiceService.UpdateInvoice(update);
             return Ok(entity);
         }
+        [HttpPut("UpdateStatus")]
+        public async Task<IActionResult> UpdateInvoiceStatus([FromBody] UpdateInvoiceStatusRM update)
+        {
+            var entity = await _invoiceService.UpdateInvoiceState(update);
+            return Ok(entity);
+        }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Result<InvoiceDto>>> GetInvoiceById(Int64 id)

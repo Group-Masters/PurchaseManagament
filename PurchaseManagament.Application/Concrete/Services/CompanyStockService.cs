@@ -112,15 +112,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<CompanyStock>().GetById(updateCompanyQuantityRM.Id);
             if (entity is null)
             {
-                throw new NotFoundException("Stok BuluNamdı");
+                throw new NotFoundException("Stok Bulunamadı");
             }
             entity.Quantity += updateCompanyQuantityRM.Quantity;
             _unitWork.GetRepository<CompanyStock>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;
-
-
         }
 
         public async Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
@@ -129,7 +127,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<CompanyStock>().GetById(updateCompanyQuantityReduceRM.Id);
             if (entity is null)
             {
-                throw new NotFoundException("Stok BuluNamdı");
+                throw new NotFoundException("Stok Bulunamadı");
             }
             entity.Quantity -= updateCompanyQuantityReduceRM.Quantity;
             _unitWork.GetRepository<CompanyStock>().Update(entity);
@@ -139,7 +137,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 CompanyStockId = entity.Id,
                 Quantity = updateCompanyQuantityReduceRM.Quantity,
-                CompanyDepartmentId = updateCompanyQuantityReduceRM.CompanyDepartmentId
+                ReceivingEmployeeId = updateCompanyQuantityReduceRM.ReceivingEmployeeId
 
             };
             _mapper.Map<CompanyStock>(entity);
@@ -149,10 +147,38 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<long>> ReturnProductToStock(ReturnProductToStockRM returnProductToStockRM)
+        {
+            var result = new Result<long>();
+
+            var stockOperationExists = await _unitWork.GetRepository<StockOperations>().AnyAsync(x => x.Id == returnProductToStockRM.Id);
+            if (!stockOperationExists)
+            {
+                throw new NotFoundException($"{returnProductToStockRM.Id} Id'li stok işlem kaydı bulunamadı.");
+            }
+
+            var companyStockExists = await _unitWork.GetRepository<CompanyStock>().AnyAsync(x => x.Id == returnProductToStockRM.CompanyStockId);
+            if (!companyStockExists)
+            {
+                throw new NotFoundException($"{returnProductToStockRM.CompanyStockId} Id'li stok kaydı bulunamadı.");
+            }
+
+            var stockOperation = await _unitWork.GetRepository<StockOperations>().GetById(returnProductToStockRM.Id);
+            var companyStock = await _unitWork.GetRepository<CompanyStock>().GetById(returnProductToStockRM.CompanyStockId);
+
+            stockOperation.Quantity -= returnProductToStockRM.Quantity;
+            companyStock.Quantity += returnProductToStockRM.Quantity;
+
+            _unitWork.GetRepository<CompanyStock>().Update(companyStock);
+            _unitWork.GetRepository<StockOperations>().Update(stockOperation);
+
+            await _unitWork.CommitAsync();
+            result.Data = stockOperation.Id;
+            return result;
+        }
 
         // Adet güncellenmesi
         //[Validator(typeof(UpdateCompanyStockQuantityValidator))]
-
 
     }
 }

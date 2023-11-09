@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
-using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -33,8 +31,6 @@ namespace PurchaseManagament.API.Controllers
         {
             var entities = await _service.GetReportByCompanyId(new GetByIdVM { Id=Id});
             return Ok(entities);
-        }
-
-        
+        }        
     }
 }
