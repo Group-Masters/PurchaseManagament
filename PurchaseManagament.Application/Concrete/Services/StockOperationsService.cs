@@ -2,6 +2,7 @@
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
@@ -19,49 +20,48 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
         }
 
-
-
-        public async Task CreateStockOperations(UpdateCompanyQuantityAddRM updateCompanyQuantityRM)
+        public async Task<Result<HashSet<StockOperationsDto>>> GetAllStockOperations()
         {
+            var result = new Result<HashSet<StockOperationsDto>>();
 
-            //// Company Stok Id & Product Id
-            //var companyStock = await _unitWork.GetRepository<CompanyStock>().GetSingleByFilterAsync(q => q.Id == updateCompanyQuantityRM.Id);
+            var entities = await _unitWork.GetRepository<StockOperationsDto>().GetAllAsync("CompanyStock", "Employee");
+            var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
-            //StockOperationsDto stockOperationsDto = new StockOperationsDto()
-            //{
-            //    CompanyStockId = companyStock.Id,
-            //    ProductId = companyStock.ProductId,
-            //    Quantity = updateCompanyQuantityRM.Quantity,
-            //    Notification = updateCompanyQuantityRM.Quantity.ToString() + " Adet Stoktan tedarik edildi",
-            //    //ReceiverEmployeeId = 1
-
-            //    ReceiverEmployeeId = updateCompanyQuantityRM.ReceiverEmployeeId
-
-            //};
-
-
-
-            //StockOperations stockOperations = new StockOperations();
-            //_mapper.Map(stockOperationsDto, stockOperations);
-
-
-            //_unitWork.GetRepository<StockOperations>().Add(stockOperations);
-
-
-
-            ////var result = new Result<long>();
-            ////var mappedEntity = _mapper.Map<MeasuringUnit>(createMeasuringUnitRM);
-            ////_unitWork.GetRepository<MeasuringUnit>().Add(mappedEntity);
-            ////await _unitWork.CommitAsync();
-            ////result.Data = mappedEntity.Id;
-            ////return result;
-            ///
-            throw new NotImplementedException();
+            result.Data = mappedEntities;
+            return result;
         }
 
-        public Task<Result<HashSet<StockOperationsDto>>> GetAllStockOperations()
+        public async Task<Result<HashSet<StockOperationsDto>>> GetStockOperationsByDepartmentId(GetByIdVM getByIdVM)
         {
-            throw new NotImplementedException();
+            var result = new Result<HashSet<StockOperationsDto>>();
+
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.DepartmentId == getByIdVM.Id, "CompanyStock", "Employee");
+            var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
+
+            result.Data = mappedEntities;
+            return result;
+        }
+
+        public async Task<Result<HashSet<StockOperationsDto>>> GetStockOperationsByCompanyId(GetByIdVM getByIdVM)
+        {
+            var result = new Result<HashSet<StockOperationsDto>>();
+
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getByIdVM.Id, "CompanyStock", "Employee");
+            var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
+
+            result.Data = mappedEntities;
+            return result;
+        }
+
+        public async Task<Result<HashSet<StockOperationsDto>>> GetStockOperationsByEmployeeId(GetByIdVM getByIdVM)
+        {
+            var result = new Result<HashSet<StockOperationsDto>>();
+
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.ReceivingEmployeeId == getByIdVM.Id, "CompanyStock", "Employee");
+            var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
+
+            result.Data = mappedEntities;
+            return result;
         }
     }
 }
