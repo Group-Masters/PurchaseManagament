@@ -43,6 +43,7 @@ namespace PurchaseManagament.API.Controllers
             var result = await _offerService.GetOfferById(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }
+
         [HttpGet("GetByRequestId/{id}")]
         public async Task<ActionResult<Result<OfferDto>>> GetAllOfferByRequestId(Int64 id)
         {
@@ -56,22 +57,32 @@ namespace PurchaseManagament.API.Controllers
             var result = await _offerService.GetAllOffer();
             return Ok(result);
         }
+
         [HttpGet("GetByManager/{id}")]
         public async Task<IActionResult> GetByManager(int id)
         {
             var result = await _offerService.GetOfferByManager(new GetOfferByIdRM { Id=id} );
             return Ok(result);
         }
+
         [HttpGet("GetByChairman/{id}")]
         public async Task<IActionResult> GetOfferByChairman(int id)
         {
             var result = await _offerService.GetOfferByChairman(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }  
+
         [HttpGet("GetByAproved/{id}")]
         public async Task<IActionResult> GetOfferByAproved(int id)
         {
             var result = await _offerService.GetOfferByAproved(new GetOfferByIdRM { Id = id });
+            return Ok(result);
+        }        
+        
+        [HttpGet("GetFromStock/{id}")]
+        public async Task<IActionResult> GetOfferFromStock(int id)
+        {
+            var result = await _offerService.GetOfferFromStock(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }
 
