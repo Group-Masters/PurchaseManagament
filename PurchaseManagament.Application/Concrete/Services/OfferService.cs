@@ -195,7 +195,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<HashSet<OfferDto>>();
 
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id &&
-            x.Status == Status.YönetimOnay && x.SupplierId == 1
+            x.Status == Status.FaturaEklendi && x.SupplierId == 1
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
 
