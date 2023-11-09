@@ -105,16 +105,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Quantity))
                 .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.Value.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}"))
-              .ForMember(x => x.Prices, y =>
+                .ForMember(x => x.Prices, y => y.MapFrom(x =>$"{x.Offers.SingleOrDefault(y => y.Status == Status.Onay || y.Status == Status.YönetimOnay).Supplier.Name}"))
                 
-                y.MapFrom(x =>
-             
-                $"{
-                     
-                   x.Offers.SingleOrDefault(y => y.Status == Status.Onay || y.Status == Status.YönetimOnay).OfferedPrice}{x.Offers.SingleOrDefault(y => y.Status == Status.Onay || y.Status == Status.YönetimOnay).Currency.Name}"))
-                ////Where(z => z.Status == Status.Onay || z.Status == Status.YönetimOnay).FirstOrDefault()?.OfferedPrice} " +
-                //$"{x.Offers.Where(z => z.Status == Status.Onay || z.Status == Status.YönetimOnay).FirstOrDefault()?.Currency.Name}"))
-                //.ForMember(x => x.supplier, y => y.MapFrom(x => x.Supplier.Name))
+                //.ForMember(x => x.supplier, y => y.MapFrom(x => $"{x.Offers.SingleOrDefault(y => y.Status == Status.Onay || y.Status == Status.YönetimOnay).OfferedPrice}{x.Offers.SingleOrDefault(y => y.Status == Status.Onay || y.Status == Status.YönetimOnay).Currency.Name}"))
                 //.ForMember(x => x.supplyDate, y => y.MapFrom(x => x.Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))
                 //.ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Invoice.Id))
                 ;
