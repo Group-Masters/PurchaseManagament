@@ -147,10 +147,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             // onay kodu gönderimi son aşamada tekrar acılacak
-            var deger = RandomNumberUtils.CreateRandom(0, 999999);
-            var employedetails = existsEmployee.EmployeeDetail;
-            employedetails.ApprovedCode = deger;
-            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+            //var deger = RandomNumberUtils.CreateRandom(0, 999999);
+            //var employedetails = existsEmployee.EmployeeDetail;
+            //employedetails.ApprovedCode = deger;
+            //_uWork.GetRepository<EmployeeDetail>().Update(employedetails);
             var ok= await _uWork.CommitAsync();
             if (ok)
             {

@@ -10,6 +10,7 @@ using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using PurchaseManagament.Utils;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -133,7 +134,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
         {
             var result = new Result<long>();
-            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x=>x.Id==update.Id,"Offer.Request");
+            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x=>x.Id==update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
             if (update is null)
             {
                 throw new NotFoundException("Fatura bilgisi bulunamadı.");
@@ -144,6 +145,9 @@ namespace PurchaseManagament.Application.Concrete.Services
                 entity.Offer.Status = Status.Tamamlandı;
                 entity.Offer.Request.State = Status.Tamamlandı;
                 _unitWork.GetRepository<Invoice>().Update(entity);
+                SenderUtils.SendMail(entityInvoice.Offer.Request.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP", 
+                    $"{entityInvoice.Offer.RequestId} talep numaralı talebiniz tamamlanmıştır. Stoktan temin edebilirsiniz . Talep içeriğiniz : {entityInvoice.Offer.Request.Quantity}- Adet " +
+                    $"{entityInvoice.Offer.Request.Product.Name}-{entityInvoice.Offer.Request.Product.MeasuringUnit.Name} ");
 
             }
             await _unitWork.CommitAsync();
