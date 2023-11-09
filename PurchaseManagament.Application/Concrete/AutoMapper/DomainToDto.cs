@@ -123,7 +123,13 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 
 
 
-            CreateMap<StockOperations, StockOperationsDto>();
+            CreateMap<StockOperations, StockOperationsDto>()
+                .ForMember(x => x.ProductName, y => y.MapFrom(x => x.CompanyStock.Product.Name))
+                .ForMember(x => x.ReceiverName, y => y.MapFrom(x => x.Employee.Name))
+                .ForMember(x => x.ReceiverSurname, y => y.MapFrom(x => x.Employee.Surname));
+
+
+            CreateMap<ImgProduct, ImgProductDto>();
         }
     }
 }
