@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="LoginLogSaves\" />
+    <Folder Include="RequestLogsSaves\" />
     <Folder Include="SeriLogLogs\" />
   </ItemGroup>
 
