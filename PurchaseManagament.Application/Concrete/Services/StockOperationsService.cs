@@ -24,7 +24,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<StockOperationsDto>>();
 
-            var entities = await _unitWork.GetRepository<StockOperationsDto>().GetAllAsync("CompanyStock", "Employee");
+            var entities = await _unitWork.GetRepository<StockOperationsDto>().GetAllAsync("CompanyStock.Product", "Employee");
             var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
             result.Data = mappedEntities;
@@ -35,7 +35,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<StockOperationsDto>>();
 
-            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.DepartmentId == getByIdVM.Id, "CompanyStock", "Employee");
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.DepartmentId == getByIdVM.Id, "CompanyStock.Product", "Employee");
             var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
             result.Data = mappedEntities;
@@ -46,7 +46,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<StockOperationsDto>>();
 
-            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getByIdVM.Id, "CompanyStock", "Employee");
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getByIdVM.Id, "CompanyStock.Product", "Employee");
             var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
             result.Data = mappedEntities;
@@ -57,7 +57,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<StockOperationsDto>>();
 
-            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.ReceivingEmployeeId == getByIdVM.Id, "CompanyStock", "Employee");
+            var entities = await _unitWork.GetRepository<StockOperations>().GetByFilterAsync(x => x.ReceivingEmployeeId == getByIdVM.Id, "CompanyStock.Product", "Employee");
             var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
             result.Data = mappedEntities;
