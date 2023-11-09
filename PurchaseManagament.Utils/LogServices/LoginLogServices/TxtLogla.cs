@@ -22,7 +22,7 @@ namespace PurchaseManagament.Utils.LogServices.LoginLogServices
 
             byte[] writeArr = Encoding.UTF8.GetBytes(LogMessage);
 
-            using (FileStream fileStream = new FileStream(@$"C:\Users\sefa\Source\Repos\PurchaseManagament\LogSaves\LoginLogSaves\{employee.Name + employee.Surname}.txt", FileMode.Append,
+            using (FileStream fileStream = new FileStream(@$"~\..\..\LogSaves\LoginLogSaves\{employee.Name + employee.Surname}.txt", FileMode.Append,
                                               FileAccess.Write,
                                               FileShare.None))
             {
