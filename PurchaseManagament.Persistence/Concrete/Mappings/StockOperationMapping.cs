@@ -14,8 +14,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(2)
                 .IsRequired();
 
-            builder.Property(x => x.CompanyDepartmentId)
-                .HasColumnName("COMPANY_DEPARTMENT_ID")
+            builder.Property(x => x.ReceivingEmployeeId)
+                .HasColumnName("RECEIVING_EMPLOYEE")
                 .HasColumnOrder(3)
                 .IsRequired();
 
@@ -30,10 +30,10 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasConstraintName("STOCK_OPERATIONS_COMPANY_STOCK")
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.CompanyDepartment)
+            builder.HasOne(x => x.Employee)
                 .WithMany(x => x.StockOperations)
-                .HasForeignKey(x => x.CompanyDepartmentId)
-                .HasConstraintName("STOCK_OPERATIONS_COMPANY_DEPARTMENT");
+                .HasForeignKey(x => x.ReceivingEmployeeId)
+                .HasConstraintName("STOCK_OPERATIONS_RECEIVING_EMPLOYEE");
 
             builder.ToTable("STOCK_OPERATIONS");
         }
