@@ -1,4 +1,5 @@
-﻿using PurchaseManagament.Application.Abstract.Service;
+﻿using Microsoft.WindowsAPICodePack.Shell;
+using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using QuestPDF.Fluent;
@@ -17,10 +18,12 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
         }
 
         
-        public async Task GeneratePDF(GetByIdVM getByIdVM)
+        public async Task GenerateReportToPDFByEmploye(GetByIdVM getByIdVM)
         {
             var employeReports = await _reportService.GetReportByEmployeeId(getByIdVM);
-           
+
+            var yol = KnownFolders.Downloads.Path; // Dowloads dosya yolu
+
             QuestPDF.Settings.License = LicenseType.Community;
            var reportDtos = employeReports.Data;
             Document.Create(container =>
@@ -130,7 +133,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
 
                 });
             })
-        .GeneratePdf(@$"C:\Users\Mustafa Yılman\Downloads\{DateTime.Now.ToString().Replace(" ", "").Replace(".", "I").Replace(":", "I")}.pdf");
+        .GeneratePdf($"{yol + "\\"}{DateTime.Now.ToString().Replace(" ", "").Replace(".", "I").Replace(":", "I")}.pdf");
 
 
         }

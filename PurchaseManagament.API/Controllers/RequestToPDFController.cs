@@ -16,10 +16,10 @@ namespace PurchaseManagament.API.Controllers
             this._reportToPdfService = reportToPdfService;
         }
 
-        [HttpPost("GenerateRequestToPDF")]
-        public void GenerateToPDF(Int64 id)
+        [HttpPost("GenerateReportToPDFByEmploye")]
+        public void GenerateReportToPDFByEmploye(Int64 id)
         {
-            _reportToPdfService.GeneratePDF(new GetByIdVM { Id = id});
+            _reportToPdfService.GenerateReportToPDFByEmploye(new GetByIdVM { Id = id});
         }
     }
 }
