@@ -152,8 +152,8 @@ builder.Services.AddAuthentication(opt =>
 
 var app = builder.Build();
 
-// GlobalExceptionMiddleware With Log eklendi
-app.UseMiddleware<GlobalExceptionMiddleware>();
+// Requestleri loglayan / hatalı olanları loglayan
+app.UseRequestLoggingMiddleware("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\LogSaves\\RequestLogsSaves\\requests.log");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -16,11 +16,11 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string product { get; set; }
         public string Quantity { get; set; }
         public string CreateDate { get; set; }
-        public string ApprovedEmployee { get; set; }
-        public string Prices { get; set; }
-        public string supplier { get; set; }
-        public string supplyDate { get; set;}
-        public Int64 InvoiceId { get; set; }
+        public string? ApprovedEmployee { get; set; }
+        public string? Prices { get; set; }
+        public string? supplier { get; set; }
+        public string? supplyDate { get; set;}
+        public Int64? InvoiceId { get; set; }
 
     }
 }
