@@ -143,7 +143,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-            else if (entity.SupplierId == 1)
+            else if (entity.SupplierId == 1&& update.Status!=Status.Tamamlandı)
             {
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = Status.FaturaEklendi;
@@ -151,24 +151,30 @@ namespace PurchaseManagament.Application.Concrete.Services
                 _unitWork.GetRepository<Request>().Update(requestEntity);
                 update.Status= Status.FaturaEklendi;
             }
-            else if (update.Status==Status.YönetimOnay)
+            else if (update.Status==Status.YönetimOnay|| update.Status == Status.YönetimRed|| update.Status == Status.FaturaEklendi|| update.Status == Status.Tamamlandı)
             {
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-            else if (update.Status == Status.YönetimRed)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
+            //else if (update.Status == Status.YönetimRed)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
 
-            }else if(update.Status==Status.FaturaEklendi)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-            }
+            //}else if(update.Status==Status.FaturaEklendi)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
+            //}
+            //else if (update.Status == Status.Tamamlandı)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
+            //}
            
 
 
