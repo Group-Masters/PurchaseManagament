@@ -130,6 +130,22 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        public async Task<Result<HashSet<InvoiceDto>>> GetPendingInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById)
+        {
+            var result = new Result<HashSet<InvoiceDto>>();
+            var entityControl = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.FaturaEklendi);
+            if (!entityControl)
+            {
+                throw new Exception($"{getInvoiceById.Id} ID'li şirkete ait fatura bulunamadı.");
+            }
+            var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
+                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+            var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
+
+            result.Data = mappedEntity;
+            return result;
+        }
+
         public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
         {
             var result = new Result<long>();

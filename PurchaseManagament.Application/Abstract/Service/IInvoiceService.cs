@@ -16,6 +16,7 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         Task<Result<InvoiceDto>> GetInvoiceById(GetInvoiceByIdRM getInvoiceById);
         Task<Result<HashSet<InvoiceDto>>> GetInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById);
+        Task<Result<HashSet<InvoiceDto>>> GetPendingInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById);
         Task<Result<HashSet<InvoiceDto>>> GetAllInvoice();
         
     }
