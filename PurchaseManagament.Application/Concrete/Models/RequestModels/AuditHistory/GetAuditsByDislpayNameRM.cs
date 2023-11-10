@@ -1,7 +1,7 @@
 ﻿namespace PurchaseManagament.Application.Concrete.Models.RequestModels.AuditHistory
 {
-    public class GetAuditsByTableRM
+    public class GetAuditsByDislpayNameRM
     {
-        public string Table { get; set; }
+        public string MetaDisplayName { get; set; }
     }
 }

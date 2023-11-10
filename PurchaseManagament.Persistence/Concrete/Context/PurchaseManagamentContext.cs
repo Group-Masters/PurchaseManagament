@@ -49,10 +49,6 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Audit>()
-                .HasOne(ae => ae.AuditMetaData)
-                .WithMany(amde => amde.Audits);
-
             modelBuilder.ApplyConfiguration(new AuditMapping());
             modelBuilder.ApplyConfiguration(new AuditMetaDataMapping());
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());

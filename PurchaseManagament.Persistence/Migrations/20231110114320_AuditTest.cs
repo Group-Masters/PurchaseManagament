@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class AuditTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -125,21 +125,21 @@ namespace PurchaseManagament.Persistence.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    META_HASH_PRIMARY = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    META_DISPLAY_NAME = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     OLD_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NEW_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DATE_TIME = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ENTITY_STATE = table.Column<int>(type: "int", nullable: false),
                     USER_ID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    USER_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuditMetaDataHashPrimaryKey = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    AuditMetaDataDisplayName = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    USER_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AUDITS", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_AUDITS_AUDIT_META_DATAS_AuditMetaDataHashPrimaryKey_AuditMetaDataDisplayName",
-                        columns: x => new { x.AuditMetaDataHashPrimaryKey, x.AuditMetaDataDisplayName },
+                        name: "FK_AUDITS_AUDIT_META_DATAS_META_HASH_PRIMARY_META_DISPLAY_NAME",
+                        columns: x => new { x.META_HASH_PRIMARY, x.META_DISPLAY_NAME },
                         principalTable: "AUDIT_META_DATAS",
                         principalColumns: new[] { "HashPrimaryKey", "DISPLAY_NAME" });
                 });
@@ -463,9 +463,9 @@ namespace PurchaseManagament.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AUDITS_AuditMetaDataHashPrimaryKey_AuditMetaDataDisplayName",
+                name: "IX_AUDITS_META_HASH_PRIMARY_META_DISPLAY_NAME",
                 table: "AUDITS",
-                columns: new[] { "AuditMetaDataHashPrimaryKey", "AuditMetaDataDisplayName" });
+                columns: new[] { "META_HASH_PRIMARY", "META_DISPLAY_NAME" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_COMPANY_DEPARTMENTS_COMPANY_ID",

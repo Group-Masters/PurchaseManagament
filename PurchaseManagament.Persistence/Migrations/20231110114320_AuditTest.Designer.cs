@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231110051820_test")]
-    partial class test
+    [Migration("20231110114320_AuditTest")]
+    partial class AuditTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,45 +33,49 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("ID")
                         .HasColumnOrder(1);
 
-                    b.Property<string>("AuditMetaDataDisplayName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("AuditMetaDataHashPrimaryKey")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTimeOffset>("DateTimeOffset")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("DATE_TIME")
-                        .HasColumnOrder(4);
+                        .HasColumnOrder(6);
 
                     b.Property<int>("EntityState")
                         .HasColumnType("int")
                         .HasColumnName("ENTITY_STATE")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(7);
+
+                    b.Property<string>("MetaDisplayName")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("META_DISPLAY_NAME")
+                        .HasColumnOrder(3);
+
+                    b.Property<Guid>("MetaHashPrimaryKey")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("META_HASH_PRIMARY")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("NewValues")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("NEW_VALUES")
-                        .HasColumnOrder(3);
+                        .HasColumnOrder(5);
 
                     b.Property<string>("OldValues")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("OLD_VALUES")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(4);
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_ID")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(8);
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("USER_NAME")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(9);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuditMetaDataHashPrimaryKey", "AuditMetaDataDisplayName");
+                    b.HasIndex("MetaHashPrimaryKey", "MetaDisplayName");
 
                     b.ToTable("AUDITS", (string)null);
                 });
@@ -990,7 +994,7 @@ namespace PurchaseManagament.Persistence.Migrations
                 {
                     b.HasOne("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", "AuditMetaData")
                         .WithMany("Audits")
-                        .HasForeignKey("AuditMetaDataHashPrimaryKey", "AuditMetaDataDisplayName");
+                        .HasForeignKey("MetaHashPrimaryKey", "MetaDisplayName");
 
                     b.Navigation("AuditMetaData");
                 });

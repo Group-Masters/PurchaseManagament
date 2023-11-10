@@ -14,29 +14,42 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings.Audits
                 .HasColumnOrder(1)
                 .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.MetaHashPrimaryKey)
+                .HasColumnName("META_HASH_PRIMARY")
+                .HasColumnOrder(2);
+
+            builder.Property(x => x.MetaDisplayName)
+                .HasColumnName("META_DISPLAY_NAME")
+                .HasColumnOrder(3);
+
             builder.Property(x => x.OldValues)
                 .HasColumnName("OLD_VALUES")
-                .HasColumnOrder(2);
+                .HasColumnOrder(4);
 
             builder.Property(x => x.NewValues)
                 .HasColumnName("NEW_VALUES")
-                .HasColumnOrder(3);
+                .HasColumnOrder(5);
 
             builder.Property(x => x.DateTimeOffset)
                 .HasColumnName("DATE_TIME")
-                .HasColumnOrder(4);
+                .HasColumnOrder(6);
 
             builder.Property(x => x.EntityState)
                 .HasColumnName("ENTITY_STATE")
-                .HasColumnOrder(5);
+                .HasColumnOrder(7);
 
             builder.Property(x => x.UserId)
                 .HasColumnName("USER_ID")
-                .HasColumnOrder(6);
+                .HasColumnOrder(8);
 
             builder.Property(x => x.UserName)
                 .HasColumnName("USER_NAME")
-                .HasColumnOrder(7);
+                .HasColumnOrder(9);
+
+            builder.HasOne(x => x.AuditMetaData)
+                .WithMany(x => x.Audits)
+                .HasForeignKey(x => new { x.MetaHashPrimaryKey, x.MetaDisplayName });
+
                 
             builder.ToTable("AUDITS");
         }

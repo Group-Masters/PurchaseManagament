@@ -11,8 +11,8 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos.AuditHistory
         public EntityState EntityState { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
-        public Guid HashPrimaryKey { get; set; }
+        public Guid MetaHashPrimaryKey { get; set; }
+        public string MetaDisplayName { get; set; }
         public string ReadablePrimaryKey { get; set; }
-        public string Table {  get; set; }
     }
 }

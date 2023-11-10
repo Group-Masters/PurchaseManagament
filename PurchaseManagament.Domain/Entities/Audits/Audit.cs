@@ -5,6 +5,8 @@ namespace PurchaseManagament.Domain.Entities.Audits
     public class Audit
     {
         public Guid Id { get; set; }
+        public Guid MetaHashPrimaryKey { get; set; }
+        public string MetaDisplayName { get; set; }
         public string OldValues { get; set; }
         public string NewValues { get; set; }
         public DateTimeOffset DateTimeOffset { get; set; }

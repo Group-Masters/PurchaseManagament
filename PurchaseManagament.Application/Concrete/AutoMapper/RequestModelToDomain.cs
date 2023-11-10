@@ -25,7 +25,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
     {
         public RequestModelToDomain()
         {
-            CreateMap<GetAuditsByTableRM, Audit>();
+            CreateMap<GetAuditsByDislpayNameRM, Audit>();
             CreateMap<GetAuditsSpecifiedRM, Audit>();
             CreateMap<GetByIdAuditRM, Audit>();
 
