@@ -18,9 +18,9 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("GenerateReportToPDFByEmploye")]
-        public async Task GenerateReportToPDFByEmploye(Int64 id)
+        public async Task GenerateReportToPDFByEmploye([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByEmploye(new GetByIdVM { Id = id});
+            await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
         }
 
         [HttpPost("GenerateReportToPDFByCompany")]
