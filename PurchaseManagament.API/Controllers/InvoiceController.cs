@@ -53,6 +53,13 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetPendingInvoicesByCompany/{id}")]
+        public async Task<ActionResult<Result<HashSet<InvoiceDto>>>> GetPendingInvoicesByCompanyId(Int64 id)
+        {
+            var result = await _invoiceService.GetPendingInvoicesByCompanyId(new GetInvoiceByIdRM { Id = id });
+            return Ok(result);
+        }
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllInvoice()
         {
