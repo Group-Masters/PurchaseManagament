@@ -27,18 +27,23 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM)
         {
             var result = new Result<long>();
+
+            var companyStockExists = await _unitWork.GetRepository<CompanyStock>().AnyAsync(x => x.ProductId == createCompanyStockRM.ProductId);
+            if (companyStockExists)
+            {
+                throw new AlreadyExistsException($"{createCompanyStockRM.ProductId} ID'li ürünün stok kaydı zaten bulunmakta.");
+            }
             var mappedEntity = _mapper.Map<CompanyStock>(createCompanyStockRM);
             _unitWork.GetRepository<CompanyStock>().Add(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
             return result;
-
         }
 
-        public async Task<Result<bool>> DeleteCompanyStock(long id)
+        public async Task<Result<bool>> DeleteCompanyStock(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<CompanyStock>().GetById(id);
+            var entity = await _unitWork.GetRepository<CompanyStock>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
@@ -49,10 +54,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCompanyStockPermanent(long id)
+        public async Task<Result<bool>> DeleteCompanyStockPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<CompanyStock>().GetById(id);
+            var entity = _unitWork.GetRepository<CompanyStock>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");

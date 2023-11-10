@@ -74,16 +74,16 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
-        public async Task<IActionResult> UpdateRequest(Int64 id)
+        public async Task<IActionResult> DeleteRequest(Int64 id)
         {
-            var entity = await _requestService.DeleteRequest(id);
+            var entity = await _requestService.DeleteRequest(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeleteRequest/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteRequestPermanent(Int64 id)
         {
-            var result = await _requestService.DeleteRequestPermanent(id);
+            var result = await _requestService.DeleteRequestPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
 

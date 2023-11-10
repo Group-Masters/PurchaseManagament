@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
@@ -33,13 +34,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteOffer(long id)
+        public async Task<Result<bool>> DeleteOffer(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Offer>().GetById(id);
+            var entity = await _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id}'li teklif bulunamamıştır.");
+                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Offer>().Update(entity);
@@ -47,13 +48,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteOfferPermanent(long id)
+        public async Task<Result<bool>> DeleteOfferPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Offer>().GetById(id);
+            var entity = _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id}'li teklif bulunamamıştır.");
+                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
             }
             _unitWork.GetRepository<Offer>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();

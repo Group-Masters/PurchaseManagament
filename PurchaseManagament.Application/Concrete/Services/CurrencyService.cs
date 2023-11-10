@@ -2,15 +2,11 @@
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -28,6 +24,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateCurrency(CreateCurrencyRM createCurrencyRM)
         {
             var result = new Result<long>();
+
+            var currencyExists = await _unitWork.GetRepository<Currency>().AnyAsync(x => x.Name == createCurrencyRM.Name);
+            if (currencyExists)
+            {
+                throw new AlreadyExistsException($"${createCurrencyRM.Name} isimli para birimi zaten kayıtlı");
+            }
+
             var mappedEntity = _mapper.Map<Currency>(createCurrencyRM);
             _unitWork.GetRepository<Currency>().Add(mappedEntity);
             await _unitWork.CommitAsync();
@@ -35,10 +38,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCurrency(Int64 id)
+        public async Task<Result<bool>> DeleteCurrency(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Currency>().GetById(id);
+            var entity = await _unitWork.GetRepository<Currency>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
@@ -49,10 +52,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCurrencyPermanent(long id)
+        public async Task<Result<bool>> DeleteCurrencyPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Currency>().GetById(id);
+            var entity = _unitWork.GetRepository<Currency>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
