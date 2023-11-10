@@ -8,7 +8,8 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings.Audits
     {
         public void Configure(EntityTypeBuilder<AuditMetaData> builder)
         {
-            builder.HasKey(x => new { x.HashPrimaryKey });
+            builder.ToTable("AUDIT_META_DATAS");
+            builder.HasKey(x => new { x.HashPrimaryKey, x.DisplayName });
 
             builder.Property(x => x.ReadablePrimaryKey)
                 .HasColumnName("READABLE_PRIMARY_KEY")

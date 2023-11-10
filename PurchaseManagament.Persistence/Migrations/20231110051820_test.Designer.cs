@@ -12,8 +12,8 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231109080629_deneme")]
-    partial class deneme
+    [Migration("20231110051820_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,82 @@ namespace PurchaseManagament.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.Audit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("AuditMetaDataDisplayName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("AuditMetaDataHashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateTimeOffset")
+                        .HasColumnType("datetimeoffset")
+                        .HasColumnName("DATE_TIME")
+                        .HasColumnOrder(4);
+
+                    b.Property<int>("EntityState")
+                        .HasColumnType("int")
+                        .HasColumnName("ENTITY_STATE")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("NEW_VALUES")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("OLD_VALUES")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("USER_ID")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("USER_NAME")
+                        .HasColumnOrder(7);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditMetaDataHashPrimaryKey", "AuditMetaDataDisplayName");
+
+                    b.ToTable("AUDITS", (string)null);
+                });
+
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", b =>
+                {
+                    b.Property<Guid>("HashPrimaryKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("DISPLAY_NAME")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("ReadablePrimaryKey")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("READABLE_PRIMARY_KEY")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Table")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TABLE")
+                        .HasColumnOrder(3);
+
+                    b.HasKey("HashPrimaryKey", "DisplayName");
+
+                    b.ToTable("AUDIT_META_DATAS", (string)null);
+                });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>
                 {
@@ -40,49 +116,19 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("ADDRESS")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
@@ -109,21 +155,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("COMPANY_ID")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<long>("DepartmentId")
                         .HasColumnType("bigint")
                         .HasColumnName("DEPARTMENT_ID")
@@ -133,30 +164,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.HasKey("Id");
 
@@ -182,49 +198,19 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("COMPANY_ID")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint")
@@ -255,49 +241,19 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -325,49 +281,19 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -401,21 +327,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("COMPANY_DEPARTMENT_ID")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<int>("Gender")
                         .HasColumnType("int")
                         .HasColumnName("GENDER")
@@ -431,30 +342,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -496,21 +392,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("APPROVED_CODE")
                         .HasColumnOrder(9);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(150)")
@@ -533,30 +414,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -595,19 +461,10 @@ namespace PurchaseManagament.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("EmployeeId")
                         .HasColumnType("bigint")
@@ -618,30 +475,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint")
@@ -670,17 +512,12 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnOrder(47);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                        .HasColumnName("CREATED_DATE")
+                        .HasColumnOrder(48);
 
                     b.Property<string>("ImageSrc")
                         .IsRequired()
@@ -692,30 +529,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("ProductId")
                         .HasColumnType("BigInt")
@@ -743,46 +565,26 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnOrder(47);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                        .HasColumnName("CREATED_DATE")
+                        .HasColumnOrder(48);
 
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("OfferId")
                         .HasColumnType("bigint")
@@ -816,49 +618,19 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -889,17 +661,12 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnOrder(47);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                        .HasColumnName("CREATED_DATE")
+                        .HasColumnOrder(48);
 
                     b.Property<long>("CurrencyId")
                         .HasColumnType("BigInt")
@@ -915,30 +682,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("OfferedPrice")
                         .HasColumnType("BigInt")
@@ -983,21 +735,6 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("DESCRIPTION")
@@ -1007,35 +744,20 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
 
                     b.Property<long>("MeasuringUnitId")
                         .HasColumnType("bigint")
                         .HasColumnName("MEASURING_UNIT_ID")
                         .HasColumnOrder(2);
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
@@ -1067,17 +789,12 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnOrder(47);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                        .HasColumnName("CREATED_DATE")
+                        .HasColumnOrder(48);
 
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)")
@@ -1088,30 +805,15 @@ namespace PurchaseManagament.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint")
@@ -1155,48 +857,24 @@ namespace PurchaseManagament.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1227,46 +905,26 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
+                        .HasColumnOrder(47);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
+                        .HasColumnName("CREATED_DATE")
+                        .HasColumnOrder(48);
 
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float")
@@ -1303,49 +961,19 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("ADDRESS")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
+                        .HasColumnOrder(49)
                         .HasDefaultValueSql("1");
 
                     b.Property<bool?>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
+                        .HasColumnOrder(50)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1356,6 +984,15 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SUPPLIERS", (string)null);
+                });
+
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.Audit", b =>
+                {
+                    b.HasOne("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", "AuditMetaData")
+                        .WithMany("Audits")
+                        .HasForeignKey("AuditMetaDataHashPrimaryKey", "AuditMetaDataDisplayName");
+
+                    b.Navigation("AuditMetaData");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -1560,6 +1197,11 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("CompanyStock");
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", b =>
+                {
+                    b.Navigation("Audits");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Company", b =>

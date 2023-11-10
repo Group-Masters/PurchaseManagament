@@ -9,7 +9,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos.AuditHistory
         public string NewValues { get; set; }
         public DateTimeOffset DateTimeOffset { get; set; }
         public EntityState EntityState { get; set; }
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public string UserName { get; set; }
         public Guid HashPrimaryKey { get; set; }
         public string ReadablePrimaryKey { get; set; }

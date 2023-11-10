@@ -177,11 +177,11 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             foreach (var auditEntry in auditEntries)
             {
                 auditEntry.Update();
-                AuditMetaData auditMetaDataEntity = auditEntry.ToAuditMetaData();
-                AuditMetaData existedAuditMetaDataEntity = AuditMetaData.FirstOrDefault(x => x.HashPrimaryKey == auditMetaDataEntity.HashPrimaryKey);
+                AuditMetaData auditMetaData = auditEntry.ToAuditMetaData();
+                AuditMetaData existedAuditMetaDataEntity = AuditMetaData.FirstOrDefault(x => x.HashPrimaryKey == auditMetaData.HashPrimaryKey && x.DisplayName == auditMetaData.DisplayName);
                 if (existedAuditMetaDataEntity == default)
                 {
-                    Add(auditEntry.ToAudit(auditMetaDataEntity));
+                    Add(auditEntry.ToAudit(auditMetaData));
                 }
                 else
                 {
@@ -196,7 +196,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             {
                 auditEntry.Update();
                 AuditMetaData auditMetaData = auditEntry.ToAuditMetaData();
-                AuditMetaData existedAuditMetaData = await AuditMetaData.FirstOrDefaultAsync(x => x.HashPrimaryKey == auditMetaData.HashPrimaryKey);
+                AuditMetaData existedAuditMetaData = await AuditMetaData.FirstOrDefaultAsync(x => x.HashPrimaryKey == auditMetaData.HashPrimaryKey && x.DisplayName == auditMetaData.DisplayName);
                 if (existedAuditMetaData == default)
                 {
                     await AddAsync(auditEntry.ToAudit(auditMetaData));

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PurchaseManagament.API.DependencyInjection;
 using PurchaseManagament.API.Filters;
 using PurchaseManagament.API.Middleware;
 using PurchaseManagament.Application.Abstract.Service;
@@ -82,46 +83,10 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 
 builder.Services.AddScoped<IUnitWork, UnitWork>();
-//servicess
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IReportService, ReportService>();
 
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+//Services
+builder.Services.AddDIServices();
 
-builder.Services.AddScoped<ICompanyDepartmentService, CompanyDepartmentService>();
-builder.Services.AddScoped<ICompanyStockService, CompanyStockService>();
-
-builder.Services.AddScoped<IRoleService, RoleService>();
-
-builder.Services.AddScoped<IEmployeService, EmployeeService>();
-builder.Services.AddScoped<ILoggedService,LoggedUserService>();
-
-builder.Services.AddScoped<IEmployeeRoleService, EmployeeRoleService>();
-
-builder.Services.AddScoped<IProductService, ProductService>();
-
-builder.Services.AddScoped<IMeasuringUnitService, MeasuringUnitService>();
-
-builder.Services.AddScoped<ISupplierService, SupplierService>();
-
-// CurrencyService Eklendi
-builder.Services.AddScoped<ICurrencyService, CurrencyService>();
-
-// RequestService Eklendi
-builder.Services.AddScoped<IRequestService, RequestService>();
-
-builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-
-builder.Services.AddScoped<IOfferService, OfferService>();
-
-// Stok Operasyon Service Eklendi
-builder.Services.AddScoped<IStockOperationsService, StockOperationsService>();
-
-// RequestToPDF Service Eklendi
-builder.Services.AddScoped(typeof(ReportToPdfService));
-
-// ImgProduct Service Eklendi
-builder.Services.AddScoped<IImgProductService, ImgProductService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
