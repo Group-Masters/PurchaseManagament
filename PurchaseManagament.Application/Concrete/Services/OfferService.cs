@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
@@ -33,13 +34,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteOffer(long id)
+        public async Task<Result<bool>> DeleteOffer(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Offer>().GetById(id);
+            var entity = await _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id}'li teklif bulunamamıştır.");
+                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Offer>().Update(entity);
@@ -47,13 +48,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteOfferPermanent(long id)
+        public async Task<Result<bool>> DeleteOfferPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Offer>().GetById(id);
+            var entity = _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id}'li teklif bulunamamıştır.");
+                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
             }
             _unitWork.GetRepository<Offer>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -80,7 +81,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice >= 20000
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice*((decimal)x.Currency.Rate)>= 20000
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
@@ -90,7 +91,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice <= 20000
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice * ((decimal)x.Currency.Rate) <= 20000
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
@@ -143,7 +144,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-            else if (entity.SupplierId == 1)
+            else if (entity.SupplierId == 1&& update.Status!=Status.Tamamlandı)
             {
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = Status.FaturaEklendi;
@@ -151,24 +152,30 @@ namespace PurchaseManagament.Application.Concrete.Services
                 _unitWork.GetRepository<Request>().Update(requestEntity);
                 update.Status= Status.FaturaEklendi;
             }
-            else if (update.Status==Status.YönetimOnay)
+            else if (update.Status==Status.YönetimOnay|| update.Status == Status.YönetimRed|| update.Status == Status.FaturaEklendi|| update.Status == Status.Tamamlandı)
             {
                 var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-            else if (update.Status == Status.YönetimRed)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
+            //else if (update.Status == Status.YönetimRed)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
 
-            }else if(update.Status==Status.FaturaEklendi)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-            }
+            //}else if(update.Status==Status.FaturaEklendi)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
+            //}
+            //else if (update.Status == Status.Tamamlandı)
+            //{
+            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+            //    requestEntity.State = update.Status;
+            //    _unitWork.GetRepository<Request>().Update(requestEntity);
+            //}
            
 
 
@@ -195,7 +202,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<HashSet<OfferDto>>();
 
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id &&
-            x.Status == Status.YönetimOnay && x.SupplierId == 1
+            x.Status == Status.FaturaEklendi && x.SupplierId == 1
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
 

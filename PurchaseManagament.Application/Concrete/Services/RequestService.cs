@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
-using PurchaseManagament.Application.Concrete.Validators.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
@@ -75,10 +73,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-        public async Task<Result<bool>> DeleteRequest(long id)
+        public async Task<Result<bool>> DeleteRequest(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Request>().GetById(id);
+            var entity = await _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
@@ -89,10 +87,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteRequestPermanent(long id)
+        public async Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Request>().GetById(id);
+            var entity = _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
@@ -142,6 +140,23 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
         public async Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM)
+        {
+            var result = new Result<HashSet<RequestDto>>();
+            var companyDepartmentControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
+            if (!companyDepartmentControl)
+            {
+                throw new Exception($"{getRequestByCIdDIdRM.CompanyId} Id'li Şirket ile {getRequestByCIdDIdRM.DepartmentId} Id'li Departmana ait kayıt bulunamadı.");
+            }
+
+            var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
+
+            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id, "Product", "ApprovedEmployee", "RequestEmployee");
+            var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
+            result.Data = mappedEntity;
+            return result;
+        }
+
+        public async Task<Result<HashSet<RequestDto>>> GetPendingRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM)
         {
             var result = new Result<HashSet<RequestDto>>();
             var companyDepartmentControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);

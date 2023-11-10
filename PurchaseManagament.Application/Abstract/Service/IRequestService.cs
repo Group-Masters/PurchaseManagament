@@ -10,8 +10,8 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<long>> CreateRequest(CreateRequestRM createRequestRM);
         Task<Result<long>> UpdateRequest(UpdateRequestRM updateRequestRM);
         Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM);
-        Task<Result<bool>> DeleteRequest(Int64 id);
-        Task<Result<bool>> DeleteRequestPermanent(Int64 id);
+        Task<Result<bool>> DeleteRequest(GetByIdVM id);
+        Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id);
 
         //GET METHODS
 
@@ -20,6 +20,7 @@ namespace PurchaseManagament.Application.Abstract.Service
 
         Task<Result<HashSet<RequestDto>>> GetRequestByEmployeeId(GetRequestByEmployeeIdRM getRequestByEmployeeIdRM);
         Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
+        Task<Result<HashSet<RequestDto>>> GetPendingRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
         Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById);
         Task<Result<HashSet<RequestDto>>> GetAllRequest();
         Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM);

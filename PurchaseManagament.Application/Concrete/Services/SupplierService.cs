@@ -2,9 +2,11 @@
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Suppliers;
 using PurchaseManagament.Application.Concrete.Validators.Supplier;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -25,12 +27,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> CreateSupplier(CreateSupplierRM createSupplierRM)
         {
             var result = new Result<bool>();
-            var mappedEntity = _mapper.Map<Supplier>(createSupplierRM);
-            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(z => z.Name == mappedEntity.Name);
+            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(z => z.Name == createSupplierRM.Name);
             if (existEntity)
             {
-                throw new Exception("Böyle bir şirket ismi zaten mevcut.");
-            }
+                throw new AlreadyExistsException("Böyle bir şirket ismi zaten mevcut.");
+            }            
+            
+            var mappedEntity = _mapper.Map<Supplier>(createSupplierRM);
             _unitWork.GetRepository<Supplier>().Add(mappedEntity);
             var resultBool = await _unitWork.CommitAsync();
             result.Data = resultBool;
@@ -77,30 +80,30 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteSupplier(Int64 id)
+        public async Task<Result<bool>> DeleteSupplier(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir tedarikci silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Supplier>().GetById(id);
+            var entity = await _unitWork.GetRepository<Supplier>().GetById(id.Id);
             entity.IsDeleted = true;
             _unitWork.GetRepository<Supplier>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
 
-        public async Task<Result<bool>> DeleteSupplierPermanent(Int64 id)
+        public async Task<Result<bool>> DeleteSupplierPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir Tedarikci silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<Supplier>().GetById(id);
+            var entity = await _unitWork.GetRepository<Supplier>().GetById(id.Id);
             _unitWork.GetRepository<Supplier>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;

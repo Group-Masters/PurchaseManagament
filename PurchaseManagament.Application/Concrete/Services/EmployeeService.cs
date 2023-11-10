@@ -2,10 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
-using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -161,14 +159,14 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             // onay kodu gönderimi son aşamada tekrar acılacak
-            var deger = RandomNumberUtils.CreateRandom(0, 999999);
-            var employedetails = existsEmployee.EmployeeDetail;
-            employedetails.ApprovedCode = deger;
-            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
-            var ok= await _uWork.CommitAsync();
+            //var deger = RandomNumberUtils.CreateRandom(0, 999999);
+            //var employedetails = existsEmployee.EmployeeDetail;
+            //employedetails.ApprovedCode = deger;
+            //_uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+            var ok = await _uWork.CommitAsync();
             if (ok)
             {
-              //  SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+               //SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
             }
             else
             {

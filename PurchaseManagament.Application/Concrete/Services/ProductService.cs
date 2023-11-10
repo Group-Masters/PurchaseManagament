@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
-using PurchaseManagament.Application.Concrete.Validators.Product;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -33,10 +31,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteProduct(long id)
+        public async Task<Result<bool>> DeleteProduct(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Product>().GetById(id);
+            var entity = await _unitWork.GetRepository<Product>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
@@ -47,10 +45,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteProductPermanent(long id)
+        public async Task<Result<bool>> DeleteProductPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Product>().GetById(id);
+            var entity = _unitWork.GetRepository<Product>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");

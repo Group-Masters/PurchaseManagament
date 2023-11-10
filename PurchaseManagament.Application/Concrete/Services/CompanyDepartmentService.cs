@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
-using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -25,6 +24,14 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmanRM createCompanyDepartmentRM)
         {
             var result = new Result<bool>();
+
+            var companyDepartmentExists = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync
+                (x => x.CompanyId == createCompanyDepartmentRM.CompanyId && x.DepartmentId == createCompanyDepartmentRM.DepartmentId);
+            if (companyDepartmentExists)
+            {
+                throw new AlreadyExistsException($"{createCompanyDepartmentRM.CompanyId} ID'li şirket zaten {createCompanyDepartmentRM.DepartmentId} ID'li departmana sahip.");
+            }
+
             var mappedEntity = _mapper.Map<CompanyDepartment>(createCompanyDepartmentRM);
             _unitWork.GetRepository<CompanyDepartment>().Add(mappedEntity);
             var resultBool = await _unitWork.CommitAsync();
@@ -48,30 +55,30 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCompanyDepartment(Int64 id)
+        public async Task<Result<bool>> DeleteCompanyDepartment(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             entity.IsDeleted = true;
             _unitWork.GetRepository<CompanyDepartment>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }        
         
-        public async Task<Result<bool>> DeleteCompanyDepartmentPermanent(Int64 id)
+        public async Task<Result<bool>> DeleteCompanyDepartmentPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             _unitWork.GetRepository<CompanyDepartment>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;

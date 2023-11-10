@@ -50,12 +50,19 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = await _requestService.GetRequestByEmployeeId(new GetRequestByEmployeeIdRM { RequestEmployeeId = requestemployeeid });
             return Ok(result);
-        }         
+        }
         
         [HttpGet("GetByCIdDId/{companyid}/{departmentid}")]
         public async Task<ActionResult<Result<HashSet<RequestDto>>>> GetRequestByCIdDId(Int64 companyid, Int64 departmentid)
         {
             var result = await _requestService.GetRequestByCIdDId(new GetRequestByCIdDIdRM { CompanyId = companyid, DepartmentId = departmentid });
+            return Ok(result);
+        }
+        
+        [HttpGet("GetPendingByCIdDId/{companyid}/{departmentid}")]
+        public async Task<ActionResult<Result<HashSet<RequestDto>>>> GetPendingRequestByCIdDId(Int64 companyid, Int64 departmentid)
+        {
+            var result = await _requestService.GetPendingRequestByCIdDId(new GetRequestByCIdDIdRM { CompanyId = companyid, DepartmentId = departmentid });
             return Ok(result);
         }
 
@@ -67,16 +74,16 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
-        public async Task<IActionResult> UpdateRequest(Int64 id)
+        public async Task<IActionResult> DeleteRequest(Int64 id)
         {
-            var entity = await _requestService.DeleteRequest(id);
+            var entity = await _requestService.DeleteRequest(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeleteRequest/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteRequestPermanent(Int64 id)
         {
-            var result = await _requestService.DeleteRequestPermanent(id);
+            var result = await _requestService.DeleteRequestPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
 

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
-using PurchaseManagament.Application.Concrete.Validators.Invoices;
-using PurchaseManagament.Application.Concrete.Validators.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -26,6 +25,12 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateMeasuringUnit(CreateMeasuringUnitRM createMeasuringUnitRM)
         {
             var result = new Result<long>();
+
+            var measuringUnitExists = await _unitWork.GetRepository<MeasuringUnit>().AnyAsync(x => x.Name == createMeasuringUnitRM.Name);
+            if (measuringUnitExists)
+            {
+                throw new AlreadyExistsException($"{createMeasuringUnitRM.Name} isminde kayıtlı ölçü birimi zaten bulunmakta.");
+            }
             var mappedEntity = _mapper.Map<MeasuringUnit>(createMeasuringUnitRM);
             _unitWork.GetRepository<MeasuringUnit>().Add(mappedEntity);
             await _unitWork.CommitAsync();
@@ -33,10 +38,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteMeasuringUnit(Int64 id)
+        public async Task<Result<bool>> DeleteMeasuringUnit(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<MeasuringUnit>().GetById(id);
+            var entity = await _unitWork.GetRepository<MeasuringUnit>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
@@ -47,10 +52,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteMeasuringUnitPermanent(long id)
+        public async Task<Result<bool>> DeleteMeasuringUnitPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity =  _unitWork.GetRepository<MeasuringUnit>().GetById(id);
+            var entity =  _unitWork.GetRepository<MeasuringUnit>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
