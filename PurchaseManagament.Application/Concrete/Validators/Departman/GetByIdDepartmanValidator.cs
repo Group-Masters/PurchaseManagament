@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PurchaseManagament.Application.Concrete.Validators.Departman
 {
@@ -12,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Departman
     {
         public GetByIdDepartmanValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
 
         }
     }

@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Request
     {
         public GetRequestByEmployeeIdValidator()
         {
-            RuleFor(x => x.RequestEmployeeId).NotEmpty().WithMessage("Lütfen Talep Eden Kullanıcı Id bilgisini boş bırakmayınız");
+            RuleFor(x => x.RequestEmployeeId).NotEmpty().WithMessage("Lütfen Talep Eden Kullanıcı Id bilgisini boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
 }

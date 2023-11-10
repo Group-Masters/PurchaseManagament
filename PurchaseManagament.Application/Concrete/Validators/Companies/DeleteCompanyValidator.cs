@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Companies
     {
         public DeleteCompanyValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Şirket numarası boş bırakılamaz");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Şirket numarası boş bırakılamaz").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
 }
