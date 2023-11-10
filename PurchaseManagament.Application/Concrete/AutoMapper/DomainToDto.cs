@@ -105,10 +105,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Quantity))
                 .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.Value.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}"))
-                .ForMember(x => x.Prices, y => y.MapFrom(x =>$"{x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede || y.Status != null).OfferedPrice}- {x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede || y.Status != null).Currency.Name}"))
-                .ForMember(x => x.supplier, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede || y.Status != null ).Supplier.Name))
-                .ForMember(x => x.supplyDate, y => y.MapFrom(x =>  x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede || y.Status != null).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede || y.Status != null).Invoice.Id));
+                .ForMember(x => x.Prices, y => y.MapFrom(x =>x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status==Status.Reddedildi).OfferedPrice))
+                .ForMember(x => x.supplier, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Supplier.Name))
+                .ForMember(x => x.supplyDate, y => y.MapFrom(x =>  x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Invoice.Id));
+                ;
             CreateMap<Offer, ReportSupplierDto>()
                 .ForMember(x => x.OfferId, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.CreateDate, y => y.MapFrom(z => z.CreatedDate.Value.ToString("yyyy-MM-dd")))

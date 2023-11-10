@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -81,16 +82,16 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete")]
-        public async Task<ActionResult<Result<bool>>> DeleteEmployeeRole(Int64 Id)
+        public async Task<ActionResult<Result<bool>>> DeleteEmployeeRole(Int64 id)
         {
-            var result = await _employeeRoleService.DeleteEmployeeRole(Id);
+            var result = await _employeeRoleService.DeleteEmployeeRole(new GetByIdVM { Id = id });
             return Ok(result);
         }
 
         [HttpDelete("DeletePermanent/{id}")]
-        public async Task<ActionResult<Result<bool>>> DeleteEmployeeRolePermanent(Int64 Id)
+        public async Task<ActionResult<Result<bool>>> DeleteEmployeeRolePermanent(Int64 id)
         {
-            var result = await _employeeRoleService.DeleteEmployeeRolePermanent(Id);
+            var result = await _employeeRoleService.DeleteEmployeeRolePermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -39,14 +40,14 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteProduct(Int64 id)
         {
-            var entity = await _productService.DeleteProduct(id);
+            var entity = await _productService.DeleteProduct(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeletePermanent/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteCompanyStockPermanent(Int64 id)
         {
-            var result = await _productService.DeleteProductPermanent(id);
+            var result = await _productService.DeleteProductPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
     }

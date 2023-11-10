@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
-using PurchaseManagament.Application.Concrete.Validators.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
@@ -75,10 +73,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-        public async Task<Result<bool>> DeleteRequest(long id)
+        public async Task<Result<bool>> DeleteRequest(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Request>().GetById(id);
+            var entity = await _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
@@ -89,10 +87,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteRequestPermanent(long id)
+        public async Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Request>().GetById(id);
+            var entity = _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
                 throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
