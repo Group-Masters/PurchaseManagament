@@ -77,9 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
-
             var dtos= mappedEntity.Union(requestMapping).ToHashSet();
-
             result.Data = dtos;
             return result;
           
@@ -98,12 +96,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
 
             var requestMapping = _mapper.Map< HashSet<ReportDto>>(requestEntity);
-
-           var dtos= mappedEntity.Union(requestMapping).ToHashSet();
-
-
-
-
+            var dtos= mappedEntity.Union(requestMapping).ToHashSet();
             result.Data = dtos;
             return result;
         }
