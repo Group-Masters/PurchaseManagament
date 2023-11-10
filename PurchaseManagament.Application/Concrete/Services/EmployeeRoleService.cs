@@ -64,7 +64,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception($"Rol ID {Id.Id} bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id.Id);
             _unitWork.GetRepository<EmployeeRole>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
@@ -78,7 +78,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception($"Rol ID {Id.Id} bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id.Id);
             entity.IsDeleted = true;
             _unitWork.GetRepository<EmployeeRole>().Update(entity);
             result.Data = await _unitWork.CommitAsync();

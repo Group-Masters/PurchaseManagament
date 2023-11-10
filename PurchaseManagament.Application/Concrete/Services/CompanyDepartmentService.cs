@@ -63,7 +63,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             entity.IsDeleted = true;
             _unitWork.GetRepository<CompanyDepartment>().Update(entity);
             result.Data = await _unitWork.CommitAsync();
@@ -78,7 +78,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
             }
-            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id);
+            var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             _unitWork.GetRepository<CompanyDepartment>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
