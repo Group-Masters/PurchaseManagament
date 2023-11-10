@@ -1,4 +1,5 @@
 ﻿using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Domain.Entities.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
@@ -13,6 +14,7 @@ namespace PurchaseManagament.Domain.Entities
 
         public virtual CompanyDepartment CompanyDepartment { get; set; }
         public virtual EmployeeDetail EmployeeDetail { get; set; }
+        public virtual IEnumerable<Audit> Audits { get; set; }
         public virtual IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
         public virtual IEnumerable<Offer> Offers { get; set; }
         public virtual IEnumerable<Request> EmployeeRequests { get; set; }

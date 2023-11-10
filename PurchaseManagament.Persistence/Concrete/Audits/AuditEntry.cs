@@ -30,8 +30,7 @@ namespace PurchaseManagament.Persistence.Concrete.Audits
         public Dictionary<string, object> OldValues { get; } = new Dictionary<string, object>();
         public Dictionary<string, object> NewValues { get; } = new Dictionary<string, object>();
         public EntityState EntityState { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
+        public long UserId { get; set; }
         public List<PropertyEntry> TemporaryProperties { get; } = new List<PropertyEntry>();
         public bool HasTemporaryProperties => TemporaryProperties.Any();
 
@@ -43,8 +42,7 @@ namespace PurchaseManagament.Persistence.Concrete.Audits
             TableName = entry.Metadata.GetTableName();
             DisplayName = entry.Metadata.DisplayName();
             EntityState = entry.State;
-            UserId = loggedService.UserId.ToString() ?? "admin";
-            UserName = loggedService.Username ?? "admin";
+            UserId = loggedService.UserId ?? 0;
 
             foreach (PropertyEntry property in entry.Properties)
             {
@@ -114,7 +112,6 @@ namespace PurchaseManagament.Persistence.Concrete.Audits
             audit.EntityState = EntityState;
             audit.DateTimeOffset = DateTimeOffset.UtcNow;
             audit.UserId = UserId;
-            audit.UserName = UserName;
             audit.AuditMetaData = auditMetaData;
 
             return audit;
@@ -128,7 +125,6 @@ namespace PurchaseManagament.Persistence.Concrete.Audits
             audit.EntityState = EntityState;
             audit.DateTimeOffset = DateTimeOffset.UtcNow;
             audit.UserId = UserId;
-            audit.UserName = UserName;
 
             return audit;
         }

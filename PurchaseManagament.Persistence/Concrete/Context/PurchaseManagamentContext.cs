@@ -75,8 +75,6 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.Entity<CompanyStock>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Currency>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Department>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
-            modelBuilder.Entity<Employee>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
-            modelBuilder.Entity<EmployeeDetail>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<EmployeeRole>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Product>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
             modelBuilder.Entity<Invoice>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
@@ -203,5 +201,28 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 }
             }
         }
+
+        //Sistem ilkleme
+        //public static void SeedData(PurchaseManagamentContext context)
+        //{
+        //    // Check if any employees exist
+        //    if (!context.Employees.Any())
+        //    {
+        //        // Create a new company
+        //        var company = new Company { Name = "Default Company" };
+        //        context.Companies.Add(company);
+
+        //        // Create a new department
+        //        var department = new Department { Name = "Default Department" };
+        //        context.Departments.Add(department);
+
+        //        // Create a new employee
+        //        var employee = new Employee { Name = "Default Employee" };
+        //        context.Employees.Add(employee);
+
+        //        // Save changes to the database
+        //        context.SaveChanges();
+        //    }
+        //}
     }
 }

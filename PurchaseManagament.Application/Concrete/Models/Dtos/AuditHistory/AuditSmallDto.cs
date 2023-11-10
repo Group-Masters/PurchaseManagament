@@ -4,8 +4,7 @@
     {
         public Guid Id { get; set; }
         public Guid MetaHashPrimaryKey { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
+        public Int64 UserId { get; set; }
         public string MetaDisplayName { get; set; }
         public string ReadablePrimaryKey { get; set; }
         public int EntityState { get; set; }

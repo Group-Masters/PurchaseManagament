@@ -12,7 +12,7 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231110114320_AuditTest")]
+    [Migration("20231110144016_AuditTest")]
     partial class AuditTest
     {
         /// <inheritdoc />
@@ -36,12 +36,12 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<DateTimeOffset>("DateTimeOffset")
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("DATE_TIME")
-                        .HasColumnOrder(6);
+                        .HasColumnOrder(7);
 
                     b.Property<int>("EntityState")
                         .HasColumnType("int")
                         .HasColumnName("ENTITY_STATE")
-                        .HasColumnOrder(7);
+                        .HasColumnOrder(8);
 
                     b.Property<string>("MetaDisplayName")
                         .HasColumnType("nvarchar(450)")
@@ -56,24 +56,21 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("NewValues")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("NEW_VALUES")
-                        .HasColumnOrder(5);
+                        .HasColumnOrder(6);
 
                     b.Property<string>("OldValues")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("OLD_VALUES")
+                        .HasColumnOrder(5);
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("USER_ID")
                         .HasColumnOrder(4);
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("USER_ID")
-                        .HasColumnOrder(8);
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("USER_NAME")
-                        .HasColumnOrder(9);
-
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("MetaHashPrimaryKey", "MetaDisplayName");
 
@@ -992,11 +989,21 @@ namespace PurchaseManagament.Persistence.Migrations
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Audits.Audit", b =>
                 {
+                    b.HasOne("PurchaseManagament.Domain.Entities.Employee", "Employee")
+                        .WithMany("Audits")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("AUDITS_EMPLOYEE");
+
                     b.HasOne("PurchaseManagament.Domain.Entities.Audits.AuditMetaData", "AuditMetaData")
                         .WithMany("Audits")
-                        .HasForeignKey("MetaHashPrimaryKey", "MetaDisplayName");
+                        .HasForeignKey("MetaHashPrimaryKey", "MetaDisplayName")
+                        .HasConstraintName("AUDITS_AUDIT_META_DATA");
 
                     b.Navigation("AuditMetaData");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -1238,6 +1245,8 @@ namespace PurchaseManagament.Persistence.Migrations
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Employee", b =>
                 {
                     b.Navigation("ApprovedRequests");
+
+                    b.Navigation("Audits");
 
                     b.Navigation("EmployeeDetail");
 

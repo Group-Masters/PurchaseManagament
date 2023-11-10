@@ -121,30 +121,6 @@ namespace PurchaseManagament.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AUDITS",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    META_HASH_PRIMARY = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    META_DISPLAY_NAME = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    OLD_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NEW_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DATE_TIME = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ENTITY_STATE = table.Column<int>(type: "int", nullable: false),
-                    USER_ID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    USER_NAME = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AUDITS", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_AUDITS_AUDIT_META_DATAS_META_HASH_PRIMARY_META_DISPLAY_NAME",
-                        columns: x => new { x.META_HASH_PRIMARY, x.META_DISPLAY_NAME },
-                        principalTable: "AUDIT_META_DATAS",
-                        principalColumns: new[] { "HashPrimaryKey", "DISPLAY_NAME" });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "COMPANY_DEPARTMENTS",
                 columns: table => new
                 {
@@ -270,6 +246,35 @@ namespace PurchaseManagament.Persistence.Migrations
                         column: x => x.PRODUCT_ID,
                         principalTable: "PRODUCTS",
                         principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AUDITS",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    META_HASH_PRIMARY = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    META_DISPLAY_NAME = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    USER_ID = table.Column<long>(type: "bigint", nullable: false),
+                    OLD_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NEW_VALUES = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATE_TIME = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ENTITY_STATE = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AUDITS", x => x.ID);
+                    table.ForeignKey(
+                        name: "AUDITS_AUDIT_META_DATA",
+                        columns: x => new { x.META_HASH_PRIMARY, x.META_DISPLAY_NAME },
+                        principalTable: "AUDIT_META_DATAS",
+                        principalColumns: new[] { "HashPrimaryKey", "DISPLAY_NAME" });
+                    table.ForeignKey(
+                        name: "AUDITS_EMPLOYEE",
+                        column: x => x.USER_ID,
+                        principalTable: "EMPLOYEES",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -466,6 +471,11 @@ namespace PurchaseManagament.Persistence.Migrations
                 name: "IX_AUDITS_META_HASH_PRIMARY_META_DISPLAY_NAME",
                 table: "AUDITS",
                 columns: new[] { "META_HASH_PRIMARY", "META_DISPLAY_NAME" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AUDITS_USER_ID",
+                table: "AUDITS",
+                column: "USER_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_COMPANY_DEPARTMENTS_COMPANY_ID",

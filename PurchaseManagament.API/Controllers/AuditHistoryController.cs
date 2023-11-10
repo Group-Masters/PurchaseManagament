@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service.AuditHistoryService;
-using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.Dtos.AuditHistory;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.AuditHistory;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
@@ -29,7 +26,7 @@ namespace PurchaseManagament.API.Controllers
         [HttpGet("GetEmployee/{id}")]
         public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByEmployeeId(long id)
         {
-            var entities = await _auditHistoryService.GetAuditsByUserId(new GetAuditsByUserIdRM { UserId = $"{id}"});
+            var entities = await _auditHistoryService.GetAuditsByUserId(new GetAuditsByUserIdRM { UserId = id});
             return Ok(entities);
         }
 
