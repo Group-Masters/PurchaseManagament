@@ -9,8 +9,8 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM);
         Task<Result<long>> UpdateCompanyStock(UpdateCompanyStockRM updateCompanyStockRM);
-        Task<Result<bool>> DeleteCompanyStockPermanent(Int64 id);
-        Task<Result<bool>> DeleteCompanyStock(Int64 id);
+        Task<Result<bool>> DeleteCompanyStockPermanent(GetByIdVM id);
+        Task<Result<bool>> DeleteCompanyStock(GetByIdVM id);
 
 
 

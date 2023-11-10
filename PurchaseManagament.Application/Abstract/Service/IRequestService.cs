@@ -10,8 +10,8 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<long>> CreateRequest(CreateRequestRM createRequestRM);
         Task<Result<long>> UpdateRequest(UpdateRequestRM updateRequestRM);
         Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM);
-        Task<Result<bool>> DeleteRequest(Int64 id);
-        Task<Result<bool>> DeleteRequestPermanent(Int64 id);
+        Task<Result<bool>> DeleteRequest(GetByIdVM id);
+        Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id);
 
         //GET METHODS
 

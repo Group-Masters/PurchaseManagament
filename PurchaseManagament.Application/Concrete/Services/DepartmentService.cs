@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
-using PurchaseManagament.Application.Concrete.Validators.Departman;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -25,6 +25,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<bool>> CreateDepartment(CreateDepartmentRM createDepartmentRM)
         {
             var result = new Result<bool>();
+
+            var departmentExists = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Name == createDepartmentRM.Name);
+            if (departmentExists)
+            {
+                throw new AlreadyExistsException($"{createDepartmentRM.Name} isminde departman kaydı zaten bulunmakta.");
+            }
+
             var mappedEntity = _mapper.Map<Department>(createDepartmentRM);
             if (mappedEntity != null) 
             {
@@ -36,10 +43,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteDepartment(Int64 id)
+        public async Task<Result<bool>> DeleteDepartment(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
@@ -51,10 +58,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteDepartmentPermanent(Int64 id)
+        public async Task<Result<bool>> DeleteDepartmentPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Department>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
-using PurchaseManagament.Application.Concrete.Validators.Companies;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -77,10 +76,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCompany(Int64 id)
+        public async Task<Result<bool>> DeleteCompany(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
@@ -92,10 +91,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteCompanyPermanent(Int64 id)
+        public async Task<Result<bool>> DeleteCompanyPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id);
+            var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
                 throw new Exception("Böyle bir ıd silinmek için bulunamadı.");

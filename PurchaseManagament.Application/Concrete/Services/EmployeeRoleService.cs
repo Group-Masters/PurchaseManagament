@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
-using PurchaseManagament.Application.Concrete.Validators.EmployeeRoles;
-using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -58,13 +56,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteEmployeeRolePermanent(Int64 Id)
+        public async Task<Result<bool>> DeleteEmployeeRolePermanent(GetByIdVM Id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol {Id} bulunamadı.");
+                throw new Exception($"Rol ID {Id.Id} bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
             _unitWork.GetRepository<EmployeeRole>().Delete(entity);
@@ -72,13 +70,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteEmployeeRole(Int64 Id)
+        public async Task<Result<bool>> DeleteEmployeeRole(GetByIdVM Id)
         {
             var result = new Result<bool>();
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id);
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol {Id} bulunamadı.");
+                throw new Exception($"Rol ID {Id.Id} bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id);
             entity.IsDeleted = true;

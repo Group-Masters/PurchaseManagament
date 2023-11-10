@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -89,14 +90,14 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteOffer(Int64 id)
         {
-            var entity = await _offerService.DeleteOffer(id);
+            var entity = await _offerService.DeleteOffer(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeletePermanent/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteOfferPermanent(Int64 id)
         {
-            var result = await _offerService.DeleteOfferPermanent(id);
+            var result = await _offerService.DeleteOfferPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
     }
