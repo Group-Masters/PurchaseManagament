@@ -152,6 +152,23 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
 
+            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id, "Product", "ApprovedEmployee", "RequestEmployee");
+            var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
+            result.Data = mappedEntity;
+            return result;
+        }
+
+        public async Task<Result<HashSet<RequestDto>>> GetPendingRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM)
+        {
+            var result = new Result<HashSet<RequestDto>>();
+            var companyDepartmentControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
+            if (!companyDepartmentControl)
+            {
+                throw new Exception($"{getRequestByCIdDIdRM.CompanyId} Id'li Şirket ile {getRequestByCIdDIdRM.DepartmentId} Id'li Departmana ait kayıt bulunamadı.");
+            }
+
+            var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
+
             var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id && x.State== Status.Beklemede, "Product", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
             result.Data = mappedEntity;

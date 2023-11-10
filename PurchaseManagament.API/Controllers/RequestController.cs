@@ -50,12 +50,19 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = await _requestService.GetRequestByEmployeeId(new GetRequestByEmployeeIdRM { RequestEmployeeId = requestemployeeid });
             return Ok(result);
-        }         
+        }
         
         [HttpGet("GetByCIdDId/{companyid}/{departmentid}")]
         public async Task<ActionResult<Result<HashSet<RequestDto>>>> GetRequestByCIdDId(Int64 companyid, Int64 departmentid)
         {
             var result = await _requestService.GetRequestByCIdDId(new GetRequestByCIdDIdRM { CompanyId = companyid, DepartmentId = departmentid });
+            return Ok(result);
+        }
+        
+        [HttpGet("GetPendingByCIdDId/{companyid}/{departmentid}")]
+        public async Task<ActionResult<Result<HashSet<RequestDto>>>> GetPendingRequestByCIdDId(Int64 companyid, Int64 departmentid)
+        {
+            var result = await _requestService.GetPendingRequestByCIdDId(new GetRequestByCIdDIdRM { CompanyId = companyid, DepartmentId = departmentid });
             return Ok(result);
         }
 
