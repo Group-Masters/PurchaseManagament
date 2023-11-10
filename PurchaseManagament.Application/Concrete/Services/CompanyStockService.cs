@@ -31,14 +31,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             var companyStockExists = await _unitWork.GetRepository<CompanyStock>().AnyAsync(x => x.ProductId == createCompanyStockRM.ProductId);
             if (companyStockExists)
             {
-
+                throw new AlreadyExistsException($"{createCompanyStockRM.ProductId} ID'li ürünün stok kaydı zaten bulunmakta.");
             }
             var mappedEntity = _mapper.Map<CompanyStock>(createCompanyStockRM);
             _unitWork.GetRepository<CompanyStock>().Add(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
             return result;
-
         }
 
         public async Task<Result<bool>> DeleteCompanyStock(GetByIdVM id)
