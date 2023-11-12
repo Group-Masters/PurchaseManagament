@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Role
     {
         public GetRoleByIdValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Rol ID bilgisini boş bırakmayınız");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Rol ID bilgisini boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
 }

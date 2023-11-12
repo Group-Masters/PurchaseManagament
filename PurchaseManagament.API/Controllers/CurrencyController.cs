@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
@@ -25,14 +26,14 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteCurrency(Int64 id)
         {
-            var entity = await _currencyService.DeleteCurrency(id);
+            var entity = await _currencyService.DeleteCurrency(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeletePermanent/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteCurrencyPermanent(Int64 id)
         {
-            var result = await _currencyService.DeleteCurrencyPermanent(id);
+            var result = await _currencyService.DeleteCurrencyPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
 

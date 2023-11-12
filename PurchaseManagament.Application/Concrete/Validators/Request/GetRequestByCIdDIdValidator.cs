@@ -7,8 +7,8 @@ namespace PurchaseManagament.Application.Concrete.Validators.Request
     {
         public GetRequestByCIdDIdValidator()
         {
-            RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Lütfen Şirket Id bilgisini boş bırakmayınız");
-            RuleFor(x => x.DepartmentId).NotEmpty().WithMessage("Lütfen Departman Id bilgisini boş bırakmayınız");
+            RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Lütfen Şirket Id bilgisini boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
+            RuleFor(x => x.DepartmentId).NotEmpty().WithMessage("Lütfen Departman Id bilgisini boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
 }

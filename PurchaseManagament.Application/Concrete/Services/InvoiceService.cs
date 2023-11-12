@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
-using PurchaseManagament.Application.Concrete.Validators.Employees;
-using PurchaseManagament.Application.Concrete.Validators.Invoices;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -29,12 +27,19 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
             var result = new Result<long>();
+            var invoiceExists = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.UUID == create.UUID);
+            if (invoiceExists)
+            {
+                throw new AlreadyExistsException($"{create.UUID} ETTN'li fatura kaydı zaten bulunmakta.");
+            }
+
             var mappedEntity = _mapper.Map<Invoice>(create);
             var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==create.OfferId,"Request");
             if (offerEntity is null)
             {
                 throw new NotFoundException("Teklif bulunmadı.");
             }
+
             offerEntity.Status = Status.FaturaEklendi;
             offerEntity.Request.State=Status.FaturaEklendi;
             _unitWork.GetRepository<Offer>().Update(offerEntity);
@@ -60,13 +65,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteInvoice(long id)
+        public async Task<Result<bool>> DeleteInvoice(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = await _unitWork.GetRepository<Invoice>().GetById(id);
+            var entity = await _unitWork.GetRepository<Invoice>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id} ID'li fatura bulunamadı.");
+                throw new Exception($"{id.Id} ID'li fatura bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Invoice>().Update(entity);
@@ -74,13 +79,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        public async Task<Result<bool>> DeleteInvoicePermanent(long id)
+        public async Task<Result<bool>> DeleteInvoicePermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
-            var entity = _unitWork.GetRepository<Invoice>().GetById(id);
+            var entity = _unitWork.GetRepository<Invoice>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id} ID'li fatura bulunamadı.");
+                throw new Exception($"{id.Id} ID'li fatura bulunamadı.");
             }
             _unitWork.GetRepository<Invoice>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -118,13 +123,20 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<InvoiceDto>>> GetInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById)
         {
             var result = new Result<HashSet<InvoiceDto>>();
-            var entityControl = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id);
-            if (!entityControl)
-            {
-                throw new Exception($"{getInvoiceById.Id} ID'li şirkete ait fatura bulunamadı.");
-            }
+
             var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
                 (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+            var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
+
+            result.Data = mappedEntity;
+            return result;
+        }
+
+        public async Task<Result<HashSet<InvoiceDto>>> GetPendingInvoicesByCompanyId(GetInvoiceByIdRM getInvoiceById)
+        {
+            var result = new Result<HashSet<InvoiceDto>>();
+            var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
+                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.FaturaEklendi, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
 
             result.Data = mappedEntity;

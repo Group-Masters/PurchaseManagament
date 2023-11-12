@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
@@ -47,14 +48,14 @@ namespace PurchaseManagament.API.Controllers
         [HttpPut("Delete/{id}")]
         public async Task<IActionResult> DeleteMeasuringUnit(Int64 id)
         {
-            var entity = await _measuringUnitService.DeleteMeasuringUnit(id);
+            var entity = await _measuringUnitService.DeleteMeasuringUnit(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 
         [HttpDelete("DeletePermanent/{id}")]
         public async Task<ActionResult<Result<bool>>> DeleteMeasuringUnitPermanent(Int64 id)
         {
-            var result = await _measuringUnitService.DeleteMeasuringUnitPermanent(id);
+            var result = await _measuringUnitService.DeleteMeasuringUnitPermanent(new GetByIdVM { Id = id });
             return Ok(result);
         }
     }

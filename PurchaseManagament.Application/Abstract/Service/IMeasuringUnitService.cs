@@ -1,8 +1,7 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
-using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Application.Abstract.Service
 {
@@ -10,8 +9,8 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         Task<Result<long>> CreateMeasuringUnit(CreateMeasuringUnitRM createMeasuringUnitRM);
         Task<Result<long>> UpdateMeasuringUnit(UpdateMeasuringUnitRM updateMeasuringUnitRM);
-        Task<Result<bool>> DeleteMeasuringUnitPermanent(Int64 id);
-        Task<Result<bool>> DeleteMeasuringUnit(Int64 id);
+        Task<Result<bool>> DeleteMeasuringUnitPermanent(GetByIdVM id);
+        Task<Result<bool>> DeleteMeasuringUnit(GetByIdVM id);
 
         //GET METHODS
         Task<Result<HashSet<MeasuringUnitDto>>> GetAllMeasuringUnit();
