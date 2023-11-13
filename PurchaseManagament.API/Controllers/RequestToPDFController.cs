@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Services.PDFServices;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("PDF")]
+    [Authorize(Roles = "1,7,8")]
     public class RequestToPDFController : Controller
     {
         private readonly ReportToPdfService _reportToPdfService;

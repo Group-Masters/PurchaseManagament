@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Contdepartmanlers
 {
     [Route("Department")]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -18,6 +20,7 @@ namespace PurchaseManagament.API.Contdepartmanlers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentRM create)
         {
             var entity = await _departmentService.CreateDepartment(create);
@@ -25,6 +28,7 @@ namespace PurchaseManagament.API.Contdepartmanlers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> UpdateDepartment([FromBody] UpdateDepartmentRM updateDepartmentRM)
         {
             var entity = await _departmentService.UpdateDepartment(updateDepartmentRM);
@@ -54,6 +58,7 @@ namespace PurchaseManagament.API.Contdepartmanlers
         //}
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteDepartment(Int64 id)
         {
             var result = await _departmentService.DeleteDepartment(new GetByIdVM { Id = id });
@@ -61,6 +66,7 @@ namespace PurchaseManagament.API.Contdepartmanlers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteDepartmentPermanent(Int64 id)
         {
             var result = await _departmentService.DeleteDepartmentPermanent(new GetByIdVM { Id = id });

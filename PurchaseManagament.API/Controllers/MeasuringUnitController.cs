@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
@@ -7,6 +8,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("MeasuringUnit")]
+    [Authorize]
     public class MeasuringUnitController : Controller
     {
         private readonly IMeasuringUnitService _measuringUnitService;
@@ -17,6 +19,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> CreateMeasuringUnit([FromBody] CreateMeasuringUnitRM create)
         {
             var entity = await _measuringUnitService.CreateMeasuringUnit(create);
@@ -46,6 +49,7 @@ namespace PurchaseManagament.API.Controllers
 
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> DeleteMeasuringUnit(Int64 id)
         {
             var entity = await _measuringUnitService.DeleteMeasuringUnit(new GetByIdVM { Id = id });
@@ -53,6 +57,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteMeasuringUnitPermanent(Int64 id)
         {
             var result = await _measuringUnitService.DeleteMeasuringUnitPermanent(new GetByIdVM { Id = id });

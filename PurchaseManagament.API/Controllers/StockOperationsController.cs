@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 
 namespace PurchaseManagament.API.Controllers
 {
     [Route("StockOperations")]
+    [Authorize(Roles = "1,2,9")]
     public class StockOperationsController : ControllerBase
     {
         private readonly IStockOperationsService _stockOperationsServiceService;

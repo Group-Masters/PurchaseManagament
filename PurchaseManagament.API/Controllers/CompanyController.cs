@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Company")]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -17,6 +19,7 @@ namespace PurchaseManagament.API.Controllers
             _companyService = companyService;
         }
         [HttpPost("Create")]
+        [Authorize(Roles ="1")]
         public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRM createCompanyRM)
         {
            var entities = await _companyService.CreateCompany(createCompanyRM);
@@ -24,6 +27,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> UpdateDepartment([FromBody] UpdateCompanyRM update)
         {
             var entity = await _companyService.UpdateCompany(update);
@@ -45,6 +49,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteCompany(Int64 id)
         {
             var result = await _companyService.DeleteCompany(new GetByIdVM { Id = id });
@@ -52,6 +57,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteCompanyPermanent(Int64 id)
         {
             var result = await _companyService.DeleteCompanyPermanent(new GetByIdVM { Id = id });

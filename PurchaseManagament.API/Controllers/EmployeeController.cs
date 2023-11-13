@@ -6,6 +6,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Employee")]
+    [Authorize]
     public class EmployeeController : Controller
     {
         private IEmployeService _service;
@@ -15,17 +16,20 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "1,8")]
         public async Task<IActionResult> CreateEmployee([FromBody]CreateEmployeeVM createEmployeeVM)
         {
            var entities = await _service.CreateEmployee(createEmployeeVM);
             return Ok(entities);
         }
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
         {
             var entities = await _service.Login(loginVM);
             return Ok(entities);
         }
+        [AllowAnonymous]
         [HttpPost("Login2fk")]
         public async Task<IActionResult> Login_2f([FromBody] LoginVM2 loginVM)
         {
@@ -33,26 +37,30 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
-        [Authorize(Roles = "1")]
+        
         [HttpGet("GetAll")]
+        [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetAllEmployee()
         {
             var entities = await _service.GetAllEmployes();
             return Ok(entities);
         }
         [HttpGet("GetById/{id}")]
+        [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetById(int id)
         {
             var entities = await _service.GetEmployeeById(new GetByIdVM { Id=id});
             return Ok(entities);
         }
         [HttpGet("GetByCompany/{id}")]
+        [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetByCompanyId(int id)
         {
             var entities = await _service.GetEmployeesByCompany(new GetByIdVM { Id = id });
             return Ok(entities);
         }
         [HttpGet("GetIsActiceByCompany/{id}")]
+        [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetEmployeeIsActiveByCompany(int id)
         {
             var entities = await _service.GetEmployeeIsActiveByCompany(new GetByIdVM { Id = id });
@@ -61,12 +69,14 @@ namespace PurchaseManagament.API.Controllers
 
 
         [HttpPut("Update")]
+        [Authorize]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeVM updateEmployeeVM)
         {
             var entities = await _service.UpdateEmployee(updateEmployeeVM);
             return Ok(entities);
         }
         [HttpPut("UpdatePassword")]
+        [Authorize]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordVM updatePasswordVM)
         {
             var entities = await _service.UpdateEmployeePassword(updatePasswordVM);
