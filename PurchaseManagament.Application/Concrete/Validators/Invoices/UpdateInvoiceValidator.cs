@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Invoices
     {
         public UpdateInvoiceValidator()
         {
-            RuleFor(x => x.OfferId).NotEmpty().WithMessage("Teklif numarası boş bırakalamaz");
+            RuleFor(x => x.OfferId).NotEmpty().WithMessage("Teklif numarası boş bırakalamaz").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
 
         }
     }

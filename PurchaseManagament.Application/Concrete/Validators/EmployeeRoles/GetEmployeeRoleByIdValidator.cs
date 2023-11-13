@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.EmployeeRoles
     {
         public GetEmployeeRoleByIdValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("Çalısan rol numarası boş bırakılamaz");
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Çalısan rol numarası boş bırakılamaz").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
 
         }
     }

@@ -72,7 +72,7 @@ namespace PurchaseManagament.Application.Concrete.Services
              var mappedEntity = _mapper.Map<HashSet<ReportDto>>(entities);
             
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State != Domain.Enums.Status.Tamamlandı,
-                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");
+                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice","Offers");
                                                                                                                                                                                               
 
 
@@ -92,7 +92,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.Product.Id == getByIdVM.ProductId && x.RequestEmployee.CompanyDepartment.Company.Id == getByIdVM.CompanyId && x.State != Domain.Enums.Status.Tamamlandı,
                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");// "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Company", 
-                // "RequestEmployee.CompanyDepartment.Department");
+                
 
 
             var requestMapping = _mapper.Map< HashSet<ReportDto>>(requestEntity);

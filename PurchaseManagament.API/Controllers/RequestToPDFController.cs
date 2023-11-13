@@ -18,35 +18,35 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("GenerateReportToPDFByEmploye")]
-        public async Task GenerateReportToPDFByEmploye(Int64 id)
+        public async Task GenerateReportToPDFByEmploye([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByEmploye(new GetByIdVM { Id = id});
+            await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
         }
 
         [HttpPost("GenerateReportToPDFByCompany")]
-        public async Task GenerateReportToPDFByCompany(Int64 id)
+        public async Task GenerateReportToPDFByCompany([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByCompany(new GetByIdVM { Id = id });
+            await _reportToPdfService.GenerateReportToPDFByCompany(getByIdVM);
         }
 
 
         [HttpPost("GenerateReportToPDFByDepartman")]
-        public async Task GenerateReportToPDFByDepartman(Int64 id)
+        public async Task GenerateReportToPDFByDepartman([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByDepartman(new GetByIdVM { Id = id });
+            await _reportToPdfService.GenerateReportToPDFByDepartman(getByIdVM);
         }
 
         [HttpPost("GenerateReportToPDFByProduct")]
-        public async Task GenerateReportToPDFByProduct(GetReportProductVM getReportProductVM)
+        public async Task GenerateReportToPDFByProduct([FromBody] GetReportProductVM getReportProductVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByProduct(new GetReportProductVM { CompanyId = getReportProductVM.CompanyId, ProductId = getReportProductVM.ProductId });
+            await _reportToPdfService.GenerateReportToPDFByProduct(getReportProductVM);
         }
 
 
         [HttpPost("GenerateReportToPDFBySupplier")]
-        public async Task GenerateReportToPDFBySupplier(Int64 id)
+        public async Task GenerateReportToPDFBySupplier([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFBySupplier(new GetByIdVM { Id = id });
+            await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
         }
     }
 }
