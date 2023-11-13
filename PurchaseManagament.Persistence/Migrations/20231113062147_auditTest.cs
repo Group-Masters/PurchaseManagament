@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AuditTest : Migration
+    public partial class auditTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -466,6 +466,41 @@ namespace PurchaseManagament.Persistence.Migrations
                         principalTable: "OFFERS",
                         principalColumn: "ID");
                 });
+
+            migrationBuilder.InsertData(
+                table: "COMPANIES",
+                columns: new[] { "ID", "ADDRESS", "NAME" },
+                values: new object[] { 1L, "Default Address", "Default Company" });
+
+            migrationBuilder.InsertData(
+                table: "DEPARTMENTS",
+                columns: new[] { "ID", "DEPARTMENT_NAME" },
+                values: new object[] { 1L, "Default Department" });
+
+            migrationBuilder.InsertData(
+                table: "ROLES",
+                columns: new[] { "ID", "CreatedBy", "CreatedDate", "ROLE_NAME" },
+                values: new object[] { 1L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "COMPANY_DEPARTMENTS",
+                columns: new[] { "ID", "COMPANY_ID", "DEPARTMENT_ID" },
+                values: new object[] { 1L, 1L, 1L });
+
+            migrationBuilder.InsertData(
+                table: "EMPLOYEES",
+                columns: new[] { "ID", "BIRTH_YEAR", "COMPANY_DEPARTMENT_ID", "GENDER", "ID_NUMBER", "NAME", "SURNAME" },
+                values: new object[] { 1L, "1999", 1L, 0, "12345678910", "Default", "Employee" });
+
+            migrationBuilder.InsertData(
+                table: "EMPLOYEE_DETAILS",
+                columns: new[] { "ID", "ADDRESS", "APPROVED_CODE", "EMAIL", "EMAIL_OK", "EMPLOYEE_ID", "PASSWORD", "PHONE", "USERNAME" },
+                values: new object[] { 1L, "Address", "111111", "default@mail.com", true, 1L, "kVU41twDyttUL/SM7IO0vQ==", "12345678910", "Default" });
+
+            migrationBuilder.InsertData(
+                table: "EMPLOYEE_ROLES",
+                columns: new[] { "ID", "CreatedBy", "CreatedDate", "EMPLOYEE_ID", "ROLE_ID" },
+                values: new object[] { 1L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1L, 1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AUDITS_META_HASH_PRIMARY_META_DISPLAY_NAME",

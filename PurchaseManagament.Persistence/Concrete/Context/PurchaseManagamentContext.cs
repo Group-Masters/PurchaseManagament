@@ -8,6 +8,7 @@ using PurchaseManagament.Domain.Entities.Audits;
 using PurchaseManagament.Persistence.Concrete.Audits;
 using PurchaseManagament.Persistence.Concrete.Mappings;
 using PurchaseManagament.Persistence.Concrete.Mappings.Audits;
+using PurchaseManagament.Utils;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
@@ -49,6 +50,9 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+            new DbInitializer(modelBuilder).Seed();
             modelBuilder.ApplyConfiguration(new AuditMapping());
             modelBuilder.ApplyConfiguration(new AuditMetaDataMapping());
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
@@ -202,23 +206,67 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             }
         }
 
-        //Sistem ilkleme
+        public class DbInitializer
+        {
+            private readonly ModelBuilder modelBuilder;
+
+            public DbInitializer(ModelBuilder modelBuilder)
+            {
+                this.modelBuilder = modelBuilder;
+            }
+
+            public void Seed()
+            {
+                modelBuilder.Entity<Company>().HasData(
+                       new Company() { Id = 1, Name = "Default Company", Address = "Default Address" }
+                );
+                modelBuilder.Entity<Department>().HasData(
+                       new Department { Id = 1, Name = "Default Department" }
+                );
+                modelBuilder.Entity<CompanyDepartment>().HasData(
+                       new CompanyDepartment { Id = 1, CompanyId = 1, DepartmentId = 1 }
+                );
+                modelBuilder.Entity<Employee>().HasData(
+                        new Employee { Id = 1, CompanyDepartmentId = 1, Name = "Default", Surname = "Employee", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 }
+                );
+                modelBuilder.Entity<EmployeeDetail>().HasData(
+                        new EmployeeDetail {Id = 1, Username = "Default", Address = "Address", Phone = "12345678910", Email = "default@mail.com", Password = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456"), EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" }
+                );
+                modelBuilder.Entity<Role>().HasData(
+                       new Role { Id = 1, Name = "Admin" }
+                );
+                modelBuilder.Entity<EmployeeRole>().HasData(
+                       new EmployeeRole { Id = 1, EmployeeId = 1, RoleId = 1 }
+                );
+            }
+        }
+        ////Sistem ilkleme
         //public static void SeedData(PurchaseManagamentContext context)
         //{
         //    // Check if any employees exist
         //    if (!context.Employees.Any())
         //    {
-        //        // Create a new company
-        //        var company = new Company { Name = "Default Company" };
+        //        var company = new Company { Name = "Default Company", Address = "Default Address" };
         //        context.Companies.Add(company);
 
-        //        // Create a new department
         //        var department = new Department { Name = "Default Department" };
         //        context.Departments.Add(department);
 
+        //        var companyDepartment = new CompanyDepartment { CompanyId = 1, DepartmentId = 1 };
+
         //        // Create a new employee
-        //        var employee = new Employee { Name = "Default Employee" };
+        //        var employee = new Employee { CompanyDepartmentId = 1, Name = "Default", Surname = "Employee", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 };
         //        context.Employees.Add(employee);
+
+        //        var hashedPassword = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456");
+        //        var employeeDetail = new EmployeeDetail { Username = "Default", Address = "Address", Phone = "12345678910", Email = "default@mail.com", Password = hashedPassword, EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" };
+        //        context.EmployeeDetails.Add(employeeDetail);
+
+        //        var role = new Role { Name = "Admin" };
+        //        context.Roles.Add(role);
+
+        //        var employeeRole = new EmployeeRole { EmployeeId = 1, RoleId = 1 };
+        //        context.EmployeesRoles.Add(employeeRole);
 
         //        // Save changes to the database
         //        context.SaveChanges();

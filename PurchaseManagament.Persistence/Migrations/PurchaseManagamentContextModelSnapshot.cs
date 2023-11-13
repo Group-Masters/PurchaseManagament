@@ -136,6 +136,14 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("COMPANIES", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Address = "Default Address",
+                            Name = "Default Company"
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -179,6 +187,14 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("COMPANY_DEPARTMENTS", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CompanyId = 1L,
+                            DepartmentId = 1L
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyStock", b =>
@@ -302,6 +318,13 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DEPARTMENTS", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Default Department"
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Employee", b =>
@@ -367,6 +390,18 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("CompanyDepartmentId");
 
                     b.ToTable("EMPLOYEES", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            BirthYear = "1999",
+                            CompanyDepartmentId = 1L,
+                            Gender = 0,
+                            IdNumber = "12345678910",
+                            Name = "Default",
+                            Surname = "Employee"
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.EmployeeDetail", b =>
@@ -446,6 +481,20 @@ namespace PurchaseManagament.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("EMPLOYEE_DETAILS", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Address = "Address",
+                            ApprovedCode = "111111",
+                            Email = "default@mail.com",
+                            EmailOk = true,
+                            EmployeeId = 1L,
+                            Password = "kVU41twDyttUL/SM7IO0vQ==",
+                            Phone = "12345678910",
+                            Username = "Default"
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.EmployeeRole", b =>
@@ -495,6 +544,15 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("EMPLOYEE_ROLES", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeId = 1L,
+                            RoleId = 1L
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.ImgProduct", b =>
@@ -883,6 +941,14 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ROLES", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.StockOperations", b =>
