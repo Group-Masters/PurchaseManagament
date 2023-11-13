@@ -23,10 +23,10 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.GetReportByEmployeeId(new GetByIdVM { Id=Id});
             return Ok(entities);
         }
-        [HttpGet("GetByDepartment/{Id}")]
-        public async Task<IActionResult> GetByDepartment(Int64 Id)
+        [HttpGet("GetByDepartment/{CompanyId}/{DepartmentId}")]
+        public async Task<IActionResult> GetByDepartment(Int64 CompanyId, Int64 DepartmentId)
         {
-            var entities = await _service.GetReportByDepartmentId(new GetByIdVM { Id=Id});
+            var entities = await _service.GetReportByDepartmentId(new GetReportDepartmentVM { });
             return Ok(entities);
         }
         [HttpGet("GetByCompany/{Id}")]

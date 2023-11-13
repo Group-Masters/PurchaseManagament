@@ -103,7 +103,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.product, y => y.MapFrom(x => $"{x.Product.Name}-{x.Product.MeasuringUnit.Name}"))
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Quantity))
                 .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.Value.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}"))
+                .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => z.ApprovedEmployee != null? $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}": " Beklemede"))
                 .ForMember(x => x.Prices, y => y.MapFrom(x =>x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status!=Status.Reddedildi).OfferedPrice))
                 .ForMember(x => x.supplier, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Supplier.Name))
                 .ForMember(x => x.supplyDate, y => y.MapFrom(x =>  x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))

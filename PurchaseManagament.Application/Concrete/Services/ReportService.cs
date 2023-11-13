@@ -30,10 +30,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
 
         }
-        public async Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetByIdVM getByIdVM)
+        public async Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetReportDepartmentVM getByIdVM)
         {
             var result = new Result<HashSet<ReportDto>>();
-            var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == getByIdVM.Id,
+            var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.CompanyId && x.RequestEmployee.CompanyDepartment.DepartmentId==getByIdVM.DepartmentId,
                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
