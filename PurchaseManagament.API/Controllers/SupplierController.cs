@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Supplier")]
+    [Authorize(Roles = "1,2,7,8")]
     public class SupplierController : Controller
     {
         private readonly ISupplierService _supplierService;
@@ -31,6 +33,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [Authorize]
         public async Task<ActionResult<Result<SupplierDto>>> GetSupplierById(Int64 id)
         {
             var result = await _supplierService.GetSupplierById(new GetSupplierByIdRM { Id = id });
@@ -38,6 +41,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<IActionResult> GetAllSupplier()
         {
             var entities = await _supplierService.GetAllSupplier();

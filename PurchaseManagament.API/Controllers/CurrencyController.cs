@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -7,6 +8,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Currency")]
+    [Authorize]
     public class CurrencyController : Controller
     {
         private readonly ICurrencyService _currencyService;
@@ -17,6 +19,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> CreateCurrency([FromBody] CreateCurrencyRM create)
         {
             var entity = await _currencyService.CreateCurrency(create);
@@ -24,6 +27,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> DeleteCurrency(Int64 id)
         {
             var entity = await _currencyService.DeleteCurrency(new GetByIdVM { Id = id });
@@ -31,6 +35,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1")]
         public async Task<ActionResult<Result<bool>>> DeleteCurrencyPermanent(Int64 id)
         {
             var result = await _currencyService.DeleteCurrencyPermanent(new GetByIdVM { Id = id });
@@ -45,6 +50,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = "1")]
         public async Task<IActionResult> UpdateCurrency([FromBody] UpdateCurrencyRM update)
         {
             var entity = await _currencyService.UpdateCurrency(update);

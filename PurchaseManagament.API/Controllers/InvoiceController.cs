@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Invoice")]
+    [Authorize(Roles = "1,6,7,8,9")]
     public class InvoiceController : Controller
     {
         private readonly IInvoiceService _invoiceService;
@@ -16,7 +18,7 @@ namespace PurchaseManagament.API.Controllers
         {
             _invoiceService = invoiceService;
         }
-
+        [Authorize(Roles = "1,6,7,8")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceRM create)
         {
@@ -25,12 +27,14 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(Roles = "1,6,7,8")]
         public async Task<IActionResult> UpdateInvoice([FromBody] UpdateInvoiceRM update)
         {
             var entity = await _invoiceService.UpdateInvoice(update);
             return Ok(entity);
         }
         [HttpPut("UpdateStatus")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateInvoiceStatus([FromBody] UpdateInvoiceStatusRM update)
         {
             var entity = await _invoiceService.UpdateInvoiceState(update);
@@ -38,6 +42,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+       
         public async Task<ActionResult<Result<InvoiceDto>>> GetInvoiceById(Int64 id)
         {
             var result = await _invoiceService.GetInvoiceById(new GetInvoiceByIdRM { Id = id });
@@ -66,6 +71,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1,6,7,8")]
         public async Task<IActionResult> DeleteInvoice(Int64 id)
         {
             var entity = await _invoiceService.DeleteInvoice(new GetByIdVM { Id = id });
@@ -73,6 +79,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1,6,7,8")]
         public async Task<ActionResult<Result<bool>>> DeleteInvoicePermanent(Int64 id)
         {
             var result = await _invoiceService.DeleteInvoicePermanent(new GetByIdVM { Id = id });
