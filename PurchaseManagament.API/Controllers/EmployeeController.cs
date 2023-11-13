@@ -46,7 +46,6 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
         [HttpGet("GetById/{id}")]
-        [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetById(int id)
         {
             var entities = await _service.GetEmployeeById(new GetByIdVM { Id=id});
