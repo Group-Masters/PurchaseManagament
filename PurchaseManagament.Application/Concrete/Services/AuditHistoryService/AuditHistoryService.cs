@@ -24,7 +24,7 @@ namespace PurchaseManagament.Application.Concrete.Services.AuditHistoryService
         {
             var result = new Result<AuditHistoryDto>();
 
-            var entityExist = await _unitWork.GetRepository<Audit>().GetSingleByFilterAsync(x => x.Id == getByIdAuditRM.Id, "AuditMetaData");
+            var entityExist = await _unitWork.GetRepository<Audit>().GetSingleByFilterAsync(x => x.Id == getByIdAuditRM.Id, "AuditMetaData", "Employee");
             var mappedEntity = _mapper.Map<AuditHistoryDto>(entityExist);
 
             result.Data = mappedEntity;
@@ -35,7 +35,7 @@ namespace PurchaseManagament.Application.Concrete.Services.AuditHistoryService
         {
             var result = new Result<HashSet<AuditSmallDto>>();
 
-            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.UserId == getAuditsByUserIdRM.UserId, "AuditMetaData");
+            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.UserId == getAuditsByUserIdRM.UserId, "AuditMetaData", "Employee");
             var mappedEntity = _mapper.Map<HashSet<AuditSmallDto>>(entityExist);
 
             result.Data = mappedEntity;
@@ -46,7 +46,7 @@ namespace PurchaseManagament.Application.Concrete.Services.AuditHistoryService
         {
             var result = new Result<HashSet<AuditHistoryDto>>();
 
-            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.MetaDisplayName == getAuditsByDislpayName.MetaDisplayName, "AuditMetaData");
+            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.MetaDisplayName == getAuditsByDislpayName.MetaDisplayName, "AuditMetaData", "Employee");
             var mappedEntity = _mapper.Map<HashSet<AuditHistoryDto>>(entityExist);
 
             result.Data = mappedEntity;
@@ -57,8 +57,8 @@ namespace PurchaseManagament.Application.Concrete.Services.AuditHistoryService
         {
             var result = new Result<HashSet<AuditHistoryDto>>();
 
-            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.MetaDisplayName == getAuditsSpecifiedRM.MetaDisplayName && 
-                x.AuditMetaData.ReadablePrimaryKey == getAuditsSpecifiedRM.ReadablePrimaryKey, "AuditMetaData");
+            var entityExist = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.MetaDisplayName == getAuditsSpecifiedRM.MetaDisplayName &&
+                x.AuditMetaData.ReadablePrimaryKey == getAuditsSpecifiedRM.ReadablePrimaryKey, "AuditMetaData", "Employee");
 
             var mappedEntity = _mapper.Map<HashSet<AuditHistoryDto>>(entityExist);
 
@@ -66,11 +66,23 @@ namespace PurchaseManagament.Application.Concrete.Services.AuditHistoryService
             return result;
         }
 
+        public async Task<Result<HashSet<AuditHistoryDto>>> GetAuditsByCompany(GetAuditsByCompanyId getAuditsByCompanyId)
+        {
+            var result = new Result<HashSet<AuditHistoryDto>>();
+
+            var entityExists = await _unitWork.GetRepository<Audit>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getAuditsByCompanyId.CompanyId, "AuditMetaData", "Employee");
+
+            var mappedEntity = _mapper.Map<HashSet<AuditHistoryDto>>(entityExists); 
+            
+            result.Data = mappedEntity; 
+            return result;
+        }
+
         public async Task<Result<HashSet<AuditHistoryDto>>> GetAllAuditHistory()
         {
             var result = new Result<HashSet<AuditHistoryDto>>();
 
-            var entityExist = await _unitWork.GetRepository<Audit>().GetAllAsync("AuditMetaData");
+            var entityExist = await _unitWork.GetRepository<Audit>().GetAllAsync("AuditMetaData", "Employee");
             var mappedEntity = _mapper.Map<HashSet<AuditHistoryDto>>(entityExist);
 
             result.Data = mappedEntity;

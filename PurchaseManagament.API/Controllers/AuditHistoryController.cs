@@ -23,14 +23,21 @@ namespace PurchaseManagament.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetEmployee/{id}")]
+        [HttpGet("GetByEmployee/{id}")]
         public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByEmployeeId(long id)
         {
             var entities = await _auditHistoryService.GetAuditsByUserId(new GetAuditsByUserIdRM { UserId = id});
             return Ok(entities);
         }
 
-        [HttpGet("GetDisplayName")]
+        [HttpGet("GetByCompany/{id}")]
+        public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByCompany(long id)
+        {
+            var entities = await _auditHistoryService.GetAuditsByCompany(new GetAuditsByCompanyId { CompanyId = id});
+            return Ok(entities);
+        }
+
+        [HttpGet("GetByDisplayName")]
         public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByDisplayName(string metaDisplayName )
         {
             var entities = await _auditHistoryService.GetAuditsByDisplayName(new GetAuditsByDislpayNameRM { MetaDisplayName = metaDisplayName });

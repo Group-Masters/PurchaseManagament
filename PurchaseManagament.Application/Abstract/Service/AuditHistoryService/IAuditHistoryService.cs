@@ -10,6 +10,7 @@ namespace PurchaseManagament.Application.Abstract.Service.AuditHistoryService
         Task<Result<HashSet<AuditSmallDto>>> GetAuditsByUserId(GetAuditsByUserIdRM getAuditsByUserIdRM);
         Task<Result<HashSet<AuditHistoryDto>>> GetAuditsByDisplayName(GetAuditsByDislpayNameRM getAuditsByDislpayNameRM);
         Task<Result<HashSet<AuditHistoryDto>>> GetAuditsSpecified(GetAuditsSpecifiedRM getAuditsSpecifiedRM);
+        Task<Result<HashSet<AuditHistoryDto>>> GetAuditsByCompany(GetAuditsByCompanyId getAuditsByCompanyId);
         Task<Result<AuditHistoryDto>> GetAuditHistoryById(GetByIdAuditRM getByIdAuditRM);
     }
 }
