@@ -26,7 +26,7 @@ namespace PurchaseManagament.API.Controllers
         [HttpGet("GetByDepartment/{CompanyId}/{DepartmentId}")]
         public async Task<IActionResult> GetByDepartment(Int64 CompanyId, Int64 DepartmentId)
         {
-            var entities = await _service.GetReportByDepartmentId(new GetReportDepartmentVM { });
+            var entities = await _service.GetReportByDepartmentId(new GetReportDepartmentVM { CompanyId=CompanyId,DepartmentId=DepartmentId  });
             return Ok(entities);
         }
         [HttpGet("GetByCompany/{Id}")]

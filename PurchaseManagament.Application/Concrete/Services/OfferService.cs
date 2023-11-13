@@ -161,12 +161,16 @@ namespace PurchaseManagament.Application.Concrete.Services
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
 
-            //else if (update.Status == Status.YönetimRed)
-            //{
-            //    var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-            //    requestEntity.State = update.Status;
-            //    _unitWork.GetRepository<Request>().Update(requestEntity);
-
+            if (update.Status==Status.Onay)
+            {
+                var offers=await _unitWork.GetRepository<Offer>().GetByFilterAsync(x=>x.Id!=entity.Id);
+                foreach (var item in offers)
+                {
+                    item.Status = Status.Reddedildi;
+                   _unitWork.GetRepository<Offer>().Update(item);  
+                }
+               
+            }
             _mapper.Map(update, entity);
             entity.ApprovingEmployeeId = (Int64)_loggedService.UserId;
             _unitWork.GetRepository<Offer>().Update(entity);
