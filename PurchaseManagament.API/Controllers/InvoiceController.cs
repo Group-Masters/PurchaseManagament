@@ -34,6 +34,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
         [HttpPut("UpdateStatus")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateInvoiceStatus([FromBody] UpdateInvoiceStatusRM update)
         {
             var entity = await _invoiceService.UpdateInvoiceState(update);

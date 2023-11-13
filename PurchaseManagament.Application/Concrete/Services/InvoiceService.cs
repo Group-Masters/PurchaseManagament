@@ -136,7 +136,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<InvoiceDto>>();
             var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
-                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.FaturaEklendi, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.Beklemede, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
 
             result.Data = mappedEntity;
