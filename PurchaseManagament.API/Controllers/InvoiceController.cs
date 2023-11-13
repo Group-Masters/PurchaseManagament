@@ -18,9 +18,8 @@ namespace PurchaseManagament.API.Controllers
         {
             _invoiceService = invoiceService;
         }
-
-        [HttpPost("Create")]
         [Authorize(Roles = "1,6,7,8")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceRM create)
         {
             var entity = await _invoiceService.CreateInvoice(create);

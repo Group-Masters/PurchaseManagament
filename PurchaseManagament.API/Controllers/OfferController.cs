@@ -9,7 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Offer")]
-    [Authorize(Roles = "1,2")]
+    [Authorize]
     public class OfferController : Controller
     {
         private readonly IOfferService _offerService;
