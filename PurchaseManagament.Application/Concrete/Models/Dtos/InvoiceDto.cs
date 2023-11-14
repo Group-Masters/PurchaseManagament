@@ -14,6 +14,9 @@
         public string MeasuringUnit { get; set; }
         public decimal OfferedPrice { get; set; }
         public string Currency {  get; set; }
+        public long RequestingEmployeeId { get; set; }
+        public string RequestingEmployeeName { get; set; }
+        public string RequestingEmployeeSurname { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime RequestCreatedDate { get; set; }
     }

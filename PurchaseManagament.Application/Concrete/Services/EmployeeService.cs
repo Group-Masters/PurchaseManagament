@@ -317,8 +317,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             foreach (var r in roles)
             {
                 tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
+                Console.WriteLine(r.ToString());
             }
-
+           
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }

@@ -130,6 +130,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 //ajax bağlantı kobul işlemi
+app.UseHttpsRedirection();
 app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -8,6 +9,8 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Request")]
+    [Authorize]
+
     public class RequestController : Controller
     {
         private readonly IRequestService _requestService;
@@ -31,7 +34,8 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpPut("UpdateProductState")]
+        [HttpPut("UpdateState")]
+        [Authorize(Roles = "1,3")]
         public async Task<IActionResult> UpdateProductState([FromBody] UpdateRequestStateRM update)
         {
             var entity = await _requestService.UpdateRequestState(update);

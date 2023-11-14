@@ -20,7 +20,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-
         public async Task<Result<long>> CreateCurrency(CreateCurrencyRM createCurrencyRM)
         {
             var result = new Result<long>();
@@ -28,7 +27,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var currencyExists = await _unitWork.GetRepository<Currency>().AnyAsync(x => x.Name == createCurrencyRM.Name);
             if (currencyExists)
             {
-                throw new AlreadyExistsException($"${createCurrencyRM.Name} isimli para birimi zaten kayıtlı");
+                throw new AlreadyExistsException("Bu isimde bir Para Birimi kaydı zaten bulunmakta.");
             }
 
             var mappedEntity = _mapper.Map<Currency>(createCurrencyRM);
@@ -44,7 +43,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Currency>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Para Birimi kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Currency>().Update(entity);
@@ -58,7 +57,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Currency>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip para birimi bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Para Birimi kaydı bulunamadı.");
             }
             _unitWork.GetRepository<Currency>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -80,7 +79,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Currency>().GetById(updateCurrencyRM.Id);
             if (entity is null)
             {
-                throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Güncellenmek istenen Para Birimi kaydı bulunamadı.");
             }
             var mappedEntity = _mapper.Map(updateCurrencyRM, entity);
             _unitWork.GetRepository<Currency>().Update(mappedEntity);

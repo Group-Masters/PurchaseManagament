@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
@@ -45,7 +46,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Request>().GetById(updateRequestRM.Id);
             if (entity is null)
             {
-                throw new Exception("Talep güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Güncellenmek istenen Talep kaydı bulunamadı.");
             }
             var mappedEntity = _mapper.Map(updateRequestRM, entity);
             _unitWork.GetRepository<Request>().Update(mappedEntity);
@@ -61,9 +62,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Request>().GetById(updateRequestStateRM.Id);
             if (entity is null)
             {
-                throw new Exception("Talep güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Durumu güncellenmek istenen Talep kaydı bulunamadı.");
             }
-            if(updateRequestStateRM.State==Status.Onay|| updateRequestStateRM.State == Status.Reddedildi)
+            if (updateRequestStateRM.State==Status.Onay|| updateRequestStateRM.State == Status.Reddedildi)
             {
                 entity.ApprovingEmployeeId = _loggedService.UserId;
             }
@@ -73,13 +74,14 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
+
         public async Task<Result<bool>> DeleteRequest(GetByIdVM id)
         {
             var result = new Result<bool>();
             var entity = await _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Talep kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Request>().Update(entity);
@@ -93,7 +95,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Request>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip Talep bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Talep kaydı bulunamadı.");
             }
             _unitWork.GetRepository<Request>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -115,7 +117,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Request>().AnyAsync(x => x.Id == getRequestById.Id);
             if (!entityControl)
             {
-                throw new Exception($"{getRequestById.Id}'li talep bulunamamıştır.");
+                throw new NotFoundException("İstenen Talep kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getRequestById.Id, "Product", "ApprovedEmployee", "RequestEmployee");
@@ -130,7 +132,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Request>().AnyAsync(x => x.RequestEmployeeId ==  getRequestByEmployeeIdRM.RequestEmployeeId);
             if (!entityControl)
             {
-                throw new Exception($"{getRequestByEmployeeIdRM.RequestEmployeeId} Id'li çalışana ait talep kaydı bulunamadı");
+                throw new NotFoundException("İstenen Çalışana ait Talep kaydı bulunamadı.");
             }
 
             var existsEntity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployeeId == getRequestByEmployeeIdRM.RequestEmployeeId, "Product", "ApprovedEmployee", "RequestEmployee");
@@ -145,7 +147,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var companyDepartmentControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
             if (!companyDepartmentControl)
             {
-                throw new Exception($"{getRequestByCIdDIdRM.CompanyId} Id'li Şirket ile {getRequestByCIdDIdRM.DepartmentId} Id'li Departmana ait kayıt bulunamadı.");
+                throw new NotFoundException("İstenen Şirket/Departman'a ait Talep kaydı bulunamadı.");
             }
 
             var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
@@ -162,7 +164,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var companyDepartmentControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
             if (!companyDepartmentControl)
             {
-                throw new Exception($"{getRequestByCIdDIdRM.CompanyId} Id'li Şirket ile {getRequestByCIdDIdRM.DepartmentId} Id'li Departmana ait kayıt bulunamadı.");
+                throw new NotFoundException("İstenen Şirket/Departman'a ait Bekleyen Talep kaydı bulunamadı.");
             }
 
             var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
@@ -180,8 +182,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var dtos = _mapper.Map<HashSet<RequestDto>>(entity);
             result.Data = dtos;
-            return result;
-          
+            return result;          
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
@@ -27,6 +28,16 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity.Id;
 
 
+            return result;
+        }
+
+        public async Task<Result<HashSet<ImgProductDto>>> GetAllImgProduct()
+        {
+            var result = new Result<HashSet<ImgProductDto>>();
+            var entities = await _unitWork.GetRepository<ImgProduct>().GetAllAsync();
+            var mappedEnties = _mapper.Map<HashSet<ImgProductDto>>(entities);
+            result.Data = mappedEnties; 
+            result.Success = true; 
             return result;
         }
     }

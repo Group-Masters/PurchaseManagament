@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -7,6 +8,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("CompanyStock")]
+    [Authorize]
     public class CompanyStockController : Controller
     {
         private readonly ICompanyStockService _companyStockService;
@@ -19,6 +21,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "1,9")]
         public async Task<IActionResult> CreateCompanyStock([FromBody] CreateCompanyStockRM create)
         {
             var entity = await _companyStockService.CreateCompanyStock(create);
@@ -34,6 +37,7 @@ namespace PurchaseManagament.API.Controllers
 
         // Adet güncellemesi
         [HttpPut("UpdateQuantityAdd")]
+        [Authorize(Roles = "1,9")]
         public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityAddRM updateCompanyQuantityAddRM)
         {
             var entity = await _companyStockService.UpdateCompanyStockQuantityAdd(updateCompanyQuantityAddRM);
@@ -43,6 +47,7 @@ namespace PurchaseManagament.API.Controllers
 
         // Adet güncellemesi
         [HttpPut("UpdateQuantityReduce")]
+        [Authorize(Roles = "1,9")]
         public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
         {
             var entity = await _companyStockService.UpdateCompanyStockQuantityReduce(updateCompanyQuantityReduceRM);
@@ -52,6 +57,7 @@ namespace PurchaseManagament.API.Controllers
 
         // Adet güncellemesi
         [HttpPut("ReturnStock")]
+        [Authorize(Roles = "1,9")]
         public async Task<IActionResult> ReturnProductToStock([FromBody] ReturnProductToStockRM returnProductToStockRM)
         {
             var entity = await _companyStockService.ReturnProductToStock(returnProductToStockRM);
@@ -81,6 +87,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("Delete/{id}")]
+        [Authorize(Roles = "1,9")]
         public async Task<IActionResult> DeleteCompanyStock(Int64 id)
         {
             var entity = await _companyStockService.DeleteCompanyStock(new GetByIdVM { Id = id });
@@ -88,6 +95,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpDelete("DeletePermanent/{id}")]
+        [Authorize(Roles = "1,9")]
         public async Task<ActionResult<Result<bool>>> DeleteCompanyStockPermanent(Int64 id)
         {
             var result = await _companyStockService.DeleteCompanyStockPermanent(new GetByIdVM { Id = id });

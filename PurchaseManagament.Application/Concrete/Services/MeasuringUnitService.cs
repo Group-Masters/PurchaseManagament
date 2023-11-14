@@ -29,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var measuringUnitExists = await _unitWork.GetRepository<MeasuringUnit>().AnyAsync(x => x.Name == createMeasuringUnitRM.Name);
             if (measuringUnitExists)
             {
-                throw new AlreadyExistsException($"{createMeasuringUnitRM.Name} isminde kayıtlı ölçü birimi zaten bulunmakta.");
+                throw new AlreadyExistsException("Bu isimde bir Ölçü Birimi kaydı zaten bulunmakta.");
             }
             var mappedEntity = _mapper.Map<MeasuringUnit>(createMeasuringUnitRM);
             _unitWork.GetRepository<MeasuringUnit>().Add(mappedEntity);
@@ -44,7 +44,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<MeasuringUnit>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Ölçü Birimi kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<MeasuringUnit>().Update(entity);
@@ -58,7 +58,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity =  _unitWork.GetRepository<MeasuringUnit>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Ölçü Birimi kaydı bulunamadı.");
             }
             _unitWork.GetRepository<MeasuringUnit>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -91,14 +91,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<MeasuringUnit>().GetById(updateMeasuringUnitRM.Id);
             if (entity is null)
             {
-                throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Güncellenmek istenen Ölçü Birimi kaydı bulunamadı.");
             }
             _unitWork.GetRepository<MeasuringUnit>().Update(entity);
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;
         }
-
-
     }
 }

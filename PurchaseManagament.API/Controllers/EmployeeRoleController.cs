@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
@@ -8,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("EmployeeRole")]
+    [Authorize(Roles = "1,8")]
     public class EmployeeRoleController : ControllerBase
     {
         private readonly IEmployeeRoleService _employeeRoleService;
@@ -17,7 +19,7 @@ namespace PurchaseManagament.API.Controllers
             _employeeRoleService = employeeRoleService;
         }
 
-        [HttpPost("Create")]
+        [HttpPost("Create")]       
         public async Task<ActionResult<Result<bool>>> CreateEmployeeRole([FromBody] CreateEmployeeRoleRM createEmployeeRoleVM)
         {
             var result = await _employeeRoleService.CreateEmployeeRole(createEmployeeRoleVM);
