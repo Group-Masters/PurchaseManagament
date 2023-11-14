@@ -34,7 +34,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("UpdateOfferState")]
-        [Authorize(Roles = "1,2,7,8")]
+        [Authorize(Roles = "1,2,7,8,9")]
         public async Task<IActionResult> UpdateOfferState([FromBody] UpdateOfferStateRM update)
         {
             var entity = await _offerService.UpdateOfferState(update);

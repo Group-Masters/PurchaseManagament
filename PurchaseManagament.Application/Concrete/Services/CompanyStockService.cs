@@ -169,6 +169,11 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var stockOperation = await _unitWork.GetRepository<StockOperations>().GetById(returnProductToStockRM.Id);
+            if (stockOperation.Quantity < returnProductToStockRM.Quantity)
+            {
+                throw new Exception($"{returnProductToStockRM.Quantity} iade edilecek ürün miktarı, zimmette bulunandan fazla olamaz.");
+            }
+
             var companyStock = await _unitWork.GetRepository<CompanyStock>().GetById(returnProductToStockRM.CompanyStockId);
 
             stockOperation.Quantity -= returnProductToStockRM.Quantity;
