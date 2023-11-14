@@ -22,12 +22,20 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateImgProduct(CreateImgProductRM ımgProduct)
         {
             var result = new Result<long>();
-            var mappedEntity = _mapper.Map<ImgProduct>(ımgProduct);
-            _unitWork.GetRepository<ImgProduct>().Add(mappedEntity);
-            await _unitWork.CommitAsync();
-            result.Data = mappedEntity.Id;
-
-
+            var existsEntity = await _unitWork.GetRepository<ImgProduct>().AnyAsync(z => z.ProductId == ımgProduct.ProductId);
+            if(existsEntity is false)
+            {
+                var mappedEntity = _mapper.Map<ImgProduct>(ımgProduct);
+                _unitWork.GetRepository<ImgProduct>().Add(mappedEntity);
+                await _unitWork.CommitAsync();
+            }
+            else
+            {
+                var mappedEntity = await  _unitWork.GetRepository<ImgProduct>().GetSingleByFilterAsync(q => q.ProductId == ımgProduct.ProductId);
+                var entity = _mapper.Map(ımgProduct, mappedEntity);
+                _unitWork.GetRepository<ImgProduct>().Update(entity);
+                await _unitWork.CommitAsync();
+            }
             return result;
         }
 

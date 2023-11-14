@@ -37,6 +37,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             //Silince Runtime'da hata veriliyor dendi, hata durumunda yorum satırından çıkarmayı dene
             //Database.EnsureCreated();
             _loggedUserService = loggedService;
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
