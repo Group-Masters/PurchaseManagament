@@ -52,6 +52,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         {
 
             base.OnModelCreating(modelBuilder);
+            //Veritabanı ilkleme
             new DbInitializer(modelBuilder).Seed();
             modelBuilder.ApplyConfiguration(new AuditMapping());
             modelBuilder.ApplyConfiguration(new AuditMetaDataMapping());
@@ -226,51 +227,30 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 modelBuilder.Entity<CompanyDepartment>().HasData(
                        new CompanyDepartment { Id = 1, CompanyId = 1, DepartmentId = 1 }
                 );
+                //Admin kullanıcısının bilgileri burada verilebilir.
                 modelBuilder.Entity<Employee>().HasData(
                         new Employee { Id = 1, CompanyDepartmentId = 1, Name = "Default", Surname = "Employee", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 }
                 );
                 modelBuilder.Entity<EmployeeDetail>().HasData(
                         new EmployeeDetail {Id = 1, Username = "Default", Address = "Address", Phone = "12345678910", Email = "default@mail.com", Password = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456"), EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" }
                 );
+
                 modelBuilder.Entity<Role>().HasData(
-                       new Role { Id = 1, Name = "Admin" }
+                       new Role { Id = 1, Name = "Admin" },
+                       new Role { Id = 2, Name = "Satın Alma Sorumlusu" },
+                       new Role { Id = 3, Name = "Onay" },
+                       new Role { Id = 4, Name = "Talep" },
+                       new Role { Id = 5, Name = "Birim Sorumlusu" },
+                       new Role { Id = 6, Name = "Muhasebe" },
+                       new Role { Id = 7, Name = "Genel Müdür" },
+                       new Role { Id = 8, Name = "Y.K Başkanı" },
+                       new Role { Id = 9, Name = "Stok Sorumlusu" },
+                       new Role { Id = 10, Name = "Birim Müdürü" }
                 );
                 modelBuilder.Entity<EmployeeRole>().HasData(
                        new EmployeeRole { Id = 1, EmployeeId = 1, RoleId = 1 }
                 );
             }
         }
-        ////Sistem ilkleme
-        //public static void SeedData(PurchaseManagamentContext context)
-        //{
-        //    // Check if any employees exist
-        //    if (!context.Employees.Any())
-        //    {
-        //        var company = new Company { Name = "Default Company", Address = "Default Address" };
-        //        context.Companies.Add(company);
-
-        //        var department = new Department { Name = "Default Department" };
-        //        context.Departments.Add(department);
-
-        //        var companyDepartment = new CompanyDepartment { CompanyId = 1, DepartmentId = 1 };
-
-        //        // Create a new employee
-        //        var employee = new Employee { CompanyDepartmentId = 1, Name = "Default", Surname = "Employee", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 };
-        //        context.Employees.Add(employee);
-
-        //        var hashedPassword = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456");
-        //        var employeeDetail = new EmployeeDetail { Username = "Default", Address = "Address", Phone = "12345678910", Email = "default@mail.com", Password = hashedPassword, EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" };
-        //        context.EmployeeDetails.Add(employeeDetail);
-
-        //        var role = new Role { Name = "Admin" };
-        //        context.Roles.Add(role);
-
-        //        var employeeRole = new EmployeeRole { EmployeeId = 1, RoleId = 1 };
-        //        context.EmployeesRoles.Add(employeeRole);
-
-        //        // Save changes to the database
-        //        context.SaveChanges();
-        //    }
-        //}
     }
 }

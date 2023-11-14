@@ -948,6 +948,60 @@ namespace PurchaseManagament.Persistence.Migrations
                             Id = 1L,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Satın Alma Sorumlusu"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Onay"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Talep"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Birim Sorumlusu"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Muhasebe"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Genel Müdür"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Y.K Başkanı"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Stok Sorumlusu"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Birim Müdürü"
                         });
                 });
 

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PurchaseManagament.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -480,7 +482,19 @@ namespace PurchaseManagament.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "ROLES",
                 columns: new[] { "ID", "CreatedBy", "CreatedDate", "ROLE_NAME" },
-                values: new object[] { 1L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin" });
+                values: new object[,]
+                {
+                    { 1L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin" },
+                    { 2L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Satın Alma Sorumlusu" },
+                    { 3L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Onay" },
+                    { 4L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Talep" },
+                    { 5L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Birim Sorumlusu" },
+                    { 6L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Muhasebe" },
+                    { 7L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Genel Müdür" },
+                    { 8L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Y.K Başkanı" },
+                    { 9L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Stok Sorumlusu" },
+                    { 10L, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Birim Müdürü" }
+                });
 
             migrationBuilder.InsertData(
                 table: "COMPANY_DEPARTMENTS",
