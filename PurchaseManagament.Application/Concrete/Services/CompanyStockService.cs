@@ -131,17 +131,22 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new NotFoundException("Güncellenmek istenen Stok kaydı bulunamadı.");
             }
+
+            if (entity.Quantity < updateCompanyQuantityReduceRM.Quantity)
+            {
+                throw new Exception("Zimmete aktarılacak ürün miktarı Stoktakinden fazla olamaz.");
+            }
+
             entity.Quantity -= updateCompanyQuantityReduceRM.Quantity;
             _unitWork.GetRepository<CompanyStock>().Update(entity);
-
 
             var sOparetionEntity = new StockOperations
             {
                 CompanyStockId = entity.Id,
                 Quantity = updateCompanyQuantityReduceRM.Quantity,
                 ReceivingEmployeeId = updateCompanyQuantityReduceRM.ReceivingEmployeeId
-
             };
+
             _mapper.Map<CompanyStock>(entity);
             _unitWork.GetRepository<StockOperations>().Add(sOparetionEntity);
             await _unitWork.CommitAsync();
