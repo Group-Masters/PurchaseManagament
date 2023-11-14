@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 using PurchaseManagament.Application.Concrete.Services;
@@ -17,6 +18,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("createProduct")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateProduct([FromBody] CreateImgProductRM ımgProduct)
         {
             var entity = await _imgProductService.CreateImgProduct(ımgProduct);

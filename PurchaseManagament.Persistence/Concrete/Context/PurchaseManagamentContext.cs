@@ -42,6 +42,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
         {
             _loggedUserService = loggedService;
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
