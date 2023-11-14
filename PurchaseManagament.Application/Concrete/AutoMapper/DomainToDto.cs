@@ -80,10 +80,6 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.RequestingEmployeeName, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.Name))
                 .ForMember(x => x.RequestingEmployeeSurname, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.Surname));
                 
-
-
-                .ForMember(x => x.RequestCreatedDate, y => y.MapFrom(z => z.Offer.Request.CreatedDate));
-
             CreateMap<Offer, OfferDto>()
                 .ForMember(x => x.CurrencyName, y => y.MapFrom(z => z.Currency.Name))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
@@ -118,37 +114,27 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Companydepartment, y => y.MapFrom(z => $"{z.RequestEmployee.CompanyDepartment.Company.Name}- {z.RequestEmployee.CompanyDepartment.Department.Name}"))
                 .ForMember(x => x.product, y => y.MapFrom(x => $"{x.Product.Name}-{x.Product.MeasuringUnit.Name}"))
                 .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Quantity))
-                .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => z.ApprovedEmployee != null? $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}": " Beklemede"))
                 .ForMember(x => x.Prices, y => y.MapFrom(x =>$"{x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status!=Status.Reddedildi).OfferedPrice}-{x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Currency.Name}"))
                 .ForMember(x => x.supplier, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Supplier.Name))
-                .ForMember(x => x.supplyDate, y => y.MapFrom(x =>  x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.supplyDate, y => y.MapFrom(x =>  x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.CreatedDate.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.Id));
-                ;
-                .ForMember(x => x.CreateDate, y => y.MapFrom(x => x.CreatedDate.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.ApprovedEmployee, y => y.MapFrom(z => $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}"))
-                .ForMember(x => x.Prices, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).OfferedPrice))
-                .ForMember(x => x.supplier, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Supplier.Name))
-                .ForMember(x => x.supplyDate, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Invoice.CreatedDate.ToString("yyyy-MM-dd")))
-                .ForMember(x => x.InvoiceId, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status == Status.Reddedildi).Invoice.Id));
 
             CreateMap<Offer, ReportSupplierDto>()
                 .ForMember(x => x.OfferId, y => y.MapFrom(z => z.Id))
-                .ForMember(x => x.CreateDate, y => y.MapFrom(z => z.CreatedDate.Value.ToString("yyyy-MM-dd")))
+                .ForMember(x => x.CreateDate, y => y.MapFrom(z => z.CreatedDate.ToString("yyyy-MM-dd")))
                 .ForMember(x => x.Status, y => y.MapFrom(z => z.Status))
                 .ForMember(x => x.Detail, y => y.MapFrom(z => z.Details))
                 .ForMember(x => x.Price, y => y.MapFrom(z => $"{z.OfferedPrice} {z.Currency.Name}"))
                 .ForMember(x => x.Product, y => y.MapFrom(z => $"{z.Request.Product.Name} - {z.Request.Product.MeasuringUnit.Name}"))
                 .ForMember(x => x.Quantity, y => y.MapFrom(z => z.Request.Quantity))
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name));
-                
-
 
             CreateMap<StockOperations, StockOperationsDto>()
                 .ForMember(x => x.ProductName, y => y.MapFrom(x => x.CompanyStock.Product.Name))
                 .ForMember(x => x.ReceiverName, y => y.MapFrom(x => x.Employee.Name))
                 .ForMember(x => x.ReceiverSurname, y => y.MapFrom(x => x.Employee.Surname));
-
 
             CreateMap<ImgProduct, ImgProductDto>();
         }
