@@ -67,7 +67,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.MeasuringUnit, y => y.MapFrom(z => z.Offer.Request.Product.MeasuringUnit.Name))
                 .ForMember(x => x.OfferedPrice, y => y.MapFrom(z => z.Offer.OfferedPrice))
                 .ForMember(x => x.Currency, y => y.MapFrom(z => z.Offer.Currency.Name))
-                .ForMember(x => x.RequestCreatedDate, y => y.MapFrom(z => z.Offer.Request.CreatedDate));
+                .ForMember(x => x.RequestCreatedDate, y => y.MapFrom(z => z.Offer.Request.CreatedDate))
+                .ForMember(x => x.RequestingEmployeeId, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.Id))
+                .ForMember(x => x.RequestingEmployeeName, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.Name))
+                .ForMember(x => x.RequestingEmployeeSurname, y => y.MapFrom(z => z.Offer.Request.RequestEmployee.Surname));
+                
 
 
             CreateMap<Offer, OfferDto>()
