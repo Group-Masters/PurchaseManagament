@@ -12,7 +12,7 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    [Migration("20231114100629_auditTest")]
+    [Migration("20231114103250_auditTest")]
     partial class auditTest
     {
         /// <inheritdoc />
@@ -1215,7 +1215,7 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasOne("PurchaseManagament.Domain.Entities.Product", "Product")
                         .WithOne("ImgProduct")
                         .HasForeignKey("PurchaseManagament.Domain.Entities.ImgProduct", "ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("PRODUCT_IMG");
 

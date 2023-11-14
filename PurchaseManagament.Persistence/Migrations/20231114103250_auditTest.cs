@@ -247,7 +247,8 @@ namespace PurchaseManagament.Persistence.Migrations
                         name: "PRODUCT_IMG",
                         column: x => x.PRODUCT_ID,
                         principalTable: "PRODUCTS",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
