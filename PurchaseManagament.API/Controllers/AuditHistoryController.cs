@@ -33,7 +33,7 @@ namespace PurchaseManagament.API.Controllers
         [HttpGet("GetByCompany/{id}")]
         public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByCompany(long id)
         {
-            var entities = await _auditHistoryService.GetAuditsByCompany(new GetAuditsByCompanyId { CompanyId = id});
+            var entities = await _auditHistoryService.GetAuditsByCompany(new GetAuditsByCompanyIdRM { CompanyId = id});
             return Ok(entities);
         }
 
@@ -41,6 +41,13 @@ namespace PurchaseManagament.API.Controllers
         public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByDisplayName(string metaDisplayName )
         {
             var entities = await _auditHistoryService.GetAuditsByDisplayName(new GetAuditsByDislpayNameRM { MetaDisplayName = metaDisplayName });
+            return Ok(entities);
+        }
+
+        [HttpGet("GetByCompanyDisplay/{id}")]
+        public async Task<ActionResult<Result<HashSet<AuditHistoryDto>>>> GetAuditsByCompanyDisplay(long id, string metaDisplayName )
+        {
+            var entities = await _auditHistoryService.GetAuditsByCompanyDisplay(new GetAuditsByCompanyDisplayRM { CompanyId = id, MetaDisplayName = metaDisplayName });
             return Ok(entities);
         }
 
