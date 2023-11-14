@@ -19,7 +19,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.MeasuringUnitName, y => y.MapFrom(z => z.Product.MeasuringUnit.Name));
 
             CreateMap<Product, ProductDto>()
-                .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name));
+                .ForMember(x=>x.MeasuringName,y=>y.MapFrom(z=>z.MeasuringUnit.Name))
+                .ForMember(x=>x.ImgProduct, y => y.MapFrom(z=>z.ImgProduct.ImageSrc));
 
             CreateMap<MeasuringUnit, MeasuringUnitDto>();
 
