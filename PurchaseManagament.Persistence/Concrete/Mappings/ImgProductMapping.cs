@@ -33,7 +33,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
              .WithOne(x => x.ImgProduct)
              .HasForeignKey<ImgProduct>(x => x.ProductId)
              .HasConstraintName("PRODUCT_IMG")
-             .OnDelete(DeleteBehavior.NoAction);
+             .OnDelete(DeleteBehavior.Cascade);
 
         }
     }
