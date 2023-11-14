@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
+using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
@@ -24,7 +25,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<ReportDto>>();
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployeeId == getByIdVM.Id,
-                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");
+                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Currency","Offers.Invoice");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
@@ -34,7 +35,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<ReportDto>>();
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.CompanyId && x.RequestEmployee.CompanyDepartment.DepartmentId==getByIdVM.DepartmentId,
-                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");
+                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice", "Offers.Currency");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
@@ -46,7 +47,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var result = new Result<HashSet<ReportDto>>();
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id,
-                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice", "Offers");
+                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice", "Offers.Currency");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
@@ -57,7 +58,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<ReportDto>>();
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.Product.Id == getByIdVM.ProductId && x.RequestEmployee.CompanyDepartment.Company.Id == getByIdVM.CompanyId,
-                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice");
+                "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Currency", "Offers.Invoice");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
