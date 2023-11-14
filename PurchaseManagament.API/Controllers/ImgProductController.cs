@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
+using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.API.Controllers
@@ -21,6 +22,13 @@ namespace PurchaseManagament.API.Controllers
             var entity = await _imgProductService.CreateImgProduct(ımgProduct);
 
             return Ok(entity);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllImgProduct()
+        {
+            var entities = await _imgProductService.GetAllImgProduct();
+            return Ok(entities);
         }
     }
 }
