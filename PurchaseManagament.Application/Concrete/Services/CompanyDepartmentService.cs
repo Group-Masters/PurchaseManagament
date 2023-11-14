@@ -29,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 (x => x.CompanyId == createCompanyDepartmentRM.CompanyId && x.DepartmentId == createCompanyDepartmentRM.DepartmentId);
             if (companyDepartmentExists)
             {
-                throw new AlreadyExistsException($"{createCompanyDepartmentRM.CompanyId} ID'li şirket zaten {createCompanyDepartmentRM.DepartmentId} ID'li departmana sahip.");
+                throw new AlreadyExistsException("Bu Şirket/Departman kaydı zaten bulunmakta.");
             }
 
             var mappedEntity = _mapper.Map<CompanyDepartment>(createCompanyDepartmentRM);
@@ -46,7 +46,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.DepartmentId == updateCompanyDepartmentRM.DepartmentId);
             if (!existEntity)
             {
-                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Şirket/Departman kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(updateCompanyDepartmentRM.DepartmentId);
             var mappedEntity = _mapper.Map(updateCompanyDepartmentRM, entity);
@@ -61,7 +61,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Şirket/Departman kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             entity.IsDeleted = true;
@@ -76,7 +76,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Şirket/Departman kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<CompanyDepartment>().GetById(id.Id);
             _unitWork.GetRepository<CompanyDepartment>().Delete(entity);
@@ -99,7 +99,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.Id == getCompanyDepartmentById.Id);
             if (!entityControl)
             {
-                throw new Exception($"Departman ID {getCompanyDepartmentById.Id} bulunamadı.");
+                throw new NotFoundException("İstenen Şirket/Departman kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == getCompanyDepartmentById.Id, "Company", "Department");
@@ -114,7 +114,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var companyControl = await _unitWork.GetRepository<CompanyDepartment>().AnyAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);
             if (!companyControl)
             {
-                throw new NotFoundException($"{getDepartmentByCompanyIdRM.CompanyId} numaralı şirkete ait kayıt bulunamadı.");
+                throw new NotFoundException("İstenen Şirkete ait Şirket/Departman kaydı bulunamadı.");
             }
 
             var companyDepartments = await _unitWork.GetRepository<CompanyDepartment>().GetByFilterAsync(x => x.CompanyId == getDepartmentByCompanyIdRM.CompanyId);

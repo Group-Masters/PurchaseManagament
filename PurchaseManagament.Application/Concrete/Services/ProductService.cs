@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -37,7 +38,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Product>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Ürün kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Product>().Update(entity);
@@ -51,7 +52,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Product>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception("Böyle id ye sahip stok ürünü bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Ürün kaydı bulunamadı.");
             }
             _unitWork.GetRepository<Product>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -74,7 +75,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Product>().GetById(updateProductRM.Id);
             if (entity is null)
             {
-                throw new Exception("Stok güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Güncellenmek istenen Ürün kaydı bulunamadı.");
             }
             var mappedEntity = _mapper.Map(updateProductRM, entity);
             _unitWork.GetRepository<Product>().Update(mappedEntity);

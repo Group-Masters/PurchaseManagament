@@ -30,9 +30,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(z => z.Name == createSupplierRM.Name);
             if (existEntity)
             {
-                throw new AlreadyExistsException("Böyle bir şirket ismi zaten mevcut.");
-            }            
-            
+                throw new AlreadyExistsException("Bu isimde bir Tedarikçi kaydı zaten bulunmakta.");
+            }
+
             var mappedEntity = _mapper.Map<Supplier>(createSupplierRM);
             _unitWork.GetRepository<Supplier>().Add(mappedEntity);
             var resultBool = await _unitWork.CommitAsync();
@@ -55,7 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == getSupplierByIdRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Şirket ID {getSupplierByIdRM.Id} bulunamadı.");
+                throw new NotFoundException("İstenen Tedarikçi kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Supplier>().GetById(getSupplierByIdRM.Id);
@@ -71,7 +71,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == updateSupplierRM.Id);
             if (!existEntity)
             {
-                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Tedarikçi kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Supplier>().GetById(updateSupplierRM.Id);
             var mappedEntity = _mapper.Map(updateSupplierRM, entity);
@@ -86,7 +86,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir tedarikci silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Tedarikçi kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Supplier>().GetById(id.Id);
             entity.IsDeleted = true;
@@ -101,7 +101,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Supplier>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir Tedarikci silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Tedarikçi kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Supplier>().GetById(id.Id);
             _unitWork.GetRepository<Supplier>().Delete(entity);

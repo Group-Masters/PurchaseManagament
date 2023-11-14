@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -27,7 +28,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existsEntity = await _unitWork.GetRepository<Role>().AnyAsync(z => z.Name == createRoleRM.Name);
             if (existsEntity)
             {
-                throw new Exception($"Rol ismi {createRoleRM.Name} zaten mevcut");
+                throw new AlreadyExistsException("Bu isimde bir Rol kaydı zaten bulunmakta.");
             }
 
             var mappedEntity = _mapper.Map<Role>(createRoleRM);
@@ -43,7 +44,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol {Id.Id} bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Rol kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Role>().GetById(Id.Id);
             _unitWork.GetRepository<Role>().Delete(entity);
@@ -57,7 +58,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol {Id.Id} bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Rol kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Role>().GetById(Id.Id);
             entity.IsDeleted = true;
@@ -82,7 +83,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Name.ToUpper().Trim() == getRoleByNameRM.Name.ToUpper().Trim());
             if (!existEntity)
             {
-                throw new Exception("Bu isimle bir rol bulunamadı.");
+                throw new NotFoundException("İstenen Rol kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Role>().GetByFilterAsync(x => x.Name.ToUpper().Trim() == getRoleByNameRM.Name.ToUpper().Trim());
             var mappedEntity = _mapper.Map<RoleDto>(entity);
@@ -97,7 +98,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Role>().AnyAsync(z => z.Id == updateRoleRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Rol {updateRoleRM.Id} bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Role>().GetById(updateRoleRM.Id);
@@ -114,7 +115,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Role>().AnyAsync(x => x.Id == getRoleByIdRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Rol ID {getRoleByIdRM.Id} bulunamadı.");
+                throw new NotFoundException("İstenen Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Role>().GetById(getRoleByIdRM.Id);
