@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
@@ -40,7 +41,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Teklif kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Offer>().Update(entity);
@@ -54,12 +55,13 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Offer>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id.Id} ID'li teklif bulunamamıştır.");
+                throw new NotFoundException("Silinmek istenen Teklif kaydı bulunamadı.");
             }
             _unitWork.GetRepository<Offer>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
+
         public async Task<Result<HashSet<OfferDto>>> GetAllOffer()
         {
             var result = new Result<HashSet<OfferDto>>();
@@ -104,7 +106,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Offer>().AnyAsync(x => x.Id == getOfferById.Id);
             if (!entityControl)
             {
-                throw new Exception($"{getOfferById.Id}'li teklif bulunamamıştır.");
+                throw new NotFoundException("İstenen Teklif kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == getOfferById.Id, "Currency", "Supplier", "ApprovingEmployee");
@@ -113,17 +115,18 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
             var result = new Result<long>();
             var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
             if (entity is null)
             {
-                throw new Exception($"{update.Id}'li teklif bulunamamıştır.");
+                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
             }
-            _mapper.Map(update, entity);
-            _unitWork.GetRepository<Offer>().Update(entity);
+
+            var mappedEntity = _mapper.Map(update, entity);
+            _unitWork.GetRepository<Offer>().Update(mappedEntity);
+
             await _unitWork.CommitAsync();
             result.Data = entity.Id;
             return result;
@@ -136,9 +139,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == update.Id, "Supplier");
             if (entity is null)
             {
-                throw new Exception("Teklif güncellemesi için id eşleşmesi başarısız oldu.");
+                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
             }
-           
+
             //talebin tedarikçisi  stoksa ve yönetim onaya gönderilecekse
             if (entity.SupplierId == 1 && update.Status == Status.YönetimOnay)
             {
@@ -167,9 +170,6 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-
-           
-               
             
             _mapper.Map(update, entity);
             entity.ApprovingEmployeeId = (Int64)_loggedService.UserId;

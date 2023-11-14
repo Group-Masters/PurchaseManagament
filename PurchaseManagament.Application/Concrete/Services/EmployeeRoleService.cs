@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -28,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existsEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(z => z.EmployeeId == mappedEntity.EmployeeId && z.RoleId == mappedEntity.RoleId);
             if (existsEntity)
             {
-                throw new Exception($"{mappedEntity.EmployeeId} ID'li çalışan zaten {mappedEntity.RoleId} ID'li role sahip.");
+                throw new AlreadyExistsException("Bu Çalışan/Rol kaydı zaten bulunmakta.");
             }
 
             _unitWork.GetRepository<EmployeeRole>().Add(mappedEntity);
@@ -37,7 +38,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-
         //[Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<bool>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleRM)
         {
@@ -45,7 +45,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(z => z.Id == updateEmployeeRoleRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Rol {updateEmployeeRoleRM.Id} bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Çalışan/Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetById(updateEmployeeRoleRM.Id);
@@ -62,7 +62,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol ID {Id.Id} bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Çalışan/Rol kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id.Id);
             _unitWork.GetRepository<EmployeeRole>().Delete(entity);
@@ -76,7 +76,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == Id.Id);
             if (!existEntity)
             {
-                throw new Exception($"Rol ID {Id.Id} bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Çalışan/Rol kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<EmployeeRole>().GetById(Id.Id);
             entity.IsDeleted = true;
@@ -85,7 +85,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-
         //[Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM)
         {
@@ -93,7 +92,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId);
             if (!existEntity)
             {
-                throw new Exception($"{getByEmployeeIdRM.EmployeeId} ID'li çalışana ait kayıtlı rol bulunamadı");
+                throw new NotFoundException("İstenen Çalışana ait Çalışan/Rol kaydı bulunamadı.");
             }
 
             var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId);
@@ -109,7 +108,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.RoleId == getByRoleIdRM.RoleId);
             if (!existEntity)
             {
-                throw new Exception($"{getByRoleIdRM.RoleId} ID'li rol herhangi bir çalışana atanmamış");
+                throw new NotFoundException("İstenen Role ait herhangi bir Çalışan/Rol kaydı bulunamadı.");
             }
 
             var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.RoleId == getByRoleIdRM.RoleId);
@@ -125,7 +124,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == getEmployeeRoleByIdRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Rol ID {getEmployeeRoleByIdRM.Id} bulunamadı.");
+                throw new NotFoundException("İstenen Çalışan/Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetById(getEmployeeRoleByIdRM.Id);
@@ -150,7 +149,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == getEmployeeRoleByIdRM.Id);
             if(!entityControl)
             {
-                throw new Exception($"Çalışan Rol Kaydı Bulunamadı");
+                throw new NotFoundException("Detaylı çıktısı istenen Çalışan/Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetSingleByFilterAsync(x => x.Id == getEmployeeRoleByIdRM.Id, "Employee","Employee.EmployeeDetail", "Role");
@@ -170,7 +169,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity;
             return result;
         }
-
 
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail()
         {

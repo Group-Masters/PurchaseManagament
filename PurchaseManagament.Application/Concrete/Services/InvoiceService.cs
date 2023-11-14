@@ -30,14 +30,14 @@ namespace PurchaseManagament.Application.Concrete.Services
             var invoiceExists = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.UUID == create.UUID);
             if (invoiceExists)
             {
-                throw new AlreadyExistsException($"{create.UUID} ETTN'li fatura kaydı zaten bulunmakta.");
+                throw new AlreadyExistsException("Bu ETTN'li Fatura kaydı zaten bulunmakta.");
             }
 
             var mappedEntity = _mapper.Map<Invoice>(create);
             var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==create.OfferId,"Request");
             if (offerEntity is null)
             {
-                throw new NotFoundException("Teklif bulunmadı.");
+                throw new NotFoundException("İstenen Teklif kaydı bulunmadı.");
             }
 
             offerEntity.Status = Status.FaturaEklendi;
@@ -56,7 +56,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Invoice>().GetById(updateInvoiceRM.Id);
             if (entity is null)
             {
-                throw new Exception($"{updateInvoiceRM.Id} ID'li fatura bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Fatura kaydı bulunamadı.");
             }
             _mapper.Map(updateInvoiceRM, entity);
             _unitWork.GetRepository<Invoice>().Update(entity);
@@ -71,7 +71,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = await _unitWork.GetRepository<Invoice>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id.Id} ID'li fatura bulunamadı.");
+                throw new NotFoundException($"Silinmek istenen Fatura kaydı bulunamadı.");
             }
             entity.IsDeleted = true;
             _unitWork.GetRepository<Invoice>().Update(entity);
@@ -85,7 +85,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entity = _unitWork.GetRepository<Invoice>().GetById(id.Id);
             if (entity is null)
             {
-                throw new Exception($"{id.Id} ID'li fatura bulunamadı.");
+                throw new NotFoundException($"Silinmek istenen Fatura kaydı bulunamadı.");
             }
             _unitWork.GetRepository<Invoice>().Delete(await entity);
             result.Data = await _unitWork.CommitAsync();
@@ -149,7 +149,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x=>x.Id==update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
             if (update is null)
             {
-                throw new NotFoundException("Fatura bilgisi bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Fatura kaydı bulunamadı.");
             }
             var entity = _mapper.Map(update, entityInvoice);
             if (entity.Status == Status.Tamamlandı)

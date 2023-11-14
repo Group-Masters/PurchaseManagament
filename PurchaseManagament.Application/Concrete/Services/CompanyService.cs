@@ -4,6 +4,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
@@ -28,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(z => z.Name == mappedEntity.Name);
             if (existEntity)
             {
-                throw new Exception("Böyle bir şirket ismi zaten mevcut.");
+                throw new AlreadyExistsException("Bu isimde bir Şirket kaydı zaten bulunmakta.");
             }
             _unitWork.GetRepository<Company>().Add(mappedEntity);
             var resultBool = await _unitWork.CommitAsync();
@@ -51,7 +52,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entityControl = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == getCompanyByIdRM.Id);
             if (!entityControl)
             {
-                throw new Exception($"Şirket ID {getCompanyByIdRM.Id} bulunamadı.");
+                throw new NotFoundException("İstenen Şirket kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<Company>().GetById(getCompanyByIdRM.Id);
@@ -67,7 +68,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == updateCompanyRM.Id);
             if (!existEntity)
             {
-                throw new Exception("Bu id ye sahip bir şirket bulunamadı.");
+                throw new NotFoundException("Güncellenmek istenen Şirket kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Company>().GetById(updateCompanyRM.Id);
             var mappedEntity = _mapper.Map(updateCompanyRM, entity);
@@ -82,7 +83,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Şirket kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Company>().GetById(id.Id);
             entity.IsDeleted = true;
@@ -97,7 +98,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var existEntity = await _unitWork.GetRepository<Company>().AnyAsync(x => x.Id == id.Id);
             if (!existEntity)
             {
-                throw new Exception("Böyle bir ıd silinmek için bulunamadı.");
+                throw new NotFoundException("Silinmek istenen Şirket kaydı bulunamadı.");
             }
             var entity = await _unitWork.GetRepository<Company>().GetById(id.Id);
             _unitWork.GetRepository<Company>().Delete(entity);
