@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Companies;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.Companies;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -21,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateCompanyValidator))]
+        [Validator(typeof(CreateCompanyValidator))]
         public async Task<Result<bool>> CreateCompany(CreateCompanyRM createCompanyRM)
         {
             var result = new Result<bool>();
@@ -46,6 +48,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetCompanyValidator))]
         public async Task<Result<CompanyDto>> GetCompanyById(GetCompanyByIdRM getCompanyByIdRM)
         {
             var result = new Result<CompanyDto>();
@@ -61,7 +64,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateCompanyValidator))]
+        [Validator(typeof(UpdateCompanyValidator))]
         public async Task<Result<bool>> UpdateCompany(UpdateCompanyRM updateCompanyRM)
         {
             var result = new Result<bool>();
@@ -77,6 +80,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteCompanyValidator))]
         public async Task<Result<bool>> DeleteCompany(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -92,6 +96,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteCompanyValidator))]
         public async Task<Result<bool>> DeleteCompanyPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();

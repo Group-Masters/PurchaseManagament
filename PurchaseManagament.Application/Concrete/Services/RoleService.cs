@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
+using PurchaseManagament.Application.Concrete.Validators.Role;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -21,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateRoleValidator))]
+        [Validator(typeof(CreateRoleValidator))]
         public async Task<Result<bool>> CreateRole(CreateRoleRM createRoleRM)
         {
             var result = new Result<bool>();
@@ -38,6 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteRoleValidator))]
         public async Task<Result<bool>> DeleteRolePermanent(GetByIdVM Id)
         {
             var result = new Result<bool>();
@@ -50,8 +53,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork.GetRepository<Role>().Delete(entity);
             result.Data = await _unitWork.CommitAsync();
             return result;
-        }        
-        
+        }
+
+        [Validator(typeof(DeleteRoleValidator))]
         public async Task<Result<bool>> DeleteRole(GetByIdVM Id)
         {
             var result = new Result<bool>();
@@ -76,7 +80,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //Bozuk
+        [Validator(typeof(GetRoleByIdNameValidator))]
         public async Task<Result<RoleDto>> GetRoleByName(GetRoleByNameRM getRoleByNameRM)
         {
             var result = new Result<RoleDto>();
@@ -91,7 +95,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateRoleValidator))]
+        [Validator(typeof(UpdateRoleValidator))]
         public async Task<Result<bool>> UpdateRole(UpdateRoleRM updateRoleRM)
         {
             var result = new Result<bool>();
@@ -109,6 +113,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetRoleByIdValidator))]
         public async Task<Result<RoleDto>> GetRoleById(GetRoleByIdRM getRoleByIdRM)
         {
             var result = new Result<RoleDto>();
