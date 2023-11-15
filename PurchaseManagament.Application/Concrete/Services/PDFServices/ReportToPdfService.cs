@@ -498,7 +498,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
 
 
 
-        public async Task GenerateReportToPDFBySupplier(GetByIdVM getByIdVM)
+        public async Task GenerateReportToPDFBySupplier(GetReportSupplierVM getByIdVM)
         {
             var employeReports = await _reportService.GetSupplierReport(getByIdVM);
 
