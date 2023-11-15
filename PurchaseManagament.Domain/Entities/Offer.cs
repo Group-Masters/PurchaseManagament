@@ -1,8 +1,10 @@
 ﻿using PurchaseManagament.Domain.Common;
 using PurchaseManagament.Domain.Enums;
+using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    [Auditable]
     public class Offer : AuditableEntity
     {
         public Int64 CurrencyId { get; set; }

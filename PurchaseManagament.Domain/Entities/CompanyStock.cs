@@ -1,7 +1,9 @@
 ﻿using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    [Auditable]
     public class CompanyStock : BaseEntity
     {
         public double Quantity { get; set; }

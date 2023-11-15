@@ -1,8 +1,10 @@
 ﻿using PurchaseManagament.Domain.Common;
 using PurchaseManagament.Domain.Enums;
+using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    [Auditable]
     public class Request : AuditableEntity
     {
         public long ProductId { get; set; }

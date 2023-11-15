@@ -254,6 +254,25 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 modelBuilder.Entity<Supplier>().HasData(
                        new Supplier { Id = 1, Name = "Şirket Stok", Address = "Şirket Adres" }
                 );
+
+                //Ekstralar
+                modelBuilder.Entity<MeasuringUnit>().HasData(
+                       new MeasuringUnit { Id = 1, Name = "Adet", },
+                       new MeasuringUnit { Id = 2, Name = "Kilogram", },
+                       new MeasuringUnit { Id = 3, Name = "Metre", },
+                       new MeasuringUnit { Id = 4, Name = "Metrekare", },
+                       new MeasuringUnit { Id = 5, Name = "Metre Küp", },
+                       new MeasuringUnit { Id = 6, Name = "Litre", }
+                );
+                //15.11.2023 11:30 değerleri
+                modelBuilder.Entity<Currency>().HasData(
+                       new Currency { Id = 1, Name = "Türk Lirası", Rate = 1},
+                       new Currency { Id = 2, Name = "Dolar", Rate = 28.6 },
+                       new Currency { Id = 3, Name = "Euro", Rate = 31.2 },
+                       new Currency { Id = 4, Name = "Pound", Rate = 35.7 },
+                       new Currency { Id = 5, Name = "Riyal", Rate = 7.6 },
+                       new Currency { Id = 6, Name = "Ruble", Rate = 0.3 }
+                );
             }
         }
     }

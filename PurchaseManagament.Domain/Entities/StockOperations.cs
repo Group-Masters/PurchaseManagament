@@ -1,7 +1,9 @@
 ﻿using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Persistence.Concrete.Audits;
 
 namespace PurchaseManagament.Domain.Entities
 {
+    [Auditable]
     public class StockOperations:AuditableEntity
     {
         public long CompanyStockId { get; set; }

@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Infraturucture", "2-Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-api", "3-api", "{A7150AB1-8214-436D-9EB6-D068056CA95B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSaves", "LogSaves\LogSaves.csproj", "{BB5AA008-910F-4358-AFF1-0B36B4FD763C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogSaves", "LogSaves\LogSaves.csproj", "{BB5AA008-910F-4358-AFF1-0B36B4FD763C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
