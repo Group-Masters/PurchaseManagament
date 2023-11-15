@@ -153,7 +153,7 @@ builder.Services.AddAuthentication(opt =>
 var app = builder.Build();
 
 // Requestleri loglayan / hatalı olanları loglayan
-app.UseRequestLoggingMiddleware("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\LogSaves\\RequestLogsSaves\\requests.log");
+app.UseRequestLoggingMiddleware("C:\\Users\\erenagir\\Desktop\\erp\\PurchaseManagament\\LogSaves\\RequestLogsSaves\\requests.log");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
