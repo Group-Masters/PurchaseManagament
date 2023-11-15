@@ -220,20 +220,20 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             public void Seed()
             {
                 modelBuilder.Entity<Company>().HasData(
-                       new Company() { Id = 1, Name = "Default Company", Address = "Default Address" }
+                       new Company() { Id = 1, Name = "Varsayılan Şirket", Address = "Varsayılan Adres" }
                 );
                 modelBuilder.Entity<Department>().HasData(
-                       new Department { Id = 1, Name = "Default Department" }
+                       new Department { Id = 1, Name = "Varsayılan Departman" }
                 );
                 modelBuilder.Entity<CompanyDepartment>().HasData(
                        new CompanyDepartment { Id = 1, CompanyId = 1, DepartmentId = 1 }
                 );
                 //Admin kullanıcısının bilgileri burada verilebilir.
                 modelBuilder.Entity<Employee>().HasData(
-                        new Employee { Id = 1, CompanyDepartmentId = 1, Name = "Default", Surname = "Employee", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 }
+                        new Employee { Id = 1, CompanyDepartmentId = 1, Name = "Varsayılan", Surname = "Çalışan", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 }
                 );
                 modelBuilder.Entity<EmployeeDetail>().HasData(
-                        new EmployeeDetail {Id = 1, Username = "Default", Address = "Address", Phone = "12345678910", Email = "default@mail.com", Password = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456"), EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" }
+                        new EmployeeDetail {Id = 1, Username = "Varsayılan", Address = "Varsayılan Adres", Phone = "12345678910", Email = "default@mail.com", Password = CipherUtils.EncryptString("b14ca5898a4e4133bbce2ea2315a1916", "123456"), EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" }
                 );
 
                 modelBuilder.Entity<Role>().HasData(
@@ -250,6 +250,9 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 );
                 modelBuilder.Entity<EmployeeRole>().HasData(
                        new EmployeeRole { Id = 1, EmployeeId = 1, RoleId = 1 }
+                );
+                modelBuilder.Entity<Supplier>().HasData(
+                       new Supplier { Id = 1, Name = "Şirket Stok", Address = "Şirket Adres" }
                 );
             }
         }
