@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
+using PurchaseManagament.Application.Concrete.Validators.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -27,7 +29,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
-        //[Validator(typeof(CreateRequestValidator))]
+        [Validator(typeof(CreateRequestValidator))]
         public async Task<Result<long>> CreateRequest(CreateRequestRM createRequestRM)
         {
             var result = new Result<long>();
@@ -39,7 +41,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateRequestValidator))]
+        [Validator(typeof(UpdateRequestValidator))]
         public async Task<Result<long>> UpdateRequest(UpdateRequestRM updateRequestRM)
         {
             var result = new Result<long>();
@@ -55,7 +57,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateRequestStateValidator))]
+        [Validator(typeof(UpdateRequestStateValidator))]
         public async Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM)
         {
             var result = new Result<long>();
@@ -75,6 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteRequest(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -89,6 +92,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -111,6 +115,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetRequestByIdValidator))]
         public async Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById)
         {
             var result = new Result<RequestDto>();
@@ -126,6 +131,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetRequestByEmployeeIdValidator))]
         public async Task<Result<HashSet<RequestDto>>> GetRequestByEmployeeId(GetRequestByEmployeeIdRM getRequestByEmployeeIdRM)
         {
             var result = new Result<HashSet<RequestDto>>();
@@ -141,6 +147,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetRequestByCIdDIdValidator))]
         public async Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM)
         {
             var result = new Result<HashSet<RequestDto>>();
@@ -158,6 +165,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetRequestByCIdDIdValidator))]
         public async Task<Result<HashSet<RequestDto>>> GetPendingRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM)
         {
             var result = new Result<HashSet<RequestDto>>();
@@ -175,6 +183,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<HashSet<RequestDto>>();
