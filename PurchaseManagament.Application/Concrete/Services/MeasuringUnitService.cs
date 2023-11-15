@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
+using PurchaseManagament.Application.Concrete.Validators.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -21,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateMeasuringUnit))]
+        [Validator(typeof(CreateMeasuringUnit))]
         public async Task<Result<long>> CreateMeasuringUnit(CreateMeasuringUnitRM createMeasuringUnitRM)
         {
             var result = new Result<long>();
@@ -38,6 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteMeasuringUnit(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -52,6 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteMeasuringUnitPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -84,7 +88,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateInvoiceValidator))]
+        [Validator(typeof(UpdateMeasuringUnit))]
         public async Task<Result<long>> UpdateMeasuringUnit(UpdateMeasuringUnitRM updateMeasuringUnitRM)
         {
             var result = new Result<long>();

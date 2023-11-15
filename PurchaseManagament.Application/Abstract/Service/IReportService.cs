@@ -11,7 +11,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetReportDepartmentVM getReportDepartmentVM);
         Task<Result<HashSet<ReportDto>>> GetReportByCompanyId(GetByIdVM getByIdVM);
         Task<Result<HashSet<ReportDto>>> GetProductReport(GetReportProductVM getReportProductVM);
-        Task<Result<HashSet<ReportSupplierDto>>> GetSupplierReport(GetByIdVM getByIdVM);
+        Task<Result<HashSet<ReportSupplierDto>>> GetSupplierReport(GetReportSupplierVM getByIdVM);
 
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.CompanyStock;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -21,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateCompanyStockValidator))]
+        [Validator(typeof(CreateCompanyStockValidator))]
         public async Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM)
         {
             var result = new Result<long>();
@@ -38,6 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteCompanyStockValidator))]
         public async Task<Result<bool>> DeleteCompanyStock(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -52,6 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteCompanyStockValidator))]
         public async Task<Result<bool>> DeleteCompanyStockPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -74,6 +78,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetCompanyStokByCompanyIdValidator))]
         public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(GetByIdVM getByIdVM)
         {
             var result = new Result<HashSet<CompanyStocksDto>>();
@@ -83,6 +88,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }        
         
+        [Validator(typeof(GetCompanyStokByIdValidator))]
         public async Task<Result<CompanyStocksDto>> GetCompanyStockById(GetByIdVM getByIdVM)
         {
             var result = new Result<CompanyStocksDto>();
@@ -92,7 +98,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateCompanyStockValidator))]
+        [Validator(typeof(UpdateCompanyStockValidator))]
         public async Task<Result<long>> UpdateCompanyStock(UpdateCompanyStockRM updateCompanyStockRM)
         {
             var result = new Result<long>();
@@ -108,6 +114,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(UpdateCompanyStockQuantityValidator))]
         public async Task<Result<long>> UpdateCompanyStockQuantityAdd(UpdateCompanyQuantityAddRM updateCompanyQuantityRM)
         {
             var result = new Result<long>();
@@ -123,6 +130,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(UpdateCompanyStockQuantityReduceValidator))]
         public async Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
         {
             var result = new Result<long>();
@@ -154,6 +162,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(ReturnProductToStockValidator))]
         public async Task<Result<long>> ReturnProductToStock(ReturnProductToStockRM returnProductToStockRM)
         {
             var result = new Result<long>();

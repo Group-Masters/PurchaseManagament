@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Departments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.Departman;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -21,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
         }
 
-        //[Validator(typeof(CreateDepartmanValidator))]
+        [Validator(typeof(CreateDepartmanValidator))]
         public async Task<Result<bool>> CreateDepartment(CreateDepartmentRM createDepartmentRM)
         {
             var result = new Result<bool>();
@@ -42,7 +44,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             else { result.Success = false; }
             return result;
         }
-
+        [Validator(typeof(DeleteDepartmanValidator))]
         public async Task<Result<bool>> DeleteDepartment(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -57,7 +59,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-
+        [Validator(typeof(DeleteDepartmanValidator))]
         public async Task<Result<bool>> DeleteDepartmentPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -71,7 +73,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-
+        [Validator(typeof(GetByIdDepartmanValidator))]
         public async Task<Result<DepartmentDto>> GetDepartmentById(GetByIdDepartmentRM getByIdDepartmentRM)
         {
             var result = new Result<DepartmentDto>();
@@ -109,7 +111,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateDepartmanValidator))]
+        [Validator(typeof(UpdateDepartmanValidator))]
         public async Task<Result<bool>> UpdateDepartment(UpdateDepartmentRM updateDepartmentRM)
         {
             var result = new Result<bool>();

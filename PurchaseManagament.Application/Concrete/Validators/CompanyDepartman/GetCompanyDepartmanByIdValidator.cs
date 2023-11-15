@@ -10,4 +10,6 @@ namespace PurchaseManagament.Application.Concrete.Validators.CompanyDepartman
             RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
+
 }
+

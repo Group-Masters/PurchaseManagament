@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Currency;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.Currencies;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -20,6 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        [Validator(typeof(CreateCurrencyValidator))]
         public async Task<Result<long>> CreateCurrency(CreateCurrencyRM createCurrencyRM)
         {
             var result = new Result<long>();
@@ -37,6 +40,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdCurrencyValidator))]
         public async Task<Result<bool>> DeleteCurrency(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -51,6 +55,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdCurrencyValidator))]
         public async Task<Result<bool>> DeleteCurrencyPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -73,6 +78,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(UpdateCurrencyValidator))]
         public async Task<Result<long>> UpdateCurrency(UpdateCurrencyRM updateCurrencyRM)
         {
             var result = new Result<long>();

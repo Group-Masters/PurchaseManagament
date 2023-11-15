@@ -7,7 +7,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.CompanyDepartman
     {
         public GetDepartmentByCompanyIdRMValidator()
         {
-            RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Lütfen departman Id'yi boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
+            RuleFor(x => x.CompanyId).NotEmpty().WithMessage("Lütfen şirket Id'yi boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
         }
     }
 }
