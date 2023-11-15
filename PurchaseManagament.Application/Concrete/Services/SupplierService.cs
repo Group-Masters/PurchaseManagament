@@ -23,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateSupplierValidator))]
+        [Validator(typeof(CreateSupplierValidator))]
         public async Task<Result<bool>> CreateSupplier(CreateSupplierRM createSupplierRM)
         {
             var result = new Result<bool>();
@@ -49,6 +49,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetSupplierByIdValidator))]
         public async Task<Result<SupplierDto>> GetSupplierById(GetSupplierByIdRM getSupplierByIdRM)
         {
             var result = new Result<SupplierDto>();
@@ -64,7 +65,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateSupplierValidator))]
+        [Validator(typeof(UpdateSupplierValidator))]
         public async Task<Result<bool>> UpdateSupplier(UpdateSupplierRM updateSupplierRM)
         {
             var result = new Result<bool>();
@@ -80,6 +81,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteSupplier(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -95,6 +97,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteSupplierPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
