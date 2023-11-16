@@ -8,7 +8,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Currency")]
-    [Authorize]
+    [AllowAnonymous]
     public class CurrencyController : Controller
     {
         private readonly ICurrencyService _currencyService;
@@ -17,7 +17,13 @@ namespace PurchaseManagament.API.Controllers
         {
             _currencyService = currencyService;
         }
-
+        [HttpGet("GetAllCurrencyNames")]
+        [Authorize(Roles = "1")]
+        public IActionResult GetAllCurrencyNames()
+        {
+            var entity = _currencyService.GetAllCurrencyNames();
+            return Ok(entity);
+        }
         [HttpPost("Create")]
         [Authorize(Roles = "1")]
         public async Task<IActionResult> CreateCurrency([FromBody] CreateCurrencyRM create)

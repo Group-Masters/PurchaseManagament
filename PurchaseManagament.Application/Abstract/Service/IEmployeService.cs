@@ -1,5 +1,6 @@
 ﻿using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.Application.Abstract.Service
@@ -9,6 +10,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<List<EmployeeDto>>> GetAllEmployes();
         Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM);
         Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM);
+        Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCIdDId(GetRequestByCIdDIdRM getByCIdDId);
         Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM);
 
 

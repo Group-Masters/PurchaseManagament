@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
@@ -74,12 +75,8 @@ namespace PurchaseManagament.Application.Concrete.Services
 
                 throw new Exception("beklenmedik bir hata oluştu. Tekrar Deneyiniz");
             }
-
-
-            
-
-
         }
+
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
         {
             var result = new Result<List<EmployeeDto>>();
@@ -147,15 +144,12 @@ namespace PurchaseManagament.Application.Concrete.Services
                 result.Success = false;
                 result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
                 return result;
-
             }
             if (existsEmployee.IsActive != true)
             {
                 result.Success = false;
                 result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
-                return result;
-
-                
+                return result;                
             }
 
             // onay kodu gönderimi son aşamada tekrar acılacak
@@ -165,16 +159,11 @@ namespace PurchaseManagament.Application.Concrete.Services
             _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
             var ok = await _uWork.CommitAsync();
             if (ok)
-            {
-               
-                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
-
-               
-              
+            {               
+                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
             }
             else
-            {
-              
+            {              
                 throw new NotFoundException("Lütfen Daha sonra tekrar Deneyiniz");
             }
             result.Data = true;
@@ -190,7 +179,6 @@ namespace PurchaseManagament.Application.Concrete.Services
                 , "EmployeeDetail");
 
             if (existsEmployee == null)
-
             {
                 throw new NotFoundException("Hatalı Giriş yaptınız.");
             }
@@ -212,9 +200,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 DepartmentId = companyEntity.DepartmentId,
                 RolId = roleList.Select(x => x.RoleId).ToList(),
                 Token = tokenString,
-
             };
-
 
            // Txt Login Log
             TxtLogla txtLogla = new TxtLogla();
@@ -238,9 +224,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             _uWork.GetRepository<EmployeeDetail>().Update(newEntity);
             await _uWork.CommitAsync();
             _uWork.Dispose();
+
             result.Data = newEntity.EmployeeId;
             return result;
-
         }
 
         [Validator(typeof(UpdatePasswordEmployeeValidator))]
@@ -251,7 +237,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             if (existsEntity is null)
             {
                 throw new NotFoundException("lütfen giriş yapınız");
-
             }
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], updatePasswordVM.Password);
             if (existsEntity.Password != hashedPassword)
@@ -263,6 +248,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _uWork.GetRepository<EmployeeDetail>().Update(existsEntity);
             await _uWork.CommitAsync();
             _uWork.Dispose();
+
             result.Data = existsEntity.Id;
             return result;
         }
@@ -286,15 +272,34 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDtos;
             return result;
         }
+
+        [Validator(typeof(GetByIdEmployeeValidator))]
+        public async Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCIdDId(GetRequestByCIdDIdRM getByCIdDId)
+        {
+            var result = new Result<List<EmployeeDto>>();
+            var employeEntity = await _uWork.GetRepository<Employee>().GetByFilterAsync(x => x.CompanyDepartment.CompanyId == getByCIdDId.CompanyId && x.CompanyDepartment.DepartmentId == getByCIdDId.DepartmentId
+                && x.IsActive == true, "EmployeeDetail", "CompanyDepartment.Department");
+            var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
+            foreach (var employee in employeDtos)
+            {
+                var b = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == employee.Id, "Role");
+                //employee.Roles =
+                //b.ToList();
+                if (b != null)
+                {
+                    employee.Roles = b.Select(x => x.Role.Name).ToList();
+                }
+            }
+            result.Data = employeDtos;
+            return result;
+        }
+
         #region private methodlar
         private string GenerateJwtToken(Employee person, List<EmployeeRole> roles)
         {
             var secretkey = _configuration["Jwt:SigningKey"];
             var ıssuer = _configuration["Jwt:Issuer"];
             var audience = _configuration["Jwt:Audiance"];
-
-
-
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(secretkey); // appsettings.json içinde JWT ayarlarınızı yapmalısınız
@@ -304,16 +309,11 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Audience = audience,
                 Issuer = ıssuer,
 
-
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Email, person.EmployeeDetail.Email),
                     new Claim(ClaimTypes.Name, person.EmployeeDetail.Username),
-
                     new Claim(ClaimTypes.Sid, person.Id.ToString()),
-
-
-
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -322,15 +322,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
                 Console.WriteLine(r.ToString());
-            }
-           
+            }           
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-      
-
-
+        }  
         #endregion
     }
 }

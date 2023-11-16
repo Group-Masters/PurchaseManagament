@@ -12,6 +12,8 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<bool>> DeleteCurrencyPermanent(GetByIdVM id); 
         Task<Result<bool>> DeleteCurrency(GetByIdVM id); // IsDeleted Update
 
+        Result<HashSet<CurrencyNamesDto>> GetAllCurrencyNames();
+
         //GET METHODS
         Task<Result<HashSet<CurrencyDTO>>> GetAllCurrency();
     }
