@@ -19,5 +19,6 @@
         public string RequestingEmployeeSurname { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime RequestCreatedDate { get; set; }
+        public string ImageSrc { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Company")]
-    [Authorize]
+    [AllowAnonymous]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;

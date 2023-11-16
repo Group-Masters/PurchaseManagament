@@ -7,6 +7,8 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Companies
         public Int64 Id { get; set; }
         public string Name { get; set; }
         public string? Address { get; set; }
+        public decimal ManagerThreshold { get; set; }
+
 
         //public virtual IEnumerable<CompanyDepartment>? CompanyDepartments { get; set; } // Şirket ve Departman
         //public virtual IEnumerable<CompanyStock>? CompanyStocks { get; set; } // Şirket Stok
