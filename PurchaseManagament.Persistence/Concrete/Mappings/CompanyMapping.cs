@@ -17,6 +17,10 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
               .HasColumnName("ADDRESS")
               .HasColumnOrder(3)
               .HasColumnType("nvarchar(150)");
+          
+            builder.Property(x => x.ManagerThreshold)
+              .HasColumnName("MANAGER_THRESHOLD");
+              
 
             builder.ToTable("COMPANIES");
         }
