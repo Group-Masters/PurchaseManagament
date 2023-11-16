@@ -160,7 +160,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var ok = await _uWork.CommitAsync();
             if (ok)
             {               
-                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
+               // SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
             }
             else
             {              

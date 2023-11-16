@@ -13,13 +13,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(2)
                 .HasColumnType("nvarchar(50)")
                 .IsRequired();
-
-            builder.Property(x => x.Rate)
-               .HasColumnName("CURRENCY_RATE")
-               .HasColumnOrder(3)
-               .IsRequired();
-            
-            builder.ToTable("CURRENCIES");
+             builder.ToTable("CURRENCIES");
         }
     }
 }
