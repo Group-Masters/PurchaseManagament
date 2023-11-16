@@ -9,6 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using System.Xml;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -75,6 +76,25 @@ namespace PurchaseManagament.Application.Concrete.Services
             var entities = _unitWork.GetRepository<Currency>().GetAllAsync();
             var mappedEntities = _mapper.Map<HashSet<CurrencyDTO>>(await entities);
             result.Data = mappedEntities;
+            return result;
+        }
+
+        public Result<HashSet<CurrencyNamesDto>> GetAllCurrencyNames()
+        {
+            var result = new Result<HashSet<CurrencyNamesDto>>();
+            var xml = new XmlDocument();
+            xml.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+            
+            var deneme = xml.DocumentElement?.ChildNodes;
+            var list = new HashSet<CurrencyNamesDto>();
+            foreach (XmlNode item in deneme)
+            {
+               list.Add(new CurrencyNamesDto() { Name = item.ChildNodes.Item(1).InnerText, Code = item.Attributes["Kod"].InnerText });
+               //Console.WriteLine(item.Attributes["Kod"].InnerText);
+               //Console.WriteLine(item.ChildNodes.Item(1).InnerText);
+            }
+            result.Data = list;
+            
             return result;
         }
 
