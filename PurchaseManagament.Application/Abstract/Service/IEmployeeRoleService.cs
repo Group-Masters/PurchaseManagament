@@ -18,6 +18,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<HashSet<EmployeeRoleDto>>> GetAllEmployeeRole();
 
         Task<Result<HashSet<EmployeeRoleDetailDto>>> GetEmployeeRolesByCompanyId(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM);
+        Task<Result<HashSet<EmployeeRoleDetailDto>>> GetDetailByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM);
         Task<Result<EmployeeRoleDetailDto>> GetEmployeeRoleDetailById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM);
         Task<Result<HashSet<EmployeeRoleDetailDto>>> GetAllEmployeeRoleDetail();
     }

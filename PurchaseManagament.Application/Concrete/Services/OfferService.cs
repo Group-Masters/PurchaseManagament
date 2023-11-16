@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
@@ -11,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using System.Xml;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -89,10 +91,39 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
         {
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+            //decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
+            //decimal eur = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
+            //decimal jpy = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "JPY")).InnerText.Replace('.', ','));
+
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice * ((decimal)x.Currency.Rate) >= 20000
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+
+            var list = new HashSet<Offer>();
+            foreach (var entity in entities)
+            {   
+                if (entity.Currency.Name=="TRY")
+                {
+                    if (entity.OfferedPrice>20000)
+                    {
+                        list.Add(entity);
+                    }
+                    continue;
+                }
+                var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
+                
+                if (rate * entity.OfferedPrice > 20000)
+                {
+                    list.Add(entity);
+                }
+
+            }
+
+
+
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(list);
             result.Data = mappedEntity;
             return result;
         }
@@ -100,10 +131,36 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
+
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme && x.OfferedPrice * ((decimal)x.Currency.Rate) <= 20000
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+
+            var list = new HashSet<Offer>();
+            foreach (var entity in entities)
+            {
+                if (entity.Currency.Name == "TRY")
+                {
+                    if (entity.OfferedPrice <= 20000)
+                    {
+                        list.Add(entity);
+                    }
+                    continue;
+                }
+                var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
+
+                if (rate * entity.OfferedPrice <= 20000)
+                {
+                    list.Add(entity);
+                }
+
+            }
+
+
+
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(list);
             result.Data = mappedEntity;
             return result;
         }
@@ -167,7 +224,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
 
-                var offers = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Id != entity.Id&& x.RequestId==entity.RequestId);
+                var offers = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Id != entity.Id && x.RequestId == entity.RequestId);
                 foreach (var item in offers)
                 {
                     item.Status = Status.Reddedildi;
@@ -180,7 +237,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
             }
-            
+
             _mapper.Map(update, entity);
             entity.ApprovingEmployeeId = (Int64)_loggedService.UserId;
             _unitWork.GetRepository<Offer>().Update(entity);

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -46,26 +47,34 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
         [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(long id)
         {
             var entities = await _service.GetEmployeeById(new GetByIdVM { Id=id});
             return Ok(entities);
         }
         [HttpGet("GetByCompany/{id}")]
         [Authorize(Roles = "1,3,9")]
-        public async Task<IActionResult> GetByCompanyId(int id)
+        public async Task<IActionResult> GetByCompanyId(long id)
         {
             var entities = await _service.GetEmployeesByCompany(new GetByIdVM { Id = id });
             return Ok(entities);
         }
+
         [HttpGet("GetIsActiceByCompany/{id}")]
         [Authorize(Roles = "1,3,9")]
-        public async Task<IActionResult> GetEmployeeIsActiveByCompany(int id)
+        public async Task<IActionResult> GetEmployeeIsActiveByCompany(long id)
         {
             var entities = await _service.GetEmployeeIsActiveByCompany(new GetByIdVM { Id = id });
             return Ok(entities);
         }
 
+        [HttpGet("GetIsActiveByCompanyDepartment/{id}")]
+        [Authorize(Roles = "1,3,9")]
+        public async Task<IActionResult> GetEmployeeIsActiveByCIdDId(long companyId, long departmentId)
+        {
+            var entities = await _service.GetEmployeeIsActiveByCIdDId(new GetRequestByCIdDIdRM { CompanyId = companyId, DepartmentId = departmentId });
+            return Ok(entities);
+        }
 
         [HttpPut("Update")]
         [Authorize]
@@ -74,6 +83,7 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.UpdateEmployee(updateEmployeeVM);
             return Ok(entities);
         }
+
         [HttpPut("UpdatePassword")]
         [Authorize]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordVM updatePasswordVM)

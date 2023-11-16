@@ -23,6 +23,16 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("STATUS")
                 .HasColumnOrder(4);
 
+            builder.Property(x => x.ImageSrc)
+               .HasColumnName("IMAGE_SRC")
+               .HasColumnOrder(5)
+               .HasColumnType("nvarchar(150)");
+            
+            builder.Property(x => x.TRY_Rate)
+               .HasColumnName("TRY_RATE")
+               .HasColumnOrder(6);
+               
+
             builder.HasOne(x => x.Offer)
                 .WithOne(x => x.Invoice)
                 .HasForeignKey<Invoice>(x => x.OfferId)

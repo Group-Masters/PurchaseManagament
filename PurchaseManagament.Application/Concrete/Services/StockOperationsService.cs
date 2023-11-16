@@ -22,7 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<StockOperationsDto>>();
 
-            var entities = await _unitWork.GetRepository<StockOperationsDto>().GetAllAsync("CompanyStock.Product.MeasuringUnit", "Employee");
+            var entities = await _unitWork.GetRepository<StockOperations>().GetAllAsync("CompanyStock.Product.MeasuringUnit", "Employee");
             var mappedEntities = _mapper.Map<HashSet<StockOperationsDto>>(entities);
 
             result.Data = mappedEntities;
