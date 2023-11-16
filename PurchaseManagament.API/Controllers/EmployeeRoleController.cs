@@ -47,6 +47,14 @@ namespace PurchaseManagament.API.Controllers
             var result = await _employeeRoleService.GetByEmployeeId(new GetByEmployeeIdRM { EmployeeId = EmployeeId });
             return Ok(result);
         }
+        
+
+        [HttpGet("GetDetailByEmployeeId/{id}")]
+        public async Task<ActionResult<Result<HashSet<EmployeeRoleDetailDto>>>> GetDetailByEmployeeId(Int64 EmployeeId)
+        {
+            var result = await _employeeRoleService.GetDetailByEmployeeId(new GetByEmployeeIdRM { EmployeeId = EmployeeId });
+            return Ok(result);
+        }
 
         [HttpGet("GetByRoleId/{id}")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDto>>>> GetByRoleId(Int64 RoleId)

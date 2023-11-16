@@ -10,6 +10,8 @@
         public string ProductName { get; set; }
         public string MeasuringUnit { get; set; }
         public double Quantity { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         //public bool OperationType { get; set; }
     }
 }

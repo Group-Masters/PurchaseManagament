@@ -101,6 +101,22 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(GetByIdEmployeeValidator))]
+        public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetDetailByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM)
+        {
+            var result = new Result<HashSet<EmployeeRoleDetailDto>>();
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId);
+            if (!existEntity)
+            {
+                throw new NotFoundException("İstenen Çalışana ait Çalışan/Rol kaydı bulunamadı.");
+            }
+
+            var entities = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == getByEmployeeIdRM.EmployeeId, "Employee.EmployeeDetail", "Role");
+            var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(entities);
+            result.Data = mappedEntity;
+            return result;
+        }
+
         //[Validator(typeof(GetByRoleIdValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByRoleId(GetByRoleIdRM getByRoleIdRM)
         {
@@ -152,7 +168,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new NotFoundException("Detaylı çıktısı istenen Çalışan/Rol kaydı bulunamadı.");
             }
 
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetSingleByFilterAsync(x => x.Id == getEmployeeRoleByIdRM.Id, "Employee","Employee.EmployeeDetail", "Role");
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetSingleByFilterAsync(x => x.Id == getEmployeeRoleByIdRM.Id, "Employee.EmployeeDetail", "Role");
             var mappedEntity = _mapper.Map<EmployeeRoleDetailDto>(existEntity);
             
             result.Data = mappedEntity;
@@ -163,7 +179,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetEmployeeRolesByCompanyId(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
-            var entity = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getEmployeeRoleByIdRM.Id, "Employee", "Employee.EmployeeDetail", "Role");
+            var entity = await _unitWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.Employee.CompanyDepartment.CompanyId == getEmployeeRoleByIdRM.Id, "Employee.EmployeeDetail", "Role");
             var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(entity);
 
             result.Data = mappedEntity;
@@ -174,7 +190,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
 
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetAllAsync( "Employee", "Employee.EmployeeDetail", "Role");
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetAllAsync( "Employee.EmployeeDetail", "Role");
             var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(existEntity);
 
             result.Data = mappedEntity;
