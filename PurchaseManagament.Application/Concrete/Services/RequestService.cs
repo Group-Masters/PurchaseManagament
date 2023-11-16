@@ -109,7 +109,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<RequestDto>>> GetAllRequest()
         {
             var result = new Result<HashSet<RequestDto>>();
-            var entities = await _unitWork.GetRepository<Request>().GetAllAsync("Product", "ApprovedEmployee", "RequestEmployee");
+            var entities = await _unitWork.GetRepository<Request>().GetAllAsync("Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -125,7 +125,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new NotFoundException("İstenen Talep kaydı bulunamadı.");
             }
 
-            var existEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getRequestById.Id, "Product", "ApprovedEmployee", "RequestEmployee");
+            var existEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getRequestById.Id, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<RequestDto>(existEntity);
             result.Data = mappedEntity;
             return result;
@@ -141,7 +141,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 throw new NotFoundException("İstenen Çalışana ait Talep kaydı bulunamadı.");
             }
 
-            var existsEntity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployeeId == getRequestByEmployeeIdRM.RequestEmployeeId, "Product", "ApprovedEmployee", "RequestEmployee");
+            var existsEntity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployeeId == getRequestByEmployeeIdRM.RequestEmployeeId, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(existsEntity);
             result.Data = mappedEntity;
             return result;
@@ -159,7 +159,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
 
-            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id, "Product", "ApprovedEmployee", "RequestEmployee");
+            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
             result.Data = mappedEntity;
             return result;
@@ -177,7 +177,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var companyDepartment = await _unitWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == getRequestByCIdDIdRM.CompanyId && x.DepartmentId == getRequestByCIdDIdRM.DepartmentId);
 
-            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id && x.State== Status.Beklemede, "Product", "ApprovedEmployee", "RequestEmployee");
+            var requestFilter = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartmentId == companyDepartment.Id && x.State== Status.Beklemede, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
             var mappedEntity = _mapper.Map<HashSet<RequestDto>>(requestFilter);
             result.Data = mappedEntity;
             return result;
@@ -187,7 +187,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<HashSet<RequestDto>>();
-            var entity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State == Status.Onay, "Product", "ApprovedEmployee", "RequestEmployee.CompanyDepartment", "Product.MeasuringUnit");
+            var entity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id && x.State == Status.Onay, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee.CompanyDepartment", "Product.MeasuringUnit");
 
             var dtos = _mapper.Map<HashSet<RequestDto>>(entity);
             result.Data = dtos;
