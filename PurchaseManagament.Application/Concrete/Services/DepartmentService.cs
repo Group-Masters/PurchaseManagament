@@ -23,7 +23,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
         }
 
-        [Validator(typeof(CreateDepartmanValidator))]
+        [Validator(typeof(CreateDepartmentValidator))]
         public async Task<Result<bool>> CreateDepartment(CreateDepartmentRM createDepartmentRM)
         {
             var result = new Result<bool>();
@@ -73,7 +73,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-        [Validator(typeof(GetByIdDepartmanValidator))]
+        [Validator(typeof(GetByIdDepartmentValidator))]
         public async Task<Result<DepartmentDto>> GetDepartmentById(GetByIdDepartmentRM getByIdDepartmentRM)
         {
             var result = new Result<DepartmentDto>();
@@ -111,7 +111,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(UpdateDepartmanValidator))]
+        [Validator(typeof(UpdateDepartmentValidator))]
         public async Task<Result<bool>> UpdateDepartment(UpdateDepartmentRM updateDepartmentRM)
         {
             var result = new Result<bool>();

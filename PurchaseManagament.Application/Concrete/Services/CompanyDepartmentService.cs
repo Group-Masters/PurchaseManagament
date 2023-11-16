@@ -41,7 +41,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(UpdateCompanyDepartmanValidator))]
+        [Validator(typeof(UpdateCompanyDepartmentValidator))]
         public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
         {
             var result = new Result<bool>();
@@ -57,7 +57,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(DeleteCompanyDepartmanValidator))]
+        [Validator(typeof(DeleteCompanyDepartmentValidator))]
         public async Task<Result<bool>> DeleteCompanyDepartment(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -72,7 +72,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }        
-        [Validator(typeof(DeleteCompanyDepartmanValidator))]
+        [Validator(typeof(DeleteCompanyDepartmentValidator))]
         public async Task<Result<bool>> DeleteCompanyDepartmentPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -96,7 +96,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity;
             return result;
         }
-        [Validator(typeof(GetCompanyDepartmanByIdValidator))]
+        [Validator(typeof(GetCompanyDepartmentByIdValidator))]
         public async Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentById(GetCompanyDepartmentByIdRM getCompanyDepartmentById)
         {
             var result = new Result<CompanyDepartmentDto>();
