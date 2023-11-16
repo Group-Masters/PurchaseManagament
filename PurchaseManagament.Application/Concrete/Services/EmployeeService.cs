@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Validators.Employees;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -31,55 +33,52 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
-        //[Validator(typeof(CreateEmployeeValidator))]
-        public async Task<Result<long>> CreateEmployee(CreateEmployeeVM createEmployeeVM)
+        [Validator(typeof(CreateEmployeeValidator))]
+        public async Task<Result<long>> CreateEmployee(CreateEmployeeVM? createEmployeeVM)
         {
-            var result = new Result<Int64>();
-
-            //tc kimlik numrası veya Email başka kullanıca bulunmaz
-            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == createEmployeeVM.Email || x.Employee.IdNumber == createEmployeeVM.IdNumber);
-            if (ExistsAny)
+            try
             {
-                throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
+                var result = new Result<Int64>();
+
+                //tc kimlik numrası veya Email başka kullanıca bulunmaz
+                var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == createEmployeeVM.Email || x.Employee.IdNumber == createEmployeeVM.IdNumber);
+                if (ExistsAny)
+                {
+                    throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
+                }
+                var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
+                // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
+                var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
+
+                if (personControl == false)
+                {
+                    throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
+                }
+                //şifre hashleme
+                var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], createEmployeeVM.Password);
+
+                var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
+                var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
+                approvedEntity.Password = hashedPassword;
+                employeeEntity.CompanyDepartment = entityCD;
+                employeeEntity.EmployeeDetail = approvedEntity;
+                _uWork.GetRepository<Employee>().Add(employeeEntity);
+                _uWork.GetRepository<EmployeeDetail>().Add(approvedEntity);
+                await _uWork.CommitAsync();
+                _uWork.Dispose();
+                result.Data = employeeEntity.Id;
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("beklenmedik bir hata oluştu. Tekrar Deneyiniz");
             }
 
 
+            
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-            var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
-            // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
-            //var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
-
-            //if (personControl == false)
-            //{
-            //    throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
-            //}
-            //şifre hashleme
-            var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], createEmployeeVM.Password);
-
-            var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
-            var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
-            approvedEntity.Password = hashedPassword;
-            employeeEntity.CompanyDepartment = entityCD;
-            employeeEntity.EmployeeDetail = approvedEntity;
-            _uWork.GetRepository<Employee>().Add(employeeEntity);
-            _uWork.GetRepository<EmployeeDetail>().Add(approvedEntity);
-            await _uWork.CommitAsync();
-            _uWork.Dispose();
-            result.Data = employeeEntity.Id;
-            return result;
         }
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
         {
@@ -98,7 +97,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<List<EmployeeDto>>();
@@ -117,7 +116,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
-        //[Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM)
         {
             var result = new Result<EmployeeDto>();
@@ -131,8 +130,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = employeDto;
             return result;
 
-        }  
-        
+        }
+
+        [Validator(typeof(LoginEmployeeValidator))]
         public async Task<Result<bool>> Login(LoginVM loginVM)
         {
             var result = new Result<bool>();
@@ -159,14 +159,18 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             // onay kodu gönderimi son aşamada tekrar acılacak
-            //var deger = RandomNumberUtils.CreateRandom(0, 999999);
-            //var employedetails = existsEmployee.EmployeeDetail;
-            //employedetails.ApprovedCode = deger;
-            //_uWork.GetRepository<EmployeeDetail>().Update(employedetails);
+            var deger = RandomNumberUtils.CreateRandom(0, 999999);
+            var employedetails = existsEmployee.EmployeeDetail;
+            employedetails.ApprovedCode = deger;
+            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
             var ok = await _uWork.CommitAsync();
             if (ok)
             {
-               //SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+               
+                SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");
+
+               
+              
             }
             else
             {
@@ -177,8 +181,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(CreateEmployeeValidator))]
-        public async Task<Result<TokenDto>> Login2FK (LoginVM2 loginVM)
+        [Validator(typeof(CreateEmployeeValidator))]
+        public async Task<Result<TokenDto>> Login2FK(LoginVM2 loginVM)
         {
             var result = new Result<TokenDto>();
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
@@ -212,15 +216,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             };
 
 
-            //Txt Login Log
+           // Txt Login Log
             TxtLogla txtLogla = new TxtLogla();
-                await txtLogla.Logla(existsEmployee);
+            await txtLogla.Logla(existsEmployee);
 
             return result;
         }
 
 
-        //[Validator(typeof(UpdateEmployeeValidator))]
+        [Validator(typeof(UpdateEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployee(UpdateEmployeeVM updateEmployeeVM)
         {
             var result = new Result<long>();
@@ -239,7 +243,7 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
-        //[Validator(typeof(UpdatePasswordEmployeeValidator))]
+        [Validator(typeof(UpdatePasswordEmployeeValidator))]
         public async Task<Result<long>> UpdateEmployeePassword(UpdatePasswordVM updatePasswordVM)
         {
             var result = new Result<long>();
@@ -263,7 +267,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM)
         {
             var result = new Result<List<EmployeeDto>>();

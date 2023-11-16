@@ -7,9 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SeriLogLogs\**" />
+    <EmbeddedResource Remove="SeriLogLogs\**" />
+    <None Remove="SeriLogLogs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="LoginLogSaves\" />
     <Folder Include="RequestLogsSaves\" />
-    <Folder Include="SeriLogLogs\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Validators.Offer;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -25,6 +27,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _loggedService = loggedService;
         }
 
+        [Validator(typeof(CreateOfferValidator))]
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
         {
             var result = new Result<long>();
@@ -35,6 +38,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteOffer(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -49,6 +53,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteOfferPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -71,6 +76,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
         {
             var result = new Result<HashSet<OfferDto>>();
@@ -80,6 +86,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
@@ -90,6 +97,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
@@ -100,6 +108,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById)
         {
             var result = new Result<OfferDto>();
@@ -115,6 +124,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(UpdateOfferValidator))]
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
             var result = new Result<long>();
@@ -132,7 +142,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateOfferStateValidator))]
+        [Validator(typeof(UpdateOfferStateValidator))]
         public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
@@ -179,6 +189,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferByAproved(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
@@ -189,6 +200,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetOfferByIdValidator))]
         public async Task<Result<HashSet<OfferDto>>> GetOfferFromStock(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();

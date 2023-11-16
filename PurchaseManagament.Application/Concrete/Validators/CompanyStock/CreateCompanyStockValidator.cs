@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyDepartments;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.CompanyStocks;
 using System;
 using System.Collections.Generic;
@@ -19,4 +20,5 @@ namespace PurchaseManagament.Application.Concrete.Validators.CompanyStock
 
         }
     }
+
 }

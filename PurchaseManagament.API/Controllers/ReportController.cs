@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
+using System.ComponentModel.Design;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -37,14 +38,15 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.GetReportByCompanyId(new GetByIdVM { Id=Id});
             return Ok(entities);
         }
-        [HttpGet("GetSupplierById/{Id}")]
-        public async Task<IActionResult> GetSupplierById(Int64 Id)
+        [HttpGet("GetSupplierById/{companyId}/{supplierId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetSupplierById(Int64 companyId ,Int64 supplierId)
         {
-            var entities = await _service.GetSupplierReport(new GetByIdVM { Id = Id });
+            var entities = await _service.GetSupplierReport(new GetReportSupplierVM { CompanyId = companyId, SupplierId = supplierId });
             return Ok(entities);
         }
         [HttpGet("GetbyProduct/{idCompany}/{idProduct}")]
-        public async Task<IActionResult> GetReportByprocut(Int64 idCompany,Int64 idProduct)
+        public async Task<IActionResult> GetReportByProduct(Int64 idCompany,Int64 idProduct)
         { 
             var entities = await _service.GetProductReport(new GetReportProductVM { CompanyId= idCompany,ProductId=idProduct });
             return Ok(entities);

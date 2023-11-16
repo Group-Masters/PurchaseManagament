@@ -22,7 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
-        [Validator(typeof(CreateCompanyDepartmentValidator))]
+        [Validator(typeof(CreateCompanyDepartmanValidator))]
         public async Task<Result<bool>> CreateCompanyDepartment(CreateCompanyDepartmanRM createCompanyDepartmentRM)
         {
             var result = new Result<bool>();
@@ -41,7 +41,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(UpdateCompanyDepartmentValidator))]
+        [Validator(typeof(UpdateCompanyDepartmanValidator))]
         public async Task<Result<bool>> UpdateCompanyDepartment(UpdateCompanyDepartmentRM updateCompanyDepartmentRM)
         {
             var result = new Result<bool>();
@@ -57,6 +57,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(DeleteCompanyDepartmanValidator))]
         public async Task<Result<bool>> DeleteCompanyDepartment(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -71,7 +72,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }        
-        
+        [Validator(typeof(DeleteCompanyDepartmanValidator))]
         public async Task<Result<bool>> DeleteCompanyDepartmentPermanent(GetByIdVM id)
         {
             var result = new Result<bool>();
@@ -86,6 +87,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+
         public async Task<Result<HashSet<CompanyDepartmentDto>>> GetAllCompanyDepartment()
         {
             var result = new Result<HashSet<CompanyDepartmentDto>>();
@@ -94,7 +96,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity;
             return result;
         }
-
+        [Validator(typeof(GetCompanyDepartmanByIdValidator))]
         public async Task<Result<CompanyDepartmentDto>> GetCompanyDepartmentById(GetCompanyDepartmentByIdRM getCompanyDepartmentById)
         {
             var result = new Result<CompanyDepartmentDto>();
@@ -110,6 +112,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        [Validator(typeof(GetDepartmentByCompanyIdRMValidator))]
         public async Task<Result<HashSet<DepartmentDto>>> GetDepartmentByCompanyId(GetDepartmentByCompanyIdRM getDepartmentByCompanyIdRM)
         {
             var result = new Result<HashSet<DepartmentDto>>();
