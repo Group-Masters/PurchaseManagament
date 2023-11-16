@@ -73,8 +73,19 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<CurrencyDTO>>> GetAllCurrency()
         {
             var result = new Result<HashSet<CurrencyDTO>>();
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             var entities = _unitWork.GetRepository<Currency>().GetAllAsync();
             var mappedEntities = _mapper.Map<HashSet<CurrencyDTO>>(await entities);
+            foreach ( var entity in mappedEntities)
+            {
+                if (entity.Name=="TRY" )
+                {
+                    entity.Rate = 1;
+                    continue;
+                }
+                entity.Rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Name}")).InnerText.Replace('.', ','));
+            }
             result.Data = mappedEntities;
             return result;
         }

@@ -4,6 +4,6 @@
     {
         public Int64 Id { get; set; }
         public string Name { get; set; }
-        public double Rate { get; set; } // Kur oranı --> TL Karşılığı
+        public decimal Rate { get; set; } // Kur oranı --> TL Karşılığı
     }
 }
