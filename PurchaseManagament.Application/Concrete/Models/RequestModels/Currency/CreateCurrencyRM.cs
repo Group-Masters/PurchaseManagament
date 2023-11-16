@@ -9,6 +9,6 @@ namespace PurchaseManagament.Application.Concrete.Models.RequestModels.Currency
     public class CreateCurrencyRM
     {
         public string Name { get; set; }
-        public double Rate { get; set; } // Kur oranı --> TL Karşılığı
+        public double? Rate { get; set; } // Kur oranı --> TL Karşılığı
     }
 }

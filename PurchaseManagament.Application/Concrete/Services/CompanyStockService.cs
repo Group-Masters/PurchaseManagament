@@ -152,7 +152,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 CompanyStockId = entity.Id,
                 Quantity = updateCompanyQuantityReduceRM.Quantity,
-                ReceivingEmployeeId = updateCompanyQuantityReduceRM.ReceivingEmployeeId
+                ReceivingEmployeeId = (Int64)updateCompanyQuantityReduceRM.ReceivingEmployeeId
             };
 
             _mapper.Map<CompanyStock>(entity);

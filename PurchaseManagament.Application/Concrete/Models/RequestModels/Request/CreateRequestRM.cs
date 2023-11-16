@@ -2,7 +2,7 @@
 {
     public class CreateRequestRM
     {
-        public long ProductId { get; set; }
+        public long? ProductId { get; set; }
         //public long ApprovingEmployeeId { get; set; }
         //public long RequestEmployeeId { get; set; }
         public string? Details { get; set; }

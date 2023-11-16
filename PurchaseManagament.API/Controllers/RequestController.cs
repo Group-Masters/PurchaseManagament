@@ -21,7 +21,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateRequest([FromBody] CreateRequestRM createRequestRM)
+        public async Task<IActionResult> CreateRequest([FromBody] CreateRequestRM? createRequestRM)
         {
             var entity = await _requestService.CreateRequest(createRequestRM);
             return Ok(entity);

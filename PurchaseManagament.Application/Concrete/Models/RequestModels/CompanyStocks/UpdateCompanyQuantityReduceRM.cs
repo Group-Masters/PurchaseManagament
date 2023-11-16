@@ -2,8 +2,8 @@
 {
     public class UpdateCompanyQuantityReduceRM
     {
-        public Int64 Id { get; set; }
-        public long ReceivingEmployeeId { get; set; }
+        public Int64? Id { get; set; }
+        public Int64? ReceivingEmployeeId { get; set; }
         public double Quantity { get; set; }
     }
 }

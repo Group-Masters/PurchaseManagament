@@ -3,7 +3,7 @@
     public class CreateCompanyStockRM
     {
         public double Quantity { get; set; }
-        public long CompanyId { get; set; }
-        public long ProductId { get; set; }
+        public long? CompanyId { get; set; }
+        public long? ProductId { get; set; }
     }
 }
