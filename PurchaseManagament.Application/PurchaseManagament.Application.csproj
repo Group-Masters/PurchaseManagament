@@ -13,13 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.1.0" />
+    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.1.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
-    <PackageReference Include="MrAdvice" Version="2.12.2" />
-    <PackageReference Include="QuestPDF" Version="2023.10.1" />
+    <PackageReference Include="MrAdvice" Version="2.13.0" />
+    <PackageReference Include="QuestPDF" Version="2023.10.2" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
 
