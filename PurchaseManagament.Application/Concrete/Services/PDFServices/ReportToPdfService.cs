@@ -62,7 +62,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                            .Image("C:\\Users\\erenagir\\Desktop\\erp\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                     });
 
