@@ -102,9 +102,11 @@ namespace PurchaseManagament.Application.Concrete.Services
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();
-            var managerThreshold = entities.FirstOrDefault().Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
+
+          
             foreach (var entity in entities)
-            {   
+            {
+                var managerThreshold = entity.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
                 if (entity.Currency.Name=="TRY")
                 {
                     if (entity.OfferedPrice> managerThreshold)
@@ -115,7 +117,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 }
                 var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
                 
-                if (rate * entity.OfferedPrice > 20000)
+                if (rate * entity.OfferedPrice > managerThreshold)
                 {
                     list.Add(entity);
                 }
@@ -140,9 +142,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();
-           var managerThreshold= entities.FirstOrDefault().Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
             foreach (var entity in entities)
             {
+                var managerThreshold = entity.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
                 if (entity.Currency.Name == "TRY")
                 {
                     if (entity.OfferedPrice <= managerThreshold)
@@ -153,7 +155,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 }
                 var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
 
-                if (rate * entity.OfferedPrice <= 20000)
+                if (rate * entity.OfferedPrice <= managerThreshold)
                 {
                     list.Add(entity);
                 }
