@@ -1,4 +1,6 @@
-﻿using PurchaseManagament.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using PurchaseManagament.Domain.Common;
+using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Domain.Entities
 {

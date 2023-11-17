@@ -266,12 +266,10 @@ namespace PurchaseManagament.Persistence.Concrete.Context
                 );
                 //15.11.2023 11:30 değerleri
                 modelBuilder.Entity<Currency>().HasData(
-                       new Currency { Id = 1, Name = "Türk Lirası", Rate = 1},
-                       new Currency { Id = 2, Name = "Dolar", Rate = 28.6 },
-                       new Currency { Id = 3, Name = "Euro", Rate = 31.2 },
-                       new Currency { Id = 4, Name = "Pound", Rate = 35.7 },
-                       new Currency { Id = 5, Name = "Riyal", Rate = 7.6 },
-                       new Currency { Id = 6, Name = "Ruble", Rate = 0.3 }
+                       new Currency { Id = 1, Name = "TRY"},
+                       new Currency { Id = 2, Name = "USD"},
+                       new Currency { Id = 3, Name = "EUR"},
+                       new Currency { Id = 3, Name = "SAR"}
                 );
             }
         }
