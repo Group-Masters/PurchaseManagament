@@ -49,7 +49,7 @@ namespace PurchaseManagament.API.Controllers
         }
         
 
-        [HttpGet("GetDetailByEmployeeId/{id}")]
+        [HttpGet("GetDetailByEmployeeId/{EmployeeId}")]
         public async Task<ActionResult<Result<HashSet<EmployeeRoleDetailDto>>>> GetDetailByEmployeeId(Int64 EmployeeId)
         {
             var result = await _employeeRoleService.GetDetailByEmployeeId(new GetByEmployeeIdRM { EmployeeId = EmployeeId });
