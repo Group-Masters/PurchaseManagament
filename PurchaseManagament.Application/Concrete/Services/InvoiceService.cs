@@ -11,6 +11,8 @@ using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 using PurchaseManagament.Utils;
+using System.Xml;
+
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -28,6 +30,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(CreateInvoiceValidator))]
         public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
+             XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             var result = new Result<long>();
             var invoiceExists = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.UUID == create.UUID);
             if (invoiceExists)
@@ -36,12 +40,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var mappedEntity = _mapper.Map<Invoice>(create);
-            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==create.OfferId,"Request");
+            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==create.OfferId,"Request", "Currency");
             if (offerEntity is null)
             {
                 throw new NotFoundException("İstenen Teklif kaydı bulunmadı.");
             }
 
+
+           mappedEntity.TRY_Rate =offerEntity.Currency.Name=="TRY"? 1*offerEntity.OfferedPrice: offerEntity.OfferedPrice* Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
+            
             offerEntity.Status = Status.FaturaEklendi;
             offerEntity.Request.State=Status.FaturaEklendi;
             _unitWork.GetRepository<Offer>().Update(offerEntity);
