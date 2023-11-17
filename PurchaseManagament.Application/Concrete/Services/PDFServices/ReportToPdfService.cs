@@ -93,16 +93,17 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                              table.ColumnsDefinition(columns =>
                              {
 
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
-                                 columns.ConstantColumn(113);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
+                                 columns.ConstantColumn(100);
                              });
 
                              table.Header(header =>
@@ -120,6 +121,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                  header.Cell().Element(CellStyle).AlignCenter().Text("Tedarikçi Adı").ExtraBold();
                                  header.Cell().Element(CellStyle).AlignCenter().Text("Tedarik Tarihi").ExtraBold();
                                  header.Cell().Element(CellStyle).AlignCenter().Text("Fatura Numarası").ExtraBold();
+                                 header.Cell().Element(CellStyle).AlignCenter().Text("TL Fiyat").ExtraBold();
 
                                  // you can extend existing styles by creating additional methods
                                  IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -142,6 +144,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                  table.Cell().Row(i + 1).Column(8).Element(CellStyle).Text(deneme[sayac].supplier ?? "-");
                                  table.Cell().Row(i + 1).Column(9).Element(CellStyle).Text(deneme[sayac].supplyDate ?? "-");
                                  table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString() ?? "-");
+                                 table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].Prices_Try ?? "-");
 
                                  sayac++;
                              }
@@ -224,18 +227,19 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             table.ColumnsDefinition(columns =>
                             {
 
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
                             });
 
                             table.Header(header =>
@@ -255,6 +259,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Tedarikçi Adı").ExtraBold();
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Tedarik Tarihi").ExtraBold();
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Fatura Numarası").ExtraBold();
+                                header.Cell().Element(CellStyle).AlignCenter().Text("TL Fiyat").ExtraBold();
 
                                 // you can extend existing styles by creating additional methods
                                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -279,6 +284,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].supplier ?? "-");
                                 table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].supplyDate ?? "-");
                                 table.Cell().Row(i + 1).Column(12).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString() ?? "-");
+                                table.Cell().Row(i + 1).Column(13).Element(CellStyle).Text(deneme[sayac].Prices_Try ?? "-");
 
                                 sayac++;
                             }
@@ -359,18 +365,19 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             table.ColumnsDefinition(columns =>
                             {
 
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
-                                columns.ConstantColumn(135);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(120);
                             });
 
                             table.Header(header =>
@@ -390,6 +397,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Tedarikçi Adı").ExtraBold();
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Tedarik Tarihi").ExtraBold();
                                 header.Cell().Element(CellStyle).AlignCenter().Text("Fatura Numarası").ExtraBold();
+                                header.Cell().Element(CellStyle).AlignCenter().Text("TL Fiyat").ExtraBold();
 
                                 // you can extend existing styles by creating additional methods
                                 IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -414,6 +422,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].supplier ?? "-");
                                 table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].supplyDate ?? "-");
                                 table.Cell().Row(i + 1).Column(12).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString() ?? "-");
+                                table.Cell().Row(i + 1).Column(13).Element(CellStyle).Text(deneme[sayac].Prices_Try ?? "-");
 
                                 sayac++;
                             }
@@ -497,18 +506,19 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                            table.ColumnsDefinition(columns =>
                            {
 
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
-                               columns.ConstantColumn(135);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
+                               columns.ConstantColumn(120);
                            });
 
                            table.Header(header =>
@@ -528,6 +538,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                header.Cell().Element(CellStyle).AlignCenter().Text("Tedarikçi Adı").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Tedarik Tarihi").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Fatura Numarası").ExtraBold();
+                               header.Cell().Element(CellStyle).AlignCenter().Text("TL Fiyat").ExtraBold();
                                // you can extend existing styles by creating additional methods
                                IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
 
@@ -550,6 +561,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                table.Cell().Row(i + 1).Column(10).Element(CellStyle).Text(deneme[sayac].supplier ?? "-");
                                table.Cell().Row(i + 1).Column(11).Element(CellStyle).Text(deneme[sayac].supplyDate ?? "-");
                                table.Cell().Row(i + 1).Column(12).Element(CellStyle).Text(deneme[sayac].InvoiceId.ToString() ?? "-");
+                               table.Cell().Row(i + 1).Column(13).Element(CellStyle).Text(deneme[sayac].Prices_Try ?? "-");
 
                                sayac++;
                            }

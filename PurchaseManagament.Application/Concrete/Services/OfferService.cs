@@ -102,11 +102,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();
+            var managerThreshold = entities.FirstOrDefault().Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
             foreach (var entity in entities)
             {   
                 if (entity.Currency.Name=="TRY")
                 {
-                    if (entity.OfferedPrice>20000)
+                    if (entity.OfferedPrice> managerThreshold)
                     {
                         list.Add(entity);
                     }
@@ -139,11 +140,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();
+           var managerThreshold= entities.FirstOrDefault().Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
             foreach (var entity in entities)
             {
                 if (entity.Currency.Name == "TRY")
                 {
-                    if (entity.OfferedPrice <= 20000)
+                    if (entity.OfferedPrice <= managerThreshold)
                     {
                         list.Add(entity);
                     }
