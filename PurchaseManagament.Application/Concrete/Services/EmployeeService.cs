@@ -280,16 +280,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             var employeEntity = await _uWork.GetRepository<Employee>().GetByFilterAsync(x => x.CompanyDepartment.CompanyId == getByCIdDId.CompanyId && x.CompanyDepartment.DepartmentId == getByCIdDId.DepartmentId
                 && x.IsActive == true, "EmployeeDetail", "CompanyDepartment.Department");
             var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
-            foreach (var employee in employeDtos)
-            {
-                var b = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == employee.Id, "Role");
-                //employee.Roles =
-                //b.ToList();
-                if (b != null)
-                {
-                    employee.Roles = b.Select(x => x.Role.Name).ToList();
-                }
-            }
             result.Data = employeDtos;
             return result;
         }
