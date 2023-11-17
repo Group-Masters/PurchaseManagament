@@ -69,6 +69,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             if (updateRequestStateRM.State==Status.Onay|| updateRequestStateRM.State == Status.Reddedildi)
             {
                 entity.ApprovingEmployeeId = _loggedService.UserId;
+                entity.ApprovedDate = DateTime.Now;
             }
             var mappedEntity = _mapper.Map(updateRequestStateRM, entity);
             _unitWork.GetRepository<Request>().Update(mappedEntity);

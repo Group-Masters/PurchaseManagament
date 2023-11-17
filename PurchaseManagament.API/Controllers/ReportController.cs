@@ -38,6 +38,13 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.GetReportByCompanyId(new GetByIdVM { Id=Id});
             return Ok(entities);
         }
+        [HttpGet("GetByRequestID/{Id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetRequestReportbyRequestId(Int64 Id)
+        {
+            var entities = await _service.GetRequestReportbyRequestId(new GetByIdVM { Id=Id});
+            return Ok(entities);
+        }
         [HttpGet("GetSupplierById/{companyId}/{supplierId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetSupplierById(Int64 companyId ,Int64 supplierId)

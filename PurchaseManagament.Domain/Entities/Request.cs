@@ -8,9 +8,11 @@ namespace PurchaseManagament.Domain.Entities
         public long ProductId { get; set; }
   
         public long? ApprovingEmployeeId { get; set; }
+
         public long RequestEmployeeId { get; set; }
         public string Details { get; set; }
         public double Quantity { get; set; }
+        public DateTime? ApprovedDate { get; set; }
 
         public virtual Product Product { get; set; }
         public virtual Employee ApprovedEmployee { get; set; } // Onaylayan 

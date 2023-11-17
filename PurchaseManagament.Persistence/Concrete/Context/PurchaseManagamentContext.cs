@@ -48,7 +48,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Veritabanı İlkleme
-            new DbInitializer(modelBuilder).Seed();
+           // new DbInitializer(modelBuilder).Seed();
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
             modelBuilder.ApplyConfiguration(new CompanyMapping());
             modelBuilder.ApplyConfiguration(new CompanyStockMapping());
