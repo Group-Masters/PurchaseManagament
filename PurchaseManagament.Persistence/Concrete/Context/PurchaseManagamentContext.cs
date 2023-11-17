@@ -4,6 +4,8 @@ using PurchaseManagament.Domain.Common;
 using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Concrete.Mappings;
+using PurchaseManagament.Utils;
+using System.Reflection.Emit;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
@@ -45,6 +47,8 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Veritabanı İlkleme
+            new DbInitializer(modelBuilder).Seed();
             modelBuilder.ApplyConfiguration(new CompanyDepartmentMapping());
             modelBuilder.ApplyConfiguration(new CompanyMapping());
             modelBuilder.ApplyConfiguration(new CompanyStockMapping());
@@ -128,6 +132,83 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             }
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public class DbInitializer
+        {
+            private readonly ModelBuilder modelBuilder;
+
+            public DbInitializer(ModelBuilder modelBuilder)
+            {
+                this.modelBuilder = modelBuilder;
+            }
+
+            //Migration ile birlikte çalışır
+            public void Seed()
+            {
+                modelBuilder.Entity<Company>().HasData(
+                       new Company() { Id = 1, Name = "Varsayılan Şirket", Address = "Varsayılan Adres" }
+                );
+                modelBuilder.Entity<Department>().HasData(
+                       new Department { Id = 1, Name = "Varsayılan Departman" }
+                );
+                modelBuilder.Entity<CompanyDepartment>().HasData(
+                       new CompanyDepartment { Id = 1, CompanyId = 1, DepartmentId = 1 }
+                );
+                //Admin kullanıcısının gerçek bilgileri burada verilmelidir.
+                modelBuilder.Entity<Employee>().HasData(
+                        new Employee { Id = 1, CompanyDepartmentId = 1, Name = "Varsayılan", Surname = "Çalışan", IdNumber = "12345678910", BirthYear = "1999", Gender = 0 }
+                );
+                modelBuilder.Entity<EmployeeDetail>().HasData(
+                        new EmployeeDetail { Id = 1, Username = "Varsayılan", Address = "Varsayılan Adres", Phone = "12345678910", Email = "default@mail.com", Password = "kVU41twDyttUL/SM7IO0vQ==", EmployeeId = 1, EmailOk = true, ApprovedCode = "111111" }
+                );
+                //Değiştirilmemeli
+                modelBuilder.Entity<Role>().HasData(
+                       new Role { Id = 1, Name = "Admin" },
+                       new Role { Id = 2, Name = "Satın Alma Sorumlusu" },
+                       new Role { Id = 3, Name = "Onay" },
+                       new Role { Id = 4, Name = "Talep" },
+                       new Role { Id = 5, Name = "Birim Sorumlusu" },
+                       new Role { Id = 6, Name = "Muhasebe" },
+                       new Role { Id = 7, Name = "Genel Müdür" },
+                       new Role { Id = 8, Name = "Y.K Başkanı" },
+                       new Role { Id = 9, Name = "Stok Sorumlusu" },
+                       new Role { Id = 10, Name = "Birim Müdürü" }
+                );
+                modelBuilder.Entity<EmployeeRole>().HasData(
+                       new EmployeeRole { Id = 1, EmployeeId = 1, RoleId = 1 }
+                );
+                //Değiştirilmemeli
+                modelBuilder.Entity<Supplier>().HasData(
+                       new Supplier { Id = 1, Name = "Şirket Stok", Address = "Şirket Adres" }
+                );
+
+                //Ekstralar
+                modelBuilder.Entity<MeasuringUnit>().HasData(
+                       new MeasuringUnit { Id = 1, Name = "Adet", },
+                       new MeasuringUnit { Id = 2, Name = "Kilogram", },
+                       new MeasuringUnit { Id = 3, Name = "Metre", },
+                       new MeasuringUnit { Id = 4, Name = "Metrekare", },
+                       new MeasuringUnit { Id = 5, Name = "Metre Küp", },
+                       new MeasuringUnit { Id = 6, Name = "Litre", }
+                );
+                //Referans: https://www.tcmb.gov.tr/kurlar/today.xml
+                modelBuilder.Entity<Currency>().HasData(
+                       new Currency { Id = 1, Name = "TRY" },
+                       new Currency { Id = 2, Name = "USD" },
+                       new Currency { Id = 3, Name = "AUD" },
+                       new Currency { Id = 4, Name = "DKK" },
+                       new Currency { Id = 5, Name = "EUR" },
+                       new Currency { Id = 6, Name = "GBP" },
+                       new Currency { Id = 7, Name = "CHF" },
+                       new Currency { Id = 8, Name = "SEK" },
+                       new Currency { Id = 9, Name = "CAD" },
+                       new Currency { Id = 10, Name = "KWD" },
+                       new Currency { Id = 11, Name = "NOK" },
+                       new Currency { Id = 12, Name = "SAR" },
+                       new Currency { Id = 13, Name = "JPY" }
+                );
+            }
         }
     }
 }
