@@ -68,7 +68,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
-        [HttpGet("GetIsActiveByCompanyDepartment/{id}")]
+        [HttpGet("GetIsActiveByCompanyDepartment/{companyId}/{departmentId}")]
         [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetEmployeeIsActiveByCIdDId(long companyId, long departmentId)
         {
