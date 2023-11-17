@@ -21,6 +21,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string? supplier { get; set; }
         public string? supplyDate { get; set;}
         public Int64? InvoiceId { get; set; }
+        public string? Prices_Try { get; set; }
 
     }
 }
