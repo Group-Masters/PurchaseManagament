@@ -30,6 +30,8 @@ Log.Logger.Information("Program Started...");
 builder.Services.AddControllers(opt =>
 {
     opt.Filters.Add(new ExceptionHandlerFilter());
+    opt.Filters.Add(new ControllingProps());
+
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,6 +65,7 @@ var app = builder.Build();
 
 // Requestleri loglayan / hatalı olanları loglayan
 app.UseRequestLoggingMiddleware("~\\..\\..\\LogSaves\\RequestLogsSaves\\requests.log");
+app.TrimPropertiesMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
