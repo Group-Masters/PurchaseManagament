@@ -15,7 +15,7 @@ namespace PurchaseManagament.API.Middleware
         {
             context.Request.EnableBuffering();
 
-            var buffer = new byte[1024];
+            var buffer = new byte[2048];
             var bytesRead = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
             context.Request.Body.Seek(0, SeekOrigin.Begin);
 
@@ -29,7 +29,7 @@ namespace PurchaseManagament.API.Middleware
                 // Key sayısını al
                 var keyCount = jsonObject.Properties().Count();
 
-                if(keyCount <= 20)
+                if(keyCount > 20)
                 {
                     throw new Exception("Çok model propu geldi.");
                 }
