@@ -7,6 +7,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Reflection;
 
 namespace PurchaseManagament.Application.Concrete.Services.PDFServices
 {
@@ -18,10 +19,10 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
         {
             _reportService = reportService;
         }
+     
 
-        
 
-        
+
         public async Task GenerateReportToPDFByEmploye(GetByIdVM getByIdVM)
         {
             var employeReports = await _reportService.GetReportByEmployeeId(getByIdVM);
@@ -62,8 +63,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
-
+                            .Image(ImagePath());
 
                     });
 
@@ -202,7 +202,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                            .Image(ImagePath());
 
                     });
 
@@ -340,7 +340,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image(ImagePath());
 
                         });
 
@@ -481,7 +481,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image(ImagePath());
 
                         });
 
@@ -623,7 +623,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image(ImagePath());
 
                         });
                     page.Content()
@@ -747,7 +747,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image(ImagePath());
 
                         });
 
@@ -930,6 +930,18 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
         .GeneratePdf($"{yol + "\\"}{DateTime.Now.ToString().Replace(" ", "").Replace(".", "I").Replace(":", "I")}.pdf");
 
 
+        }
+
+        private string ImagePath()
+        {
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // Göreceli dosya yolunu belirtin
+            string relativePath = "..\\..\\..\\..\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg";
+
+            // Göreceli dosya yolunu tam dosya yoluna çevirin
+            string fullPath = Path.GetFullPath(Path.Combine(baseDirectory, relativePath));
+            return fullPath;
         }
 
     }

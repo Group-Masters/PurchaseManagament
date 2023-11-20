@@ -22,7 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
-
+        [NullCheckParam]
         [Validator(typeof(CreateCompanyStockValidator))]
         public async Task<Result<long>> CreateCompanyStock(CreateCompanyStockRM createCompanyStockRM)
         {
@@ -39,7 +39,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity.Id;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(DeleteCompanyStockValidator))]
         public async Task<Result<bool>> DeleteCompanyStock(GetByIdVM id)
         {
@@ -54,7 +54,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(DeleteCompanyStockValidator))]
         public async Task<Result<bool>> DeleteCompanyStockPermanent(GetByIdVM id)
         {
@@ -77,7 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntities;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(GetCompanyStokByCompanyIdValidator))]
         public async Task<Result<HashSet<CompanyStocksDto>>> GetAllCompanyStockByCompanyId(GetByIdVM getByIdVM)
         {
@@ -86,8 +86,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var mappedEntities = _mapper.Map<HashSet<CompanyStocksDto>>(await entities);
             result.Data = mappedEntities;
             return result;
-        }        
-        
+        }
+        [NullCheckParam]
         [Validator(typeof(GetCompanyStokByIdValidator))]
         public async Task<Result<CompanyStocksDto>> GetCompanyStockById(GetByIdVM getByIdVM)
         {
@@ -97,7 +97,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntities;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(UpdateCompanyStockValidator))]
         public async Task<Result<long>> UpdateCompanyStock(UpdateCompanyStockRM updateCompanyStockRM)
         {
@@ -113,7 +113,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(UpdateCompanyStockQuantityValidator))]
         public async Task<Result<long>> UpdateCompanyStockQuantityAdd(UpdateCompanyQuantityAddRM updateCompanyQuantityRM)
         {
@@ -129,7 +129,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(UpdateCompanyStockQuantityReduceValidator))]
         public async Task<Result<long>> UpdateCompanyStockQuantityReduce(UpdateCompanyQuantityReduceRM updateCompanyQuantityReduceRM)
         {
@@ -161,7 +161,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-
+        [NullCheckParam]
         [Validator(typeof(ReturnProductToStockValidator))]
         public async Task<Result<long>> ReturnProductToStock(ReturnProductToStockRM returnProductToStockRM)
         {
