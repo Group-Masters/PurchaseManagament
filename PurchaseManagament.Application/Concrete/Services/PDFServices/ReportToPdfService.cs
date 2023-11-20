@@ -62,7 +62,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                            .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
 
                     });
@@ -202,7 +202,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                            .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                     });
 
@@ -340,7 +340,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                         });
 
@@ -481,7 +481,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                         });
 
@@ -623,10 +623,9 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                         });
-
                     page.Content()
                     .Layers(layers =>
                     {
@@ -748,7 +747,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                 .PrimaryLayer()
                                 .AlignTop()
                                 .Width(100)
-                                .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                                .Image("C:\\Users\\Mustafa Yılman\\source\\repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
 
                         });
 
