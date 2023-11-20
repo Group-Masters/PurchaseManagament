@@ -148,11 +148,17 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                .ForMember(x => x.Product, y => y.MapFrom(x => $"{x.Product.Name}-{x.Product.MeasuringUnit.Name}"))
                .ForMember(x => x.Quantity, y => y.MapFrom(x => x.Quantity))
                .ForMember(x => x.RequestDetails, y => y.MapFrom(z => z.Details))
-               .ForMember(x => x.RequestApproveBy, y => y.MapFrom(z => z.ApprovedEmployee != null ? $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}" : " Beklemede"))
-               .ForMember(x => x.RequestApproveDate, y => y.MapFrom(z => z.ApprovedDate != null ? z.ApprovedDate.Value.ToString("yyyy-MM-dd HH:mm") : " Beklemede"))
+               .ForMember(x => x.RequestApproveBy, y => y.MapFrom(z => z.ApprovedEmployee != null ? $"{z.ApprovedEmployee.Name} {z.ApprovedEmployee.Surname}" : " ----"))
+               .ForMember(x => x.RequestApproveDate, y => y.MapFrom(z => z.ApprovedDate != null ? z.ApprovedDate.Value.ToString("yyyy-MM-dd HH:mm") : " ----"))
                .ForMember(x => x.OfferCount, y => y.MapFrom(z => z.Offers.Count().ToString()))
                .ForMember(x => x.UUID, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.UUID.ToString()))
-           .ForMember(x => x.InvoiceCreateDate, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd HH:mm")));
+                .ForMember(x => x.Prices, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi) != null ?
+                  $"{x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).OfferedPrice}-{x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Currency.Name}/ {GetPricesTry(x)}"
+                  : "----"))
+
+
+
+               .ForMember(x => x.InvoiceCreateDate, y => y.MapFrom(x => x.Offers.SingleOrDefault(y => y.Status != Status.Beklemede && y.Status != Status.Reddedildi).Invoice.CreatedDate.Value.ToString("yyyy-MM-dd HH:mm")));
            ; CreateMap<Offer, OfferReportDto>()
                 .ForMember(x => x.offerId, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.OfferPrice, y => y.MapFrom(z => $"{z.OfferedPrice} {z.Currency.Name}"))

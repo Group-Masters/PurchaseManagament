@@ -17,6 +17,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public Status Status { get; set; }
         public string? RequestApproveBy { get; set; }
         public string? RequestApproveDate { get; set; }
+        public string Prices { get; set; }
 
         public string? OfferCount { get; set; }
         public string? InvoiceCreateDate { get; set; }
