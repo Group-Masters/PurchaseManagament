@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,11 +22,25 @@ namespace PurchaseManagament.API.Middleware
             // İstekin geldiği IP adresini alın
             var clientIpAddress = context.Connection.RemoteIpAddress;
 
+            // İsteği atan kişi
+            var requestBy = context.User.FindFirst(ClaimTypes.Name ?? "Anonim");
+
+            // Request body alır
+            context.Request.EnableBuffering(); //  isteğin body'sini bir tampona alır ve isteği işleyen sonraki middleware veya controller tarafından tekrar okunabilir hale getirir.
+            var buffer = new byte[2048];
+            var requestBody = context.Request.Body.ReadAsync(buffer , 0 , buffer.Length);
+            context.Request.Body.Seek(0, SeekOrigin.Begin);
+            var requestBodyString = "";
+            if (requestBody.Result > 0)
+            {
+                requestBodyString = Encoding.UTF8.GetString(buffer, 0, requestBody.Result);
+            }
+
             // İstekin geldiği zamanı alın
             var requestTime = DateTime.Now;
 
             // İsteği loglamak için bilgileri oluşturun
-            string logInfo = $"{requestTime.ToString("yyyy-MM-dd HH:mm:ss")} - IP: {clientIpAddress}, Request: {context.Request.Method} {context.Request.Path}{context.Request.QueryString}";
+            string logInfo = $"{requestTime.ToString("yyyy-MM-dd HH:mm:ss")} - IP: {clientIpAddress}, RequestBy: {requestBy?.Value.ToString() ?? "Anonim"}, Request: {context.Request.Method} {context.Request.Path}{context.Request.QueryString}, RequestBody: {requestBodyString ?? "Null"}";
 
             // İsteği sonraki middleware'e iletmek için _next'i çağırın
             await _next(context);
@@ -41,7 +56,7 @@ namespace PurchaseManagament.API.Middleware
                 logInfo += " - FAILED";
             }
 
-            logInfo += "\n";
+            logInfo += "\n\n";
 
             // Log bilgilerini dosyaya yazın
             await LogRequest(logInfo);
@@ -58,6 +73,8 @@ namespace PurchaseManagament.API.Middleware
                 // Hata durumlarını ele almak için buraya kod ekleyebilirsiniz
             }
         }
+
+
     }
 
     public static class RequestLoggingMiddlewareExtensions
