@@ -56,7 +56,7 @@ namespace PurchaseManagament.API.Middleware
                 logInfo += " - FAILED";
             }
 
-            logInfo += "\n\n";
+            logInfo += "\n";
 
             // Log bilgilerini dosyaya yazın
             await LogRequest(logInfo);
