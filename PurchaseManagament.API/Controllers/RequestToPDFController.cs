@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
-using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Services.PDFServices;
 using PurchaseManagament.Application.Concrete.Wrapper;
 
