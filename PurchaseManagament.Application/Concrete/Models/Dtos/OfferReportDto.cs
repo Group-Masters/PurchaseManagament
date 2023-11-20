@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PurchaseManagament.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string OfferDetail { get; set; }
         public string CreateDate { get; set; }
         public string ApprovingBy { get; set; }
-        public string Status { get; set; }  
+        public Status Status { get; set; }  
 
 
     }
