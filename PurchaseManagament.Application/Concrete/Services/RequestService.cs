@@ -16,7 +16,7 @@ using PurchaseManagament.Utils;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
-    [Route("request")]
+    [NullCheckParam]
     public class RequestService : IRequestService
     {
         private readonly IMapper _mapper;

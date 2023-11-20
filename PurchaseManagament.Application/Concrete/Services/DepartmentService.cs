@@ -12,6 +12,7 @@ using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class DepartmentService : IDepartmentService
     {
         private readonly IUnitWork _unitWork;

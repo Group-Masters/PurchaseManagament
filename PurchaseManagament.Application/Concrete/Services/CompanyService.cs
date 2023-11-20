@@ -12,6 +12,7 @@ using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class CompanyService : ICompanyService
     {
         private readonly IMapper _mapper;

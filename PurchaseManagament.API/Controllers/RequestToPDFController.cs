@@ -23,44 +23,22 @@ namespace PurchaseManagament.API.Controllers
         {
 
             var result = new Result<bool>();
+            await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
-
-
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
-
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
 
         [HttpPost("GenerateReportToPDFByCompany")]
         public async Task<Result<bool>> GenerateReportToPDFByCompany([FromBody] GetByIdVM getByIdVM)
         {
-
             var result = new Result<bool>();
+            await _reportToPdfService.GenerateReportToPDFByCompany(getByIdVM);
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFByCompany(getByIdVM);
-
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
-
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
 
 
@@ -69,18 +47,10 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = new Result<bool>();
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFByDepartman(getByIdVM);
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
+            await _reportToPdfService.GenerateReportToPDFByDepartman(getByIdVM);
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
 
         [HttpPost("GenerateReportToPDFByProduct")]
@@ -88,41 +58,22 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = new Result<bool>();
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFByProduct(getReportProductVM);
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
-            
+            await _reportToPdfService.GenerateReportToPDFByProduct(getReportProductVM);
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
 
 
         [HttpPost("GenerateReportToPDFBySupplier")]
         public async Task<Result<bool>> GenerateReportToPDFBySupplier([FromBody] GetReportSupplierVM getByIdVM)
         {
-
             var result = new Result<bool>();
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
-            
+            await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
 
         [HttpPost("GenerateReportToPDFByRequest")]
@@ -130,20 +81,10 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = new Result<bool>();
 
-            try
-            {
-                await _reportToPdfService.GenerateReportToPDFByRequest(getByIdVM);
-                result.Success = true;
-                result.Data = true;
-                return result;
-            }
-            catch
-            {
-                throw new Exception("Hata Oluştu");
-            }
-
-            
-
+            await _reportToPdfService.GenerateReportToPDFByRequest(getByIdVM);
+            result.Success = true;
+            result.Data = true;
+            return result;
         }
     }
 }
