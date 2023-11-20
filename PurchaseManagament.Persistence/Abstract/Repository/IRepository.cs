@@ -14,6 +14,5 @@ namespace PurchaseManagament.Persistence.Abstract.Repository
         void Update(T entity);
         void Delete(T entity);
         void Delete(object id);
-
     }
 }

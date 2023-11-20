@@ -1,0 +1,76 @@
+2023-11-20 10:12:04.782 +03:00 [INF] Program Started...
+2023-11-20 10:14:36.006 +03:00 [INF] Program Started...
+2023-11-20 10:27:53.623 +03:00 [INF] Program Started...
+2023-11-20 10:32:54.993 +03:00 [INF] Program Started...
+2023-11-20 10:39:08.369 +03:00 [INF] Program Started...
+2023-11-20 10:41:07.572 +03:00 [INF] Program Started...
+2023-11-20 10:43:41.701 +03:00 [INF] Program Started...
+2023-11-20 10:56:55.355 +03:00 [INF] Program Started...
+2023-11-20 11:38:33.490 +03:00 [INF] Application Starting
+2023-11-20 11:39:32.006 +03:00 [INF] Application Starting
+2023-11-20 11:43:12.832 +03:00 [INF] Application Starting
+2023-11-20 11:43:21.711 +03:00 [ERR] /Company/Create adresi çağırılırken bir hata oluştu.
+System.Exception: Bu isimde bir Şirket kaydı zaten bulunmakta.
+   at PurchaseManagament.Application.Concrete.Services.CompanyService.CreateCompany(CreateCompanyRM createCompanyRM)
+   at PurchaseManagament.API.Controllers.CompanyController.CreateCompany(CreateCompanyRM createCompanyRM)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2023-11-20 11:45:10.975 +03:00 [INF] Application Starting
+2023-11-20 11:45:21.081 +03:00 [ERR] /Company/Create adresi çağırılırken bir hata oluştu.
+System.Exception: Bu isimde bir Şirket kaydı zaten bulunmakta.
+   at PurchaseManagament.Application.Concrete.Services.CompanyService.CreateCompany(CreateCompanyRM createCompanyRM)
+   at PurchaseManagament.API.Controllers.CompanyController.CreateCompany(CreateCompanyRM createCompanyRM)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2023-11-20 11:48:18.955 +03:00 [INF] Application Starting
+2023-11-20 11:48:27.615 +03:00 [ERR] /Company/Create adresi çağırılırken bir hata oluştu.
+System.Exception: Bu isimde bir Şirket kaydı zaten bulunmakta.
+   at PurchaseManagament.Application.Concrete.Services.CompanyService.CreateCompany(CreateCompanyRM createCompanyRM)
+   at PurchaseManagament.API.Controllers.CompanyController.CreateCompany(CreateCompanyRM createCompanyRM)
+   at lambda_method5(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2023-11-20 11:48:39.547 +03:00 [ERR] /Company/Create adresi çağırılırken bir hata oluştu.
+System.Exception: Bu isimde bir Şirket kaydı zaten bulunmakta.
+   at PurchaseManagament.Application.Concrete.Services.CompanyService.CreateCompany(CreateCompanyRM createCompanyRM)
+   at PurchaseManagament.API.Controllers.CompanyController.CreateCompany(CreateCompanyRM createCompanyRM)
+   at lambda_method5(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2023-11-20 11:58:34.431 +03:00 [INF] Application Starting
+2023-11-20 13:11:23.260 +03:00 [INF] Application Starting
+2023-11-20 13:16:21.465 +03:00 [INF] Application Starting
+2023-11-20 13:16:37.004 +03:00 [ERR] /Company/Create adresi çağırılırken bir hata oluştu.
+System.Exception: Bu isimde bir Şirket kaydı zaten bulunmakta.
+   at PurchaseManagament.Application.Concrete.Services.CompanyService.CreateCompany(CreateCompanyRM createCompanyRM)
+   at PurchaseManagament.API.Controllers.CompanyController.CreateCompany(CreateCompanyRM createCompanyRM)
+   at lambda_method5(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2023-11-20 13:17:24.245 +03:00 [INF] Application Starting
+2023-11-20 13:19:12.016 +03:00 [INF] Application Starting

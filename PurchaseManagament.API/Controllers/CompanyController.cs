@@ -20,7 +20,7 @@ namespace PurchaseManagament.API.Controllers
         }
         [HttpPost("Create")]
         [Authorize(Roles ="1")]
-        public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRM createCompanyRM)
+        public async Task<ActionResult<Result<bool>>> CreateCompany([FromBody]CreateCompanyRM createCompanyRM)
         {
            var entities = await _companyService.CreateCompany(createCompanyRM);
             return Ok(entities);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KingAOP;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
@@ -9,10 +10,13 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using System.Dynamic;
+using System.Linq.Expressions;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
-    public class CompanyService : ICompanyService
+    [ExceptionHandling]
+    public class CompanyService : ICompanyService 
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
@@ -22,8 +26,11 @@ namespace PurchaseManagament.Application.Concrete.Services
             _mapper = mapper;
             _unitWork = unitWork;
         }
-
-        [Validator(typeof(CreateCompanyValidator))]
+        public DynamicMetaObject GetMetaObject(Expression parameter)
+        {
+            return new AspectWeaver(parameter, this); // this AspectWeaver will inject AOP mechanics.
+        }
+        //[Validator(typeof(CreateCompanyValidator))]
         public async Task<Result<bool>> CreateCompany(CreateCompanyRM createCompanyRM)
         {
             var result = new Result<bool>();
