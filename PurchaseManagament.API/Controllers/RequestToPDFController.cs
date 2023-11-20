@@ -50,5 +50,11 @@ namespace PurchaseManagament.API.Controllers
         {
             await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
         }
+
+        [HttpPost("GenerateReportToPDFByRequest")]
+        public async Task GenerateReportToPDFByRequest([FromBody] GetByIdVM getByIdVM)
+        {
+            await _reportToPdfService.GenerateReportToPDFByRequest(getByIdVM);
+        }
     }
 }
