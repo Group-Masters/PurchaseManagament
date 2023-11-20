@@ -62,7 +62,8 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                             .PrimaryLayer()
                             .AlignTop()
                             .Width(100)
-                            .Image("C:\\Users\\erenagir\\Desktop\\erp\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+                            .Image("C:\\Users\\sefa\\Source\\Repos\\PurchaseManagament\\PurchaseManagament.Application\\Concrete\\Services\\PDFServices\\logo.jpeg");
+
 
                     });
 
@@ -789,6 +790,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                columns.ConstantColumn(100);
                                columns.ConstantColumn(100);
                                columns.ConstantColumn(100);
+                               columns.ConstantColumn(100);
                                //columns.ConstantColumn(100);
                            });
 
@@ -807,10 +809,11 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                header.Cell().Element(CellStyle).AlignCenter().Text("Talep Detay").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Talep Durum").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Talep Onaylayan").ExtraBold();
-                               header.Cell().Element(CellStyle).AlignCenter().Text("Talep Onay \nTarih").ExtraBold();
+                               header.Cell().Element(CellStyle).AlignCenter().Text("Talep Onay Tarih").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Teklif Sayısı").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Fatura Tarih").ExtraBold();
                                header.Cell().Element(CellStyle).AlignCenter().Text("Fatura UUID").ExtraBold();
+                               header.Cell().Element(CellStyle).AlignCenter().Text("Alış Fiyat").ExtraBold();
                                //header.Cell().Element(CellStyle).AlignCenter().Text("Teklifler").ExtraBold();
                                // you can extend existing styles by creating additional methods
                                IContainer CellStyle(IContainer container) => DefaultCellStyle(container, Colors.Grey.Lighten3);
@@ -833,6 +836,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                table.Cell().Row(1).Column(12).Element(CellStyle).Text(deneme.OfferCount ?? "-");
                                table.Cell().Row(1).Column(13).Element(CellStyle).Text(deneme.InvoiceCreateDate ?? "-");
                                table.Cell().Row(1).Column(14).Element(CellStyle).Text(deneme.UUID ?? "-");
+                               table.Cell().Row(1).Column(15).Element(CellStyle).Text(deneme.Prices ?? "-");
                            //table.Cell().Row(1).Column(15).Element(CellStyle).Text(deneme.Offers.ToString() ?? "-");
 
 
@@ -910,7 +914,7 @@ namespace PurchaseManagament.Application.Concrete.Services.PDFServices
                                    tablee.Cell().Row(i + 1).Column(4).Element(CellStyle).Text(deneme[sayac].OfferDetail ?? "-");
                                    tablee.Cell().Row(i + 1).Column(5).Element(CellStyle).Text(deneme[sayac].CreateDate ?? "-");
                                    tablee.Cell().Row(i + 1).Column(6).Element(CellStyle).Text(deneme[sayac].ApprovingBy ?? "-");
-                                   tablee.Cell().Row(i + 1).Column(7).Element(CellStyle).Text(deneme[sayac].Status ?? "-");
+                                   tablee.Cell().Row(i + 1).Column(7).Element(CellStyle).Text(deneme[sayac].Status.ToString() ?? "-");
 
                                    sayac++;
                                }

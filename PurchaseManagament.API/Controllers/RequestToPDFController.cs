@@ -5,6 +5,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Services.PDFServices;
+using PurchaseManagament.Application.Concrete.Wrapper;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -20,41 +21,131 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPost("GenerateReportToPDFByEmploye")]
-        public async Task GenerateReportToPDFByEmploye([FromBody] GetByIdVM getByIdVM)
+        public async Task<Result<bool>> GenerateReportToPDFByEmploye([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
+
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFByEmploye(getByIdVM);
+
+
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
+
         }
 
         [HttpPost("GenerateReportToPDFByCompany")]
-        public async Task GenerateReportToPDFByCompany([FromBody] GetByIdVM getByIdVM)
+        public async Task<Result<bool>> GenerateReportToPDFByCompany([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByCompany(getByIdVM);
+
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFByCompany(getByIdVM);
+
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
+
         }
 
 
         [HttpPost("GenerateReportToPDFByDepartman")]
-        public async Task GenerateReportToPDFByDepartman([FromBody] GetReportDepartmentVM getByIdVM)
+        public async Task<Result<bool>> GenerateReportToPDFByDepartman([FromBody] GetReportDepartmentVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByDepartman(getByIdVM);
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFByDepartman(getByIdVM);
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
         }
 
         [HttpPost("GenerateReportToPDFByProduct")]
-        public async Task GenerateReportToPDFByProduct([FromBody] GetReportProductVM getReportProductVM)
+        public async Task<Result<bool>> GenerateReportToPDFByProduct([FromBody] GetReportProductVM getReportProductVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByProduct(getReportProductVM);
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFByProduct(getReportProductVM);
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
+            
         }
 
 
         [HttpPost("GenerateReportToPDFBySupplier")]
-        public async Task GenerateReportToPDFBySupplier([FromBody] GetReportSupplierVM getByIdVM)
+        public async Task<Result<bool>> GenerateReportToPDFBySupplier([FromBody] GetReportSupplierVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
+
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFBySupplier(getByIdVM);
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
+            
         }
 
         [HttpPost("GenerateReportToPDFByRequest")]
-        public async Task GenerateReportToPDFByRequest([FromBody] GetByIdVM getByIdVM)
+        public async Task<Result<bool>> GenerateReportToPDFByRequest([FromBody] GetByIdVM getByIdVM)
         {
-            await _reportToPdfService.GenerateReportToPDFByRequest(getByIdVM);
+            var result = new Result<bool>();
+
+            try
+            {
+                await _reportToPdfService.GenerateReportToPDFByRequest(getByIdVM);
+                result.Success = true;
+                result.Data = true;
+                return result;
+            }
+            catch
+            {
+                throw new Exception("Hata Oluştu");
+            }
+
+            
+
         }
     }
 }
