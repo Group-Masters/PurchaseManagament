@@ -12,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using PurchaseManagament.Utils;
 using System.Xml;
 
 namespace PurchaseManagament.Application.Concrete.Services
@@ -93,10 +94,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             XmlDocument xmlVerisi = new XmlDocument();
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
-            //decimal usd = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
-            //decimal eur = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
-            //decimal jpy = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "JPY")).InnerText.Replace('.', ','));
-
+            
             var result = new Result<HashSet<OfferDto>>();
             var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
@@ -123,9 +121,6 @@ namespace PurchaseManagament.Application.Concrete.Services
                 }
 
             }
-
-
-
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(list);
             result.Data = mappedEntity;
             return result;
@@ -237,9 +232,14 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
             else if (update.Status == Status.YönetimOnay || update.Status == Status.YönetimRed || update.Status == Status.FaturaEklendi || update.Status == Status.Tamamlandı)
             {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
+                var requestEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x=>x.Id==entity.RequestId, "Product.MeasuringUnit", "RequestEmployee.EmployeeDetail");
                 requestEntity.State = update.Status;
                 _unitWork.GetRepository<Request>().Update(requestEntity);
+                if (update.Status==Status.YönetimRed)
+                {
+                    SenderUtils.SendMail(requestEntity.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"Oluşturmuş olduğunuz {requestEntity.Id} numaralı {requestEntity.Quantity} {requestEntity.Product.MeasuringUnit.Name} {requestEntity.Product.Name} talebiniz Yönetim tarafınca reddetilmiştir.");
+
+                }
             }
 
             _mapper.Map(update, entity);

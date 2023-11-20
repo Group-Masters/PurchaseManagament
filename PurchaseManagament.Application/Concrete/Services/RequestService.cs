@@ -12,6 +12,7 @@ using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using PurchaseManagament.Utils;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -61,7 +62,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM)
         {
             var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Request>().GetById(updateRequestStateRM.Id);
+            var entity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x=>x.Id==updateRequestStateRM.Id, "Product.MeasuringUnit", "RequestEmployee.EmployeeDetail");
             if (entity is null)
             {
                 throw new NotFoundException("Durumu güncellenmek istenen Talep kaydı bulunamadı.");
@@ -70,6 +71,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 entity.ApprovingEmployeeId = _loggedService.UserId;
                 entity.ApprovedDate = DateTime.Now;
+                if (updateRequestStateRM.State == Status.Reddedildi)
+                {
+                    SenderUtils.SendMail(entity.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"Oluşturmuş olduğunuz {entity.Id} numaralı {entity.Quantity} {entity.Product.MeasuringUnit.Name} {entity.Product.Name} talebiniz Birim Müdürü tarafınca reddetilmiştir.");
+                }
             }
             var mappedEntity = _mapper.Map(updateRequestStateRM, entity);
             _unitWork.GetRepository<Request>().Update(mappedEntity);

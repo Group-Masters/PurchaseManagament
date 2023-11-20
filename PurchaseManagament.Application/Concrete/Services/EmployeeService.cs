@@ -115,7 +115,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginVM.Password);
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
-                , "EmployeeDetail");
+                , "EmployeeDetail", "EmployeeRoles");
             result.Data = false;
             if (existsEmployee == null)
 
@@ -128,6 +128,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 result.Success = false;
                 result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                return result;
+            } 
+            if (existsEmployee.EmployeeRoles.IsNullOrEmpty())
+            {
+                result.Success = false;
+                result.Errors.Add("Hesabınız kullanıma hazır değildir .Bir sorun olduğunu düşünüyorsanız yöneticinize başvurunuz.");
                 return result;
             }
 
@@ -199,7 +205,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 new NotFoundException("kullanıcı bulunamadı");
 
             }
-            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email);
+            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email&& x.Id!=updateEmployeeVM.EmployeeId);
             if (ExistsAny)
             {
                 throw new AlreadyExistsException($" {updateEmployeeVM.Email} adresi kullanılmaktadır.");
