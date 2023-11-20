@@ -29,8 +29,4 @@
     <ProjectReference Include="..\PurchaseManagament.Application\PurchaseManagament.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Autofac\" />
-  </ItemGroup>
-
 </Project>

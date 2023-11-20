@@ -15,7 +15,6 @@ using System.Linq.Expressions;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
-    [ExceptionHandling]
     public class CompanyService : ICompanyService 
     {
         private readonly IMapper _mapper;
@@ -30,7 +29,10 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             return new AspectWeaver(parameter, this); // this AspectWeaver will inject AOP mechanics.
         }
+
         //[Validator(typeof(CreateCompanyValidator))]
+        [ExceptionHandling]
+
         public async Task<Result<bool>> CreateCompany(CreateCompanyRM createCompanyRM)
         {
             var result = new Result<bool>();

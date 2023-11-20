@@ -18,7 +18,5 @@ namespace PurchaseManagament.Application.Abstract.Service
         //GET METHODS
         Task<Result<CompanyDto>> GetCompanyById(GetCompanyByIdRM getCompanyByIdRM);
         Task<Result<HashSet<CompanyDto>>> GetAllCompany();
-
-        DynamicMetaObject GetMetaObject(Expression target);
     }
 }
