@@ -20,6 +20,7 @@ using System.Text;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class EmployeeService : IEmployeService
     {
         private readonly IUnitWork _uWork;

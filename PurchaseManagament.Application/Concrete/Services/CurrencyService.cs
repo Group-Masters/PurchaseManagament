@@ -13,6 +13,7 @@ using System.Xml;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class CurrencyService : ICurrencyService
     {
         private readonly IMapper _mapper;

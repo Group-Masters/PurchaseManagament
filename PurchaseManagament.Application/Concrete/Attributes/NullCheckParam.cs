@@ -6,9 +6,16 @@ namespace PurchaseManagament.Application.Concrete.Attributes
     {
         public void Advise(MethodAdviceContext context)
         {
-            if (context.Arguments[0] == null)
+            if (context.Arguments.Any())
             {
-                throw new Exception("Nesne oluşturulamadı");
+                if (context.Arguments[0] is null)
+                {
+                    throw new Exception("Nesne oluşturulamadı.");
+                }
+                else
+                {
+                    context.Proceed();
+                }
             }
             else
             {

@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
-using PurchaseManagament.Domain.Enums;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class ReportService : IReportService
     {
         private readonly IUnitWork _uWork;
@@ -29,7 +30,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
-
         }
         public async Task<Result<HashSet<ReportDto>>> GetReportByDepartmentId(GetReportDepartmentVM getByIdVM)
         {
@@ -39,19 +39,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
-
         }
         public async Task<Result<HashSet<ReportDto>>> GetReportByCompanyId(GetByIdVM getByIdVM)
         {
-
-
             var result = new Result<HashSet<ReportDto>>();
             var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.Id,
                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice", "Offers.Currency");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
             return result;
-
         }
 
         public async Task<Result<HashSet<ReportDto>>> GetProductReport(GetReportProductVM getByIdVM)
@@ -70,8 +66,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             var dtos = _mapper.Map<HashSet<ReportSupplierDto>>(offerEntity);
             result.Data = dtos;
             return result;
-
-
         }
 
         public async Task<Result<RequestReportDto>> GetRequestReportbyRequestId(GetByIdVM getByIdVM )

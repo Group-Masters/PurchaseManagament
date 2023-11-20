@@ -16,6 +16,7 @@ using System.Xml;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
+    [NullCheckParam]
     public class InvoiceService : IInvoiceService
     {
         private readonly IMapper _mapper;
