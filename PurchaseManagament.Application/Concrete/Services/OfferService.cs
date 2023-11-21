@@ -84,7 +84,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.RequestId == getOfferByRequestId.Id, "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.MaterialOffers. == getOfferByRequestId.Id, "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -97,15 +97,17 @@ namespace PurchaseManagament.Application.Concrete.Services
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
-            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.MaterialOffers.SingleOrDefault
+            (x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id).Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
+            , "Currency", "Supplier", "MaterialOffer.Material.Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();
 
           
             foreach (var entity in entities)
             {
-                var managerThreshold = entity.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
+                var managerThreshold = entity.MaterialOffers.SingleOrDefault(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id)
+                    .Material.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
                 if (entity.Currency.Name=="TRY")
                 {
                     if (entity.OfferedPrice> managerThreshold)
@@ -134,7 +136,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             XmlDocument xmlVerisi = new XmlDocument();
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
+            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.ApprovingEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
             , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
 
             var list = new HashSet<Offer>();

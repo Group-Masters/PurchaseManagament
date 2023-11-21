@@ -19,20 +19,11 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(3)
                 .HasColumnType("BigInt");
             
-            builder.Property(x => x.RequestId)
-                .HasColumnName("REQUEST_ID")
-                .HasColumnOrder(4)
-                .HasColumnType("BigInt");
-
             builder.Property(x => x.ApprovingEmployeeId)
                 .HasColumnName("APPROVING_EMPLOYEE_ID")
                 .HasColumnOrder(5)
                 .IsRequired(false);
 
-            builder.Property(x => x.OfferedPrice)
-                .HasColumnName("OFFERED_PRICE")
-                .HasColumnOrder(6)
-                .HasColumnType("BigInt");
 
             builder.Property(x => x.Details)
                 .HasColumnName("DETAILS")
@@ -56,11 +47,6 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.HasOne(x => x.Currency)
                 .WithMany(x => x.Offers)
                 .HasForeignKey(x => x.CurrencyId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(x => x.Request)
-                .WithMany (x => x.Offers)
-                .HasForeignKey(x => x.RequestId)
                 .OnDelete(DeleteBehavior.NoAction);
             
             builder.ToTable("OFFERS");
