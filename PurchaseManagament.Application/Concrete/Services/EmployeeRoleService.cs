@@ -4,6 +4,9 @@ using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Validators.EmployeeRoles;
+using PurchaseManagament.Application.Concrete.Validators.Employees;
+using PurchaseManagament.Application.Concrete.Validators.Supplier;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Entities;
@@ -23,7 +26,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
-        //[Validator(typeof(CreateEmployeeRoleValidator))]
+        [Validator(typeof(CreateEmployeeRoleValidator))]
         public async Task<Result<bool>> CreateEmployeeRole(CreateEmployeeRoleRM createEmployeeRoleRM)
         {
             var result = new Result<bool>();
@@ -40,7 +43,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(UpdateEmployeeValidator))]
+        [Validator(typeof(UpdateEmployeeRoleValidator))]
         public async Task<Result<bool>> UpdateEmployeeRole(UpdateEmployeeRoleRM updateEmployeeRoleRM)
         {
             var result = new Result<bool>();
@@ -71,7 +74,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
-
+        [Validator(typeof(GetByIdValidator))]
         public async Task<Result<bool>> DeleteEmployeeRole(GetByIdVM Id)
         {
             var result = new Result<bool>();
@@ -87,7 +90,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDto>>();
@@ -103,7 +106,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetDetailByEmployeeId(GetByEmployeeIdRM getByEmployeeIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
@@ -119,7 +122,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetByRoleIdValidator))]
+        [Validator(typeof(GetByRoleIdValidator))]
         public async Task<Result<HashSet<EmployeeRoleDto>>> GetByRoleId(GetByRoleIdRM getByRoleIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDto>>();
@@ -135,7 +138,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
+        [Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<EmployeeRoleDto>> GetEmployeeRoleById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result<EmployeeRoleDto>();
@@ -160,24 +163,24 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
+        [Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<EmployeeRoleDetailDto>> GetEmployeeRoleDetailById(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
-            var result = new Result <EmployeeRoleDetailDto>();
+            var result = new Result<EmployeeRoleDetailDto>();
             var entityControl = await _unitWork.GetRepository<EmployeeRole>().AnyAsync(x => x.Id == getEmployeeRoleByIdRM.Id);
-            if(!entityControl)
+            if (!entityControl)
             {
                 throw new NotFoundException("Detaylı çıktısı istenen Çalışan/Rol kaydı bulunamadı.");
             }
 
             var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetSingleByFilterAsync(x => x.Id == getEmployeeRoleByIdRM.Id, "Employee.EmployeeDetail", "Role");
             var mappedEntity = _mapper.Map<EmployeeRoleDetailDto>(existEntity);
-            
+
             result.Data = mappedEntity;
             return result;
         }
 
-        //[Validator(typeof(GetEmployeeRoleByIdValidator))]
+        [Validator(typeof(GetEmployeeRoleByIdValidator))]
         public async Task<Result<HashSet<EmployeeRoleDetailDto>>> GetEmployeeRolesByCompanyId(GetEmployeeRoleByIdRM getEmployeeRoleByIdRM)
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
@@ -192,7 +195,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<EmployeeRoleDetailDto>>();
 
-            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetAllAsync( "Employee.EmployeeDetail", "Role");
+            var existEntity = await _unitWork.GetRepository<EmployeeRole>().GetAllAsync("Employee.EmployeeDetail", "Role");
             var mappedEntity = _mapper.Map<HashSet<EmployeeRoleDetailDto>>(existEntity);
 
             result.Data = mappedEntity;
