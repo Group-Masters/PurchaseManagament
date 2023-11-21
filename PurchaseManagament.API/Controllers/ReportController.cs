@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Report;
-using PurchaseManagament.Application.Concrete.Wrapper;
-using PurchaseManagament.Domain.Entities;
-using System.ComponentModel.Design;
 
 namespace PurchaseManagament.API.Controllers
 {

@@ -13,14 +13,13 @@ namespace PurchaseManagament.API.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
-
         public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
         [HttpPost("Create")]
         [Authorize(Roles ="1")]
-        public async Task<IActionResult> CreateCompany([FromBody]CreateCompanyRM createCompanyRM)
+        public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyRM createCompanyRM)
         {
            var entities = await _companyService.CreateCompany(createCompanyRM);
             return Ok(entities);
