@@ -35,6 +35,7 @@ namespace PurchaseManagament.API.Filters
                     result.Errors = new List<string> { context.Exception.InnerException != null ? context.Exception.InnerException.Message : context.Exception.Message };
                 }
             }
+
             //Hata Loglama
             context.Result = new JsonResult(result);
             context.HttpContext.Response.StatusCode = 400;

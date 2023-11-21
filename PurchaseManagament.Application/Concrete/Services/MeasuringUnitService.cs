@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Autofac.Extras.DynamicProxy;
+using AutoMapper;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;

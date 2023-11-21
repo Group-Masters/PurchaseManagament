@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.API.Autofac;
 using PurchaseManagament.API.DependencyInjection;
+using PurchaseManagament.API.Filters;
 //using PurchaseManagament.API.Filters;
 //using PurchaseManagament.API.Middleware;
 using PurchaseManagament.Application.Concrete.AutoMapper;
@@ -29,9 +30,9 @@ var configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json")
         .Build();
-Log.Logger = new LoggerConfiguration()
-        .ReadFrom.Configuration(configuration)
-        .CreateLogger();
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 Log.Logger.Information("Program Started...");
 
