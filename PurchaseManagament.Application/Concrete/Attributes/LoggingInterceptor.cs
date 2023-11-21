@@ -1,9 +1,6 @@
 ﻿using Castle.DynamicProxy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
+using Serilog.Core;
 
 namespace PurchaseManagament.Application.Concrete.Attributes
 {
@@ -13,9 +10,14 @@ namespace PurchaseManagament.Application.Concrete.Attributes
         {
             Console.WriteLine("AAAAAAAAAAAAA");
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             invocation.Proceed();
+            watch.Stop();
 
-            Console.WriteLine("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            var executionTime = watch.ElapsedMilliseconds;
+
+            Log.Information($"Result: {invocation.ReturnValue}");
+            Console.WriteLine($"{executionTime}BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         }
     }
 }

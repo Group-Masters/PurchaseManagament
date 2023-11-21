@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace PurchaseManagament.Application.Abstract.Service
 {
-    public interface ICompanyService : IDynamicMetaObjectProvider
+    public interface ICompanyService 
     {
         //CRUD
         Task<Result<bool>> CreateCompany(CreateCompanyRM createCompanyRM);

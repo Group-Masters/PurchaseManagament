@@ -1,17 +1,12 @@
 ﻿using Autofac;
-using Autofac.Extras.DynamicProxy;
-using Castle.DynamicProxy;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
-using KingAOP.Aspects;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Writers;
+using PurchaseManagament.API.Autofac;
 using PurchaseManagament.API.DependencyInjection;
-using PurchaseManagament.Application.Abstract.Service;
-using PurchaseManagament.Application.Concrete.Attributes;
 //using PurchaseManagament.API.Filters;
 //using PurchaseManagament.API.Middleware;
 using PurchaseManagament.Application.Concrete.AutoMapper;
-using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
 using PurchaseManagament.Persistence.Abstract.Repository;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -22,6 +17,11 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new AutofacConfiguration());
+    });
 // Add services to the container.
 
 //Logging
