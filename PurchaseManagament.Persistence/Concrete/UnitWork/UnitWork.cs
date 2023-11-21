@@ -14,7 +14,7 @@ namespace PurchaseManagament.Persistence.Concrete.UnitWork
         public UnitWork(PurchaseManagamentContext context)
         {
             _repositories = new Dictionary<Type, object>();
-            _context = context;
+            _context = context ?? throw new Exception("Nesne gelmedi");
         }
 
         

@@ -13,7 +13,7 @@ namespace PurchaseManagament.Persistence.Concrete.Repositories
 
         public Repository(PurchaseManagamentContext context)
         {
-            _context = context;
+            _context = context ?? throw new Exception("Nesne gelmedi");
             _dbSet = _context.Set<T>();
         }
         public async Task<IQueryable<T>> GetAllAsync(params string[] includeColumns)

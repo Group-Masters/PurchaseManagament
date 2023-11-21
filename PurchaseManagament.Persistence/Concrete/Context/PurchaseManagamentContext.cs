@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Common;
-using PurchaseManagament.Domain.Concrete;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Concrete.Mappings;
-using PurchaseManagament.Utils;
-using System.Reflection.Emit;
 
 namespace PurchaseManagament.Persistence.Concrete.Context
 {
