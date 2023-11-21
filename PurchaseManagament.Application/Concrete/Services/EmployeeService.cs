@@ -38,8 +38,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(CreateEmployeeValidator))]
         public async Task<Result<long>> CreateEmployee(CreateEmployeeVM? createEmployeeVM)
         {
-            try
-            {
+            
                 var result = new Result<Int64>();
 
                 //tc kimlik numrası veya Email başka kullanıca bulunmaz
@@ -56,8 +55,9 @@ namespace PurchaseManagament.Application.Concrete.Services
                 {
                     throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
                 }
+                var password = RandomNumberUtils.CreateRandom(0, 999999);
                 //şifre hashleme
-                var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], createEmployeeVM.Password);
+                var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], password);
 
                 var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
                 var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
@@ -67,15 +67,12 @@ namespace PurchaseManagament.Application.Concrete.Services
                 _uWork.GetRepository<Employee>().Add(employeeEntity);
                 _uWork.GetRepository<EmployeeDetail>().Add(approvedEntity);
                 await _uWork.CommitAsync();
+                SenderUtils.SendMail(approvedEntity.Email, "HESAP BİLGİLENDİRME", $"XYZ Holding giriş şifreniz {password} olarak kaydedilmiştir. ");
                 _uWork.Dispose();
                 result.Data = employeeEntity.Id;
                 return result;
-            }
-            catch (Exception)
-            {
-
-                throw new Exception("beklenmedik bir hata oluştu. Tekrar Deneyiniz");
-            }
+            
+            
         }
 
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
