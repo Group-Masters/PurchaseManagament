@@ -74,8 +74,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var requestEntity = await _uWork.GetRepository<Request>().GetSingleByFilterAsync(x => x.Id == getByIdVM.Id,
                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Invoice", "Offers.Currency");
             var requestMapping = _mapper.Map<RequestReportDto>(requestEntity);
-            var offerMapping = _mapper.Map<List<OfferReportDto>>(requestEntity.Offers);
-            requestMapping.Offers=(offerMapping);
+           // var offerMapping = _mapper.Map<List<OfferReportDto>>(requestEntity.Offers);
+           // requestMapping.Offers=(offerMapping);
             result.Data = requestMapping;
             return result;
         }

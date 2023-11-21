@@ -130,7 +130,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 result.Success = false;
                 result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
                 return result;
-            } 
+            }
             if (existsEmployee.EmployeeRoles.IsNullOrEmpty())
             {
                 result.Success = false;
@@ -162,8 +162,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<TokenDto>();
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.ApprovedCode == loginVM.OkCode
-                , "EmployeeDetail");
-
+                , "EmployeeDetail", "CompanyDepartment", "EmployeeRoles");
             if (existsEmployee == null)
             {
                 throw new NotFoundException("Hatalı Giriş yaptınız.");
@@ -172,27 +171,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
             }
-            var companyEntity = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == existsEmployee.CompanyDepartmentId);
-            var role = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == existsEmployee.Id);
-            var roleList = role.ToList();
-
             var expireMinute = Convert.ToInt32(_configuration["Jwt:Expire"]);
-            var tokenString = GenerateJwtToken(existsEmployee, roleList);
-
-            result.Data = new TokenDto
-            {
-                Id = existsEmployee.Id,
-                CompanyId = companyEntity.CompanyId,
-                DepartmentId = companyEntity.DepartmentId,
-                RolId = roleList.Select(x => x.RoleId).ToList(),
-                Token = tokenString,
-            };
-
+            var tokenString = GenerateJwtToken(existsEmployee, existsEmployee.EmployeeRoles.ToList());
+            var dtos = _mapper.Map<TokenDto>(existsEmployee);
+            dtos.Token = tokenString;
+            result.Data = dtos;
             // Txt Login Log
             TxtLogla txtLogla = new TxtLogla();
             await txtLogla.Logla(existsEmployee);
-
-            return result;
+             return result;
         }
 
 
@@ -206,7 +193,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 new NotFoundException("kullanıcı bulunamadı");
 
             }
-            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email&& x.Id!=updateEmployeeVM.EmployeeId);
+            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email && x.Id != updateEmployeeVM.EmployeeId);
             if (ExistsAny)
             {
                 throw new AlreadyExistsException($" {updateEmployeeVM.Email} adresi kullanılmaktadır.");

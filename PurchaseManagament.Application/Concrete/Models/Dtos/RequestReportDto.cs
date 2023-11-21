@@ -22,7 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string? OfferCount { get; set; }
         public string? InvoiceCreateDate { get; set; }
         public string? UUID { get; set; }
-        public List<OfferReportDto>? Offers { get; set; }
+        public ICollection<OfferReportDto>? Offers { get; set; }
         
         
        
