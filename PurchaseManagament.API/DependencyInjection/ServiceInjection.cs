@@ -38,6 +38,10 @@ namespace PurchaseManagament.API.DependencyInjection
 
             services.AddScoped<IRequestService, RequestService>();
 
+            services.AddScoped<IMaterialService, MaterialService>();
+
+            services.AddScoped<IMaterialOfferService, MaterialOfferService>();
+
             services.AddScoped<IInvoiceService, InvoiceService>();
 
             services.AddScoped<IOfferService, OfferService>();

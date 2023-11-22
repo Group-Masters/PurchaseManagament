@@ -74,7 +74,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetAllOffer()
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetAllAsync("Currency", "Supplier", "ApprovingEmployee");
+            var entities = await _unitWork.GetRepository<Offer>().GetAllAsync("MaterialOffer.Material.Request.RequestEmployee.CompanyDepartment.Company", "MaterialOffer.Offer.Supplier", "");
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -84,7 +84,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.MaterialOffers. == getOfferByRequestId.Id, "Currency", "Supplier", "ApprovingEmployee", "Request.Product");
+            var materalList = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getOfferByRequestId.Id);
+            var entities = _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Id == materalList.Id);
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -97,13 +98,19 @@ namespace PurchaseManagament.Application.Concrete.Services
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
             
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.MaterialOffers.SingleOrDefault
-            (x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id).Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
-            , "Currency", "Supplier", "MaterialOffer.Material.Request.RequestEmployee.CompanyDepartment.Company");
+            var materials = _unitWork.GetRepository<Material>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id, "Product.MeasuringUnit");
+            var materialDtos = _mapper.Map<HashSet<MaterialDto>>(materials);
 
+            var offers = _unitWork.GetRepository<Offer>();
+            List<MaterialOfferDto> materialOfferDtos = new List<MaterialOfferDto>();
+
+            foreach (var material in materialDtos)
+            {
+                var materialOffers = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.MaterialId == material.Id);
+
+            }
             var list = new HashSet<Offer>();
 
-          
             foreach (var entity in entities)
             {
                 var managerThreshold = entity.MaterialOffers.SingleOrDefault(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id)
