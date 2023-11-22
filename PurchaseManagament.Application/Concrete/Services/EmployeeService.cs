@@ -7,6 +7,7 @@ using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Validators.Employees;
+using PurchaseManagament.Application.Concrete.Validators.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Application.Exceptions;
 using PurchaseManagament.Domain.Abstract;
@@ -38,41 +39,41 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(CreateEmployeeValidator))]
         public async Task<Result<long>> CreateEmployee(CreateEmployeeVM? createEmployeeVM)
         {
-            
-                var result = new Result<Int64>();
 
-                //tc kimlik numrası veya Email başka kullanıca bulunmaz
-                var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == createEmployeeVM.Email || x.Employee.IdNumber == createEmployeeVM.IdNumber);
-                if (ExistsAny)
-                {
-                    throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
-                }
-                var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
-                // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
-                var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
+            var result = new Result<Int64>();
 
-                if (personControl == false)
-                {
-                    throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
-                }
-                var password = RandomNumberUtils.CreateRandom(0, 999999);
-                //şifre hashleme
-                var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], password);
+            //tc kimlik numrası veya Email başka kullanıca bulunmaz
+            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == createEmployeeVM.Email || x.Employee.IdNumber == createEmployeeVM.IdNumber);
+            if (ExistsAny)
+            {
+                throw new AlreadyExistsException($" {createEmployeeVM.Email} adresi ya {createEmployeeVM.IdNumber} kimlik numaralı personel bulunmaktadır");
+            }
+            var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
+            // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
+            var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
 
-                var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
-                var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
-                approvedEntity.Password = hashedPassword;
-                employeeEntity.CompanyDepartment = entityCD;
-                employeeEntity.EmployeeDetail = approvedEntity;
-                _uWork.GetRepository<Employee>().Add(employeeEntity);
-                _uWork.GetRepository<EmployeeDetail>().Add(approvedEntity);
-                await _uWork.CommitAsync();
-                SenderUtils.SendMail(approvedEntity.Email, "HESAP BİLGİLENDİRME", $"XYZ Holding giriş şifreniz {password} olarak kaydedilmiştir. ");
-                _uWork.Dispose();
-                result.Data = employeeEntity.Id;
-                return result;
-            
-            
+            if (personControl == false)
+            {
+                throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
+            }
+            var password = RandomNumberUtils.CreateRandom(0, 999999);
+            //şifre hashleme
+            var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], password);
+
+            var employeeEntity = _mapper.Map<Employee>(createEmployeeVM);
+            var approvedEntity = _mapper.Map<EmployeeDetail>(createEmployeeVM);
+            approvedEntity.Password = hashedPassword;
+            employeeEntity.CompanyDepartment = entityCD;
+            employeeEntity.EmployeeDetail = approvedEntity;
+            _uWork.GetRepository<Employee>().Add(employeeEntity);
+            _uWork.GetRepository<EmployeeDetail>().Add(approvedEntity);
+            await _uWork.CommitAsync();
+            SenderUtils.SendMail(approvedEntity.Email, "HESAP BİLGİLENDİRME", $"XYZ Holding giriş şifreniz {password} olarak kaydedilmiştir. ");
+            _uWork.Dispose();
+            result.Data = employeeEntity.Id;
+            return result;
+
+
         }
 
         public async Task<Result<List<EmployeeDto>>> GetAllEmployes()
@@ -176,7 +177,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             // Txt Login Log
             TxtLogla txtLogla = new TxtLogla();
             await txtLogla.Logla(existsEmployee);
-             return result;
+            return result;
         }
 
 
@@ -239,7 +240,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(GetByIdEmployeeValidator))]
+        [Validator(typeof(GetRequestByCIdDIdValidator))]
         public async Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCIdDId(GetRequestByCIdDIdRM getByCIdDId)
         {
             var result = new Result<List<EmployeeDto>>();
@@ -248,6 +249,19 @@ namespace PurchaseManagament.Application.Concrete.Services
             var employeDtos = _mapper.Map<List<EmployeeDto>>(employeEntity);
             result.Data = employeDtos;
             return result;
+        }
+        [Validator(typeof(GetByIdValidator))]
+        public async Task<Result<bool>> SendPassword(GetByIdVM getByIdVM)
+        {
+            var result = new Result<bool>();
+            var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == getByIdVM.Id);
+            var password = RandomNumberUtils.CreateRandom(0, 999999);
+            SenderUtils.SendMail(entity.Email, "ŞİFRE İŞLEMLERİ", $"Talebiniz üzerine şifreniz sıfırlanmıştır . Şifreniz {password}");
+            entity.Password = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], password);
+            _uWork.GetRepository<EmployeeDetail>().Update(entity);
+            var data = await _uWork.CommitAsync();
+            result.Data = data;
+            return result; 
         }
 
         #region private methodlar
@@ -282,6 +296,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
         #endregion
     }
 }

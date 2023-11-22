@@ -91,6 +91,13 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.UpdateEmployeePassword(updatePasswordVM);
             return Ok(entities);
         }
+        [HttpPut("SendPassword")]
+        [Authorize]
+        public async Task<IActionResult> SendPassword([FromBody] GetByIdVM ıd)
+        {
+            var entities = await _service.SendPassword(ıd);
+            return Ok(entities);
+        }
 
 
     }
