@@ -121,6 +121,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 result.Success = false;
                 result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
+                result.Errors.Add("Şifrenizi Unuttuysanız 0 (364) 888 00 88 İle İletişime Geçiniz.");
+
                 return result;
             }
             if (existsEmployee.IsActive != true)
