@@ -31,9 +31,11 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(CreateInvoiceValidator))]
         public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
-             XmlDocument xmlVerisi = new XmlDocument();
+            XmlDocument xmlVerisi = new XmlDocument();
             xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+
             var result = new Result<long>();
+
             var invoiceExists = await _unitWork.GetRepository<Invoice>().AnyAsync(x => x.UUID == create.UUID);
             if (invoiceExists)
             {
@@ -41,19 +43,28 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var mappedEntity = _mapper.Map<Invoice>(create);
-            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x=>x.Id==create.OfferId,"Request", "Currency");
-            if (offerEntity is null)
+            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == create.OfferId, "Request", "Currency");
+            var materialOffer = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == create.OfferId);
+
+            decimal totalPrice = 0;
+            foreach ( var item in materialOffer)
             {
-                throw new NotFoundException("İstenen Teklif kaydı bulunmadı.");
+                totalPrice += item.OfferedPrice;
             }
 
+            Request request = materialOffer.FirstOrDefault(x => x.OfferId == create.OfferId).Material.Request;
 
-           mappedEntity.TRY_Rate =offerEntity.Currency.Name=="TRY"? 1*offerEntity.OfferedPrice: offerEntity.OfferedPrice* Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
-            
+            mappedEntity.TRY_Rate = offerEntity.Currency.Name == "TRY" ? 1 * totalPrice : totalPrice * Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
+
             offerEntity.Status = Status.FaturaEklendi;
-            offerEntity.Request.State=Status.FaturaEklendi;
+            foreach ( var item in materialOffer)
+            {
+                item.Material.State = Status.FaturaEklendi;
+                _unitWork.GetRepository<Material>().Update(item.Material);
+            }
             _unitWork.GetRepository<Offer>().Update(offerEntity);
             _unitWork.GetRepository<Invoice>().Add(mappedEntity);
+
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
             return result;
@@ -160,7 +171,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
         {
             var result = new Result<long>();
-            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x=>x.Id==update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
+            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
             if (update is null)
             {
                 throw new NotFoundException("Güncellenmek istenen Fatura kaydı bulunamadı.");
@@ -171,7 +182,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 entity.Offer.Status = Status.Tamamlandı;
                 entity.Offer.Request.State = Status.Tamamlandı;
                 _unitWork.GetRepository<Invoice>().Update(entity);
-                SenderUtils.SendMail(entityInvoice.Offer.Request.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP", 
+                SenderUtils.SendMail(entityInvoice.Offer.Request.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP",
                     $"{entityInvoice.Offer.RequestId} talep numaralı talebiniz tamamlanmıştır. Stoktan temin edebilirsiniz . Talep içeriğiniz : {entityInvoice.Offer.Request.Quantity}- Adet " +
                     $"{entityInvoice.Offer.Request.Product.Name}-{entityInvoice.Offer.Request.Product.MeasuringUnit.Name} ");
 

@@ -11,11 +11,7 @@
         YönetimRed = 5,
         FaturaEklendi=6,
 
-
-
-
-
-
-        Tamamlandı = 9
+        İşlemeAlindi = 8,
+        Tamamlandı = 9,
     }
 }

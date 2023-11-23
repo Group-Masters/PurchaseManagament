@@ -7,9 +7,9 @@
         public string SupplierName { get; set; }
         public long MaterialId { get; set; }
         public string ProductName { get; set; }
-        public double Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public string MeasuringUnit { get; set; }
-        public double OfferedPrice { get; set; }
+        public decimal OfferedPrice { get; set; }
         public string Currency {  get; set; }
     }
 }

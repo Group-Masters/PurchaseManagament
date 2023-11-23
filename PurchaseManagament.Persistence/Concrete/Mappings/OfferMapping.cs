@@ -24,6 +24,12 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(5)
                 .IsRequired(false);
 
+            builder.Property(x => x.AboveThreshold)
+                .HasColumnName("ABOVE_THRESHOLD")
+                .HasColumnOrder(6)
+                .HasDefaultValue(0)
+                .HasColumnType("bit")
+                .IsRequired();
 
             builder.Property(x => x.Details)
                 .HasColumnName("DETAILS")

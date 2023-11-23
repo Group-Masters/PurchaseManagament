@@ -6,6 +6,8 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.MaterialOffer
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
+using System.Xml;
+using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 
 namespace PurchaseManagament.Application.Concrete.Services
 {
@@ -20,6 +22,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork = unitWork;
         }
 
+        #region MaterialOffer CRUD Operations
         public async Task<Result<long>> CreateMaterialOffer(CreateMaterialOfferRM createMaterialOfferRM)
         {
             var result = new Result<long>();
@@ -67,7 +70,9 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = await _unitWork.CommitAsync();
             return result;
         }
+        #endregion
 
+        #region MaterialOffer Get Operations
         public async Task<Result<MaterialOfferDto>> GetMaterialOfferById(GetByIdVM getMaterialOfferById)
         {
             var result = new Result<MaterialOfferDto>();
@@ -122,5 +127,10 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = mappedEntity;
             return result;
         }
+        #endregion
+
+        #region Offer Operations
+
+        #endregion
     }
 }

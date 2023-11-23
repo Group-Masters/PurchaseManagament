@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
@@ -23,14 +22,17 @@ namespace PurchaseManagament.Application.Concrete.Services
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
         private readonly ILoggedService _loggedService;
+        private readonly IMaterialOfferService _materialOfferService;
 
-        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService)
+        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService, IMaterialOfferService materialOfferService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
             _loggedService = loggedService;
+            _materialOfferService = materialOfferService;
         }
 
+        #region Offer CRUD Operations
         [Validator(typeof(CreateOfferValidator))]
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
         {
@@ -39,6 +41,137 @@ namespace PurchaseManagament.Application.Concrete.Services
             _unitWork.GetRepository<Offer>().Add(mappedEntity);
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
+            return result;
+        }
+
+        [Validator(typeof(UpdateOfferValidator))]
+        public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
+        {
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
+            if (entity is null)
+            {
+                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
+            }
+
+            var mappedEntity = _mapper.Map(update, entity);
+            _unitWork.GetRepository<Offer>().Update(mappedEntity);
+
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
+        }
+
+        [Validator(typeof(UpdateOfferStateValidator))]
+        public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
+        {
+            var result = new Result<long>();
+            var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == update.Id);
+
+            var offerMaterials = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == update.Id, "Offer.Supplier", "Material.Product.MeasuringUnit", "Offer.Currency");
+            var offerMaterialDtos = _mapper.Map<HashSet<MaterialOfferDto>>(offerMaterials);
+
+            if (offer.SupplierId == 1 && update.Status == Status.YönetimOnay)
+            {
+                foreach (var offerMaterial in offerMaterialDtos)
+                {
+                    var materialEntity = await _unitWork.GetRepository<Material>().GetById(offerMaterial.MaterialId);
+                    materialEntity.State = Status.FaturaEklendi;
+
+                    _unitWork.GetRepository<Material>().Update(materialEntity);
+                    update.Status = Status.FaturaEklendi;
+                }
+            }else if(update.Status == Status.YönetimBekleme)
+            {
+                foreach (var offerMaterial in offerMaterialDtos)
+                {
+                    var materialEntity = await _unitWork.GetRepository<Material>().GetById(offerMaterial.MaterialId);
+                    materialEntity.State = update.Status;
+                    _unitWork.GetRepository<Material>().Update(materialEntity);
+
+                    materialEntity.State = Status.YönetimBekleme;
+
+                    var declinedOffers = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId != offerMaterial.OfferId && x.MaterialId == offerMaterial.MaterialId);
+                    foreach(var item in declinedOffers)
+                    {
+                        item.Offer.Status = Status.Reddedildi;
+                        _unitWork.GetRepository<Offer>().Update(item.Offer);
+                    }
+                }
+            }else if(update.Status == Status.YönetimOnay || update.Status == Status.YönetimRed || update.Status == Status.FaturaEklendi || update.Status == Status.Tamamlandı)
+            {
+                HashSet<Material> declinedMaterials = new();
+                Request request = new Request();
+                foreach(var offerMaterial in offerMaterialDtos)
+                {
+                    var materialEntity = await _unitWork.GetRepository<Material>().GetSingleByFilterAsync(x => x.Id == offerMaterial.MaterialId, "Product.MeasuringUnit");
+                    materialEntity.State = update.Status;
+                    _unitWork.GetRepository<Material>().Update(materialEntity);
+                    if(update.Status == Status.YönetimRed)
+                    {
+                        declinedMaterials.Add(materialEntity);
+                        request = materialEntity.Request;
+                    }
+                }
+                if(declinedMaterials.Count > 0)
+                {
+                    string printDeclinedMaterial = new("");
+                    int i = 1;
+                    foreach(var item in declinedMaterials)
+                    {
+                        printDeclinedMaterial += $"\n{i}-) {item.Product.Name} {item.Quantity} {item.Product.MeasuringUnit}";
+                        i++;
+                    }
+                    SenderUtils.SendMail(request.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"Oluşturmuş olduğunuz {request.Id} numaralı talebinizdeki bazı ürünler Yönetim tarafınca reddetilmiştir. Reddedilen ürünler listesi:{printDeclinedMaterial}");
+                }
+            }
+
+            _mapper.Map(update, offer);
+            offer.ApprovingEmployeeId = (Int64)_loggedService.UserId;
+            _unitWork.GetRepository<Offer>().Update(offer);
+
+            await _unitWork.CommitAsync();
+            result.Data = offer.Id;
+            return result;
+        }
+
+
+        /// <summary>
+        /// Teklifin bütçe sınırı kontrolör değerini günceller.
+        /// </summary>
+        /// <param name="offerId">Offer.Id</param>
+        /// <returns>Offer.AboveThreshold</returns>
+        public async Task<Result<bool>> UpdateAboveThreshold(GetOfferByIdRM offerId)
+        {
+            XmlDocument xmlVerisi = new XmlDocument();
+            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
+
+            var result = new Result<bool>();
+            decimal totalPrice = 0;
+
+            var offer = await _unitWork.GetRepository<Offer>().GetById(offerId);
+            offer.AboveThreshold = false;
+
+            var offerMaterials = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == offerId.Id, "Product.MeasuringUnit");
+            var threshold = _unitWork.GetRepository<MaterialOffer>().GetSingleByFilterAsync(x => x.OfferId == offerId.Id).Result.Material.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
+            var materialOfferDtos = _mapper.Map<HashSet<MaterialOfferDto>>(offerMaterials);
+            foreach (var materialOfferDto in materialOfferDtos)
+            {
+                totalPrice += materialOfferDto.OfferedPrice;
+            }
+            if (offer.Currency.Name != "TRY")
+            {
+                var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offer.Currency.Name}")).InnerText.Replace('.', ','));
+                totalPrice = rate * totalPrice;
+            }
+            if (totalPrice >= threshold)
+            {
+
+                offer.AboveThreshold = true;
+                _unitWork.GetRepository<Offer>().Update(offer);
+                await _unitWork.CommitAsync();
+            }
+            result.Data = offer.AboveThreshold;
             return result;
         }
 
@@ -71,12 +204,67 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        #endregion
+
+        #region Offer Get Operations
+
+
+        /// <summary>
+        /// Teklifleri şirkete göre getirir.
+        /// </summary>
+        /// <param name="companyId">Company.Id</param>
+        /// <returns>İstenen şirkete ait teklifleri OfferDto listesi olarak döner.</returns>
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByCompany(GetOfferByIdRM companyId)
+        {
+            var result = new Result<HashSet<OfferDto>>();
+
+            var materialOffers = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == companyId.Id);
+            var company = _unitWork.GetRepository<Company>().GetById(companyId.Id);
+
+            HashSet<long> offerList = new();
+            foreach (var materialOffer in materialOffers)
+            {
+                if (!offerList.Contains(materialOffer.OfferId))
+                {
+                    offerList.Add(materialOffer.OfferId);
+                }
+            }
+
+            HashSet<OfferDto> offerDtos = new();
+            foreach (var offerId in offerList)
+            {
+                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee");
+                var offerDto = _mapper.Map<OfferDto>(offer);
+                offerDto.CompanyName = company.Result.Name;
+                offerDto.CompanyAddress = company.Result.Address;
+            }
+
+            result.Data = offerDtos;
+            return result;
+        }
+
         public async Task<Result<HashSet<OfferDto>>> GetAllOffer()
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetAllAsync("MaterialOffer.Material.Request.RequestEmployee.CompanyDepartment.Company", "MaterialOffer.Offer.Supplier", "");
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
-            result.Data = mappedEntity;
+
+            HashSet<long> companyIds = new();
+            var companies = await _unitWork.GetRepository<Company>().GetAllAsync();
+            foreach (var company in companies)
+            {
+                companyIds.Add(company.Id);
+            }
+
+            HashSet<OfferDto> offerDtos = new();
+            foreach (var companyId in companyIds)
+            {
+                var offerDto = GetOfferByCompany(new GetOfferByIdRM { Id = companyId }).Result.Data;
+                foreach(var offer in offerDto)
+                {
+                    offerDtos.Add(offer);
+                }
+            }
+
+            result.Data = offerDtos;
             return result;
         }
 
@@ -84,92 +272,68 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<OfferDto>>> GetAllOfferByRequestId(GetOfferByIdRM getOfferByRequestId)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var materalList = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getOfferByRequestId.Id);
-            var entities = _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Id == materalList.Id);
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+
+            var entities = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getOfferByRequestId.Id);
+            var request = _unitWork.GetRepository<Request>().GetById(getOfferByRequestId.Id);
+
+            HashSet<long> offerList = new();
+            foreach (var entity in entities)
+            {
+                if (!offerList.Contains(entity.OfferId))
+                {
+                    offerList.Add(entity.OfferId);
+                }
+            }
+
+            HashSet<OfferDto> offerDtos = new();
+            foreach (var offerId in offerList)
+            {
+                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee");
+                var offerDto = _mapper.Map<OfferDto>(offer);
+                offerDto.CompanyName = request.Result.RequestEmployee.CompanyDepartment.Company.Name;
+                offerDto.CompanyAddress = request.Result.RequestEmployee.CompanyDepartment.Company.Address;
+            }
+
+            result.Data = offerDtos;
+            return result;
+        }
+
+        [Validator(typeof(GetOfferByIdValidator))]
+        public Result<HashSet<OfferDto>> GetOfferByChairman(GetOfferByIdRM company)
+        {
+            var result = new Result<HashSet<OfferDto>>();
+
+            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            HashSet<OfferDto> offerChairman = new();
+            foreach (var offer in offerByCompany)
+            {
+                if (offer.Status == Status.YönetimBekleme && offer.AboveThreshold == true)
+                {
+                    offerChairman.Add(offer);
+                }
+            }
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(offerChairman);
+
             result.Data = mappedEntity;
             return result;
         }
 
         [Validator(typeof(GetOfferByIdValidator))]
-        public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
+        public Result<HashSet<OfferDto>> GetOfferByManager(GetOfferByIdRM company)
         {
-            XmlDocument xmlVerisi = new XmlDocument();
-            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
-            
             var result = new Result<HashSet<OfferDto>>();
-            var materials = _unitWork.GetRepository<Material>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id, "Product.MeasuringUnit");
-            var materialDtos = _mapper.Map<HashSet<MaterialDto>>(materials);
 
-            var offers = _unitWork.GetRepository<Offer>();
-            List<MaterialOfferDto> materialOfferDtos = new List<MaterialOfferDto>();
-
-            foreach (var material in materialDtos)
+            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            HashSet<OfferDto> offerManager = new();
+            foreach (var offer in offerByCompany)
             {
-                var materialOffers = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.MaterialId == material.Id);
-
+                if (offer.Status == Status.YönetimBekleme && offer.AboveThreshold == false)
+                {
+                    offerManager.Add(offer);
+                }
             }
-            var list = new HashSet<Offer>();
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(offerManager);
 
-            foreach (var entity in entities)
-            {
-                var managerThreshold = entity.MaterialOffers.SingleOrDefault(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id)
-                    .Material.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
-                if (entity.Currency.Name=="TRY")
-                {
-                    if (entity.OfferedPrice> managerThreshold)
-                    {
-                        list.Add(entity);
-                    }
-                    continue;
-                }
-                var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
-                
-                if (rate * entity.OfferedPrice > managerThreshold)
-                {
-                    list.Add(entity);
-                }
-
-            }
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(list);
-            result.Data = mappedEntity;
-            return result;
-        }
-
-        [Validator(typeof(GetOfferByIdValidator))]
-        public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
-        {
-
-            XmlDocument xmlVerisi = new XmlDocument();
-            xmlVerisi.Load("https://www.tcmb.gov.tr/kurlar/today.xml");
-            var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.ApprovingEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimBekleme
-            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
-
-            var list = new HashSet<Offer>();
-            foreach (var entity in entities)
-            {
-                var managerThreshold = entity.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
-                if (entity.Currency.Name == "TRY")
-                {
-                    if (entity.OfferedPrice <= managerThreshold)
-                    {
-                        list.Add(entity);
-                    }
-                    continue;
-                }
-                var rate = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{entity.Currency.Name}")).InnerText.Replace('.', ','));
-
-                if (rate * entity.OfferedPrice <= managerThreshold)
-                {
-                    list.Add(entity);
-                }
-
-            }
-
-
-
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(list);
             result.Data = mappedEntity;
             return result;
         }
@@ -178,111 +342,61 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<OfferDto>> GetOfferById(GetOfferByIdRM getOfferById)
         {
             var result = new Result<OfferDto>();
-            var entityControl = await _unitWork.GetRepository<Offer>().AnyAsync(x => x.Id == getOfferById.Id);
-            if (!entityControl)
-            {
-                throw new NotFoundException("İstenen Teklif kaydı bulunamadı.");
-            }
 
             var existEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == getOfferById.Id, "Currency", "Supplier", "ApprovingEmployee");
             var mappedEntity = _mapper.Map<OfferDto>(existEntity);
+
             result.Data = mappedEntity;
             return result;
         }
 
-        [Validator(typeof(UpdateOfferValidator))]
-        public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
-        {
-            var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
-            if (entity is null)
-            {
-                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
-            }
-
-            var mappedEntity = _mapper.Map(update, entity);
-            _unitWork.GetRepository<Offer>().Update(mappedEntity);
-
-            await _unitWork.CommitAsync();
-            result.Data = entity.Id;
-            return result;
-        }
-
-        [Validator(typeof(UpdateOfferStateValidator))]
-        public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
-        {
-            var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == update.Id, "Supplier");
-            if (entity is null)
-            {
-                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
-            }
-
-            //talebin tedarikçisi  stoksa ve yönetim onaya gönderilecekse
-            if (entity.SupplierId == 1 && update.Status == Status.YönetimOnay)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = Status.FaturaEklendi;
-
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-                update.Status = Status.FaturaEklendi;
-            }
-            else if (update.Status == Status.YönetimBekleme)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetById(entity.RequestId);
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-
-                var offers = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Id != entity.Id && x.RequestId == entity.RequestId);
-                foreach (var item in offers)
-                {
-                    item.Status = Status.Reddedildi;
-                    _unitWork.GetRepository<Offer>().Update(item);
-                }
-            }
-            else if (update.Status == Status.YönetimOnay || update.Status == Status.YönetimRed || update.Status == Status.FaturaEklendi || update.Status == Status.Tamamlandı)
-            {
-                var requestEntity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x=>x.Id==entity.RequestId, "Product.MeasuringUnit", "RequestEmployee.EmployeeDetail");
-                requestEntity.State = update.Status;
-                _unitWork.GetRepository<Request>().Update(requestEntity);
-                if (update.Status==Status.YönetimRed)
-                {
-                    SenderUtils.SendMail(requestEntity.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"Oluşturmuş olduğunuz {requestEntity.Id} numaralı {requestEntity.Quantity} {requestEntity.Product.MeasuringUnit.Name} {requestEntity.Product.Name} talebiniz Yönetim tarafınca reddetilmiştir.");
-
-                }
-            }
-
-            _mapper.Map(update, entity);
-            entity.ApprovingEmployeeId = (Int64)_loggedService.UserId;
-            _unitWork.GetRepository<Offer>().Update(entity);
-            await _unitWork.CommitAsync();
-            result.Data = entity.Id;
-            return result;
-        }
-
+        /// <summary>
+        /// Durumu 'YönetimOnay olan teklifleri şirkete göre getirir.'
+        /// </summary>
+        /// <param name="company">Company.Id</param>
+        /// <returns>Yönetim tarafından onaylanmış tekliflerin listesini döner.</returns>
         [Validator(typeof(GetOfferByIdValidator))]
-        public async Task<Result<HashSet<OfferDto>>> GetOfferByAproved(GetOfferByIdRM company)
+        public Result<HashSet<OfferDto>> GetOfferByAproved(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id && x.Status == Status.YönetimOnay
-            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            HashSet<OfferDto> approvedOfferByCompany = new();
+            foreach (var offer in offerByCompany)
+            {
+                if (offer.Status == Status.YönetimOnay)
+                {
+                    approvedOfferByCompany.Add(offer);
+                }
+            }
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(approvedOfferByCompany);
             result.Data = mappedEntity;
             return result;
         }
 
+        /// <summary>
+        /// Durumu 'FaturaEklendi' olan teklifleri şirkete göre getirir.
+        /// </summary>
+        /// <param name="company">Company.Id</param>
+        /// <returns>Stok işlemi gerçekleştirilmiş tekliflerin listesini döner.</returns>
         [Validator(typeof(GetOfferByIdValidator))]
-        public async Task<Result<HashSet<OfferDto>>> GetOfferFromStock(GetOfferByIdRM company)
+        public Result<HashSet<OfferDto>> GetOfferFromStock(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var entities = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.Request.RequestEmployee.CompanyDepartment.CompanyId == company.Id &&
-            x.Status == Status.FaturaEklendi && x.SupplierId == 1
-            , "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company", "Request.Product.MeasuringUnit", "Request.RequestEmployee.CompanyDepartment.Company");
-            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(entities);
+            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            HashSet<OfferDto> offerFromStock = new();
+            foreach (var offer in offerByCompany)
+            {
+                if (offer.Status == Status.FaturaEklendi)
+                {
+                    offerFromStock.Add(offer);
+                }
+            }
+            var mappedEntity = _mapper.Map<HashSet<OfferDto>>(offerFromStock);
 
             result.Data = mappedEntity;
             return result;
         }
+        #endregion
     }
 }

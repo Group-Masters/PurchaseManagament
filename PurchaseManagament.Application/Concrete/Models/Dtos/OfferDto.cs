@@ -13,6 +13,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string SupplierAddress { get; set; }
         public Int64 SupplierId { get; set; }
         public Status Status{ get; set; }
+        public bool AboveThreshold { get; set; }
         public Int64 ApprovingEmployeeId { get; set; }
         public string ApprovingEmployeeName { get; set; }
         public string ApprovingEmployeeSurname { get; set; }

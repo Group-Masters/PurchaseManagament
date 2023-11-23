@@ -9,6 +9,7 @@ namespace PurchaseManagament.Domain.Entities
         public Int64 SupplierId { get; set; }
         public Int64? ApprovingEmployeeId { get; set; }
         public string Details { get; set; }
+        public bool AboveThreshold { get; set; }
 
         public virtual Currency Currency { get; set; }
         public virtual Supplier Supplier { get; set; }
