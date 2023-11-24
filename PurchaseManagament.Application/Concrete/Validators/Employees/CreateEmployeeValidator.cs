@@ -11,7 +11,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Employees
                 .NotEmpty().WithMessage("Kişinin isim bilgisi boş bırakılamaz")
                 .MaximumLength(20).WithMessage("Ad Bilgisi 20 Karakterden Fazla Olamaz");
             RuleFor(x => x.Address)
-                .NotEmpty().WithMessage("Kişinin adres bilgisi boş bırakılamaz")
+               
                 .MaximumLength(200).WithMessage("Adres Bilgisi 200 Karakterden Fazla Olamaz");
             RuleFor(x => x.Phone)
                 .NotEmpty().WithMessage("Kişinin telefon bilgisi boş bırakılamaz")
@@ -38,11 +38,8 @@ namespace PurchaseManagament.Application.Concrete.Validators.Employees
                 .GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
             RuleFor(x => x.Username)
                 .NotEmpty().WithMessage("Kişinin kullanıcı adı boş bırakılamaz");
-            RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Kişinin kullanıcı şifresi boş bırakılamaz")
-                .MaximumLength(50).WithMessage("Şifre Bilgisi 50 Karakterden Fazla Olamaz");
-            RuleFor(x => x.Gender)
-                .NotEmpty().WithMessage("Kişinin kullanıcı şifresi boş bırakılamaz");
+            
+ 
             RuleFor(x => x.IdNumber)
                 .NotEmpty().WithMessage("Kişinin kullanıcı şifresi boş bırakılamaz")
                 .MaximumLength(11).WithMessage("Kimlik Numaranız 11 Karakterden Fazla Olamaz")

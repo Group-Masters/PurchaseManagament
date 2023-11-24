@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using Autofac.Extensions.DependencyInjection;
+using Autofac;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.API.DependencyInjection;
 using PurchaseManagament.API.Filters;
@@ -11,6 +13,7 @@ using PurchaseManagament.Persistence.Concrete.Context;
 using PurchaseManagament.Persistence.Concrete.Repositories;
 using PurchaseManagament.Persistence.Concrete.UnitWork;
 using Serilog;
+using PurchaseManagament.Application.Concrete.Inteceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,12 +30,20 @@ Log.Logger = new LoggerConfiguration()
 
 Log.Logger.Information("Program Started...");
 
+
 builder.Services.AddControllers(opt =>
 {
     opt.Filters.Add(new ExceptionHandlerFilter());
-    opt.Filters.Add(new ControllingProps());
+    //opt.Filters.Add(new ControllingProps());
 
 });
+
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new AutoFacİnterceptor());
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

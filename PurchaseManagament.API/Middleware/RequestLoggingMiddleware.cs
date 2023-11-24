@@ -33,6 +33,11 @@ namespace PurchaseManagament.API.Middleware
                 requestBodyString = Encoding.UTF8.GetString(buffer, 0, requestBody.Result);
             }
 
+            if (context.Request.Path.Value.Contains("/Login"))
+            {
+                requestBodyString = "******";
+            }
+
             // İstekin geldiği zamanı alın
             var requestTime = DateTime.Now;
 
