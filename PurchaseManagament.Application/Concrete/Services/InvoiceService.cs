@@ -21,11 +21,13 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
+        private readonly IRequestService _requestService;
 
-        public InvoiceService(IMapper mapper, IUnitWork unitWork)
+        public InvoiceService(IMapper mapper, IUnitWork unitWork, IRequestService requestService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
+            _requestService = requestService;
         }
 
         [Validator(typeof(CreateInvoiceValidator))]
@@ -47,7 +49,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var materialOffer = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == create.OfferId);
 
             decimal totalPrice = 0;
-            foreach ( var item in materialOffer)
+            foreach (var item in materialOffer)
             {
                 totalPrice += item.OfferedPrice;
             }
@@ -57,7 +59,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             mappedEntity.TRY_Rate = offerEntity.Currency.Name == "TRY" ? 1 * totalPrice : totalPrice * Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
 
             offerEntity.Status = Status.FaturaEklendi;
-            foreach ( var item in materialOffer)
+            foreach (var item in materialOffer)
             {
                 item.Material.State = Status.FaturaEklendi;
                 _unitWork.GetRepository<Material>().Update(item.Material);
@@ -167,28 +169,49 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
-        [Validator(typeof(UpdateInvoiceStatusValidator))]
         public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
         {
             var result = new Result<long>();
-            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
-            if (update is null)
-            {
-                throw new NotFoundException("Güncellenmek istenen Fatura kaydı bulunamadı.");
-            }
-            var entity = _mapper.Map(update, entityInvoice);
-            if (entity.Status == Status.Tamamlandı)
-            {
-                entity.Offer.Status = Status.Tamamlandı;
-                entity.Offer.Request.State = Status.Tamamlandı;
-                _unitWork.GetRepository<Invoice>().Update(entity);
-                SenderUtils.SendMail(entityInvoice.Offer.Request.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP",
-                    $"{entityInvoice.Offer.RequestId} talep numaralı talebiniz tamamlanmıştır. Stoktan temin edebilirsiniz . Talep içeriğiniz : {entityInvoice.Offer.Request.Quantity}- Adet " +
-                    $"{entityInvoice.Offer.Request.Product.Name}-{entityInvoice.Offer.Request.Product.MeasuringUnit.Name} ");
 
+            var invoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == update.Id);
+
+            var updatedInvoice = _mapper.Map(update, invoice);
+            if (updatedInvoice.Status == Status.Tamamlandı)
+            {
+                updatedInvoice.Offer.Status = Status.Tamamlandı;
+                var offerMaterials = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == updatedInvoice.OfferId);
+                HashSet<long> materialRequestIds = new();
+                foreach (var offerMaterial in offerMaterials)
+                {
+                    offerMaterial.Material.State = Status.Tamamlandı;
+                    if (!materialRequestIds.Contains(offerMaterial.Material.RequestId))
+                    {
+                        materialRequestIds.Add(offerMaterial.Material.RequestId);
+                    }
+                }
+                _unitWork.GetRepository<Invoice>().Update(updatedInvoice);
+
+                foreach (var requestId in materialRequestIds)
+                {
+                    var requestState = await _requestService.RequestStatusUpdate(new GetByIdVM { Id = requestId });
+                    if (requestState.Data.State == Status.Tamamlandı)
+                    {
+                        int count = 1;
+                        string printCompletedMaterials = "";
+                        var materials = await _unitWork.GetRepository<Material>().GetByFilterAsync(x => x.RequestId == requestId);
+                        foreach (var material in materials)
+                        {
+                            printCompletedMaterials += $"\n{count}-) {material.Product.Name}: {material.Quantity} {material.Product.MeasuringUnit}";
+                            count++;
+                        }
+                        SenderUtils.SendMail(requestState.Data.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP",
+                            $"{requestState.Data.Id} talep numaralı talebiniz tamamlanmıştır. Stoktan temin edebilirsiniz . Talep içeriğiniz : " +
+                            $"{printCompletedMaterials}");
+                    }
+                }
             }
             await _unitWork.CommitAsync();
-            result.Data = entity.Id;
+            result.Data = updatedInvoice.Id;
             return result;
         }
     }

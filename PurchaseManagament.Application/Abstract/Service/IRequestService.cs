@@ -2,6 +2,7 @@
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Wrapper;
+using PurchaseManagament.Domain.Entities;
 
 namespace PurchaseManagament.Application.Abstract.Service
 {
@@ -9,7 +10,7 @@ namespace PurchaseManagament.Application.Abstract.Service
     {
         Task<Result<long>> CreateRequest(CreateRequestRM? createRequestRM);
         Task<Result<long>> UpdateRequest(UpdateRequestRM updateRequestRM);
-        Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM);
+        Task<Result<Request>> RequestStatusUpdate(GetByIdVM getByIdVM);
         Task<Result<bool>> DeleteRequest(GetByIdVM id);
         Task<Result<bool>> DeleteRequestPermanent(GetByIdVM id);
 

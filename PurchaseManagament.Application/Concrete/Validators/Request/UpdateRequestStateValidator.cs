@@ -8,8 +8,6 @@ namespace PurchaseManagament.Application.Concrete.Validators.Request
         public UpdateRequestStateValidator()
         {
             RuleFor(x => x.Id).NotEmpty().WithMessage("Lütfen Talep ID bilgisini boş bırakmayınız").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
-            RuleFor(x => x.State).NotEmpty().WithMessage("Lütfen Talep Durum bilgisini boş bırakmayınız");
-
         }
     }
 }

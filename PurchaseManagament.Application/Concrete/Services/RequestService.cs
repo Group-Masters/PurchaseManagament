@@ -61,27 +61,48 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
         [Validator(typeof(UpdateRequestStateValidator))]
-        public async Task<Result<long>> UpdateRequestState(UpdateRequestStateRM updateRequestStateRM)
+        public async Task<Result<Request>> RequestStatusUpdate(GetByIdVM getByIdVM)
         {
-            var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Request>().GetSingleByFilterAsync(x=>x.Id==updateRequestStateRM.Id, "Product.MeasuringUnit", "RequestEmployee.EmployeeDetail");
-            if (entity is null)
+            var result = new Result<Request>();
+
+            int completedMaterials = 0;
+            int pendingMaterials = 0;
+            int declinedMaterials = 0;
+
+            var requestMaterials = await _unitWork.GetRepository<Material>().GetByFilterAsync(x => x.RequestId == getByIdVM.Id);
+            foreach (var offerMaterial in requestMaterials)
             {
-                throw new NotFoundException("Durumu güncellenmek istenen Talep kaydı bulunamadı.");
-            }
-            if (updateRequestStateRM.State==Status.Onay|| updateRequestStateRM.State == Status.Reddedildi)
-            {
-                entity.ApprovingEmployeeId = _loggedService.UserId;
-                entity.ApprovedDate = DateTime.Now;
-                if (updateRequestStateRM.State == Status.Reddedildi)
+                if (offerMaterial.State == Status.Tamamlandı)
                 {
-                    SenderUtils.SendMail(entity.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"{entity.CreatedDate.Value.ToShortTimeString()} tarihinde oluşturmuş olduğunuz {entity.Id} numaralı talebiniz Birim Müdürü tarafınca reddetilmiştir.");
+                    completedMaterials++;
+                }
+                else if (offerMaterial.State == Status.Reddedildi)
+                {
+                    declinedMaterials++;
+                }
+                else if (offerMaterial.State == Status.Beklemede)
+                {
+                    pendingMaterials++;
                 }
             }
-            var mappedEntity = _mapper.Map(updateRequestStateRM, entity);
-            _unitWork.GetRepository<Request>().Update(mappedEntity);
+
+            var request = await _unitWork.GetRepository<Request>().GetById(getByIdVM.Id);
+            if (pendingMaterials == requestMaterials.ToList().Count)
+            {
+                request.State = Status.Beklemede;
+            }
+            else if ((completedMaterials + declinedMaterials) == requestMaterials.ToList().Count)
+            {
+                request.State = Status.Tamamlandı;
+            }
+            else
+            {
+                request.State = Status.İşlemeAlindi;
+            }
+            _unitWork.GetRepository<Request>().Update(request);
+
             await _unitWork.CommitAsync();
-            result.Data = entity.Id;
+            result.Data = request;
             return result;
         }
 
