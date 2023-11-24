@@ -93,5 +93,6 @@ app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeade
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseStaticFiles();
 
 app.Run();
