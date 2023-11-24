@@ -48,8 +48,6 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<Currency, CurrencyDTO>();
 
             CreateMap<Request, RequestDto>()
-                .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovedEmployee.Name))
-                .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovedEmployee.Surname))
                 .ForMember(x => x.RequestEmployeeName, y => y.MapFrom(z => z.RequestEmployee.Name))
                 .ForMember(x => x.RequestEmployeeSurname, y => y.MapFrom(z => z.RequestEmployee.Surname));
 
@@ -60,6 +58,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<MaterialOffer, MaterialOfferDto>()
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Offer.Supplier.Name))
                 .ForMember(x => x.ProductName, y => y.MapFrom(z => z.Material.Product.Name))
+                .ForMember(x => x.Quantity, y => y.MapFrom(z => z.Material.Quantity))
                 .ForMember(x => x.MeasuringUnit, y => y.MapFrom(z => z.Material.Product.MeasuringUnit.Name))
                 .ForMember(x => x.Currency, y => y.MapFrom(z => z.Offer.Currency.Name));
 

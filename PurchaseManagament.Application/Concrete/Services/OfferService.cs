@@ -23,13 +23,15 @@ namespace PurchaseManagament.Application.Concrete.Services
         private readonly IUnitWork _unitWork;
         private readonly ILoggedService _loggedService;
         private readonly IMaterialOfferService _materialOfferService;
+        private readonly IRequestService _requestService;
 
-        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService, IMaterialOfferService materialOfferService)
+        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService, IMaterialOfferService materialOfferService, IRequestService requestService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
             _loggedService = loggedService;
             _materialOfferService = materialOfferService;
+            _requestService = requestService;
         }
 
         #region Offer CRUD Operations
@@ -124,6 +126,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                     }
                     SenderUtils.SendMail(request.RequestEmployee.EmployeeDetail.Email, "Talep Bilgilendirme", $"Oluşturmuş olduğunuz {request.Id} numaralı talebinizdeki bazı ürünler Yönetim tarafınca reddetilmiştir. Reddedilen ürünler listesi:{printDeclinedMaterial}");
                 }
+                await _requestService.RequestStatusUpdate(new GetByIdVM { Id = request.Id });
             }
 
             _mapper.Map(update, offer);

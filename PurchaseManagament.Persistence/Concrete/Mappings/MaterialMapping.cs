@@ -11,8 +11,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.RequestId)
                 .HasColumnName("REQUEST_ID")
                 .HasColumnOrder(2)
-                .HasColumnType("bigint")
-                .IsRequired(false);
+                .HasColumnType("bigint");
 
             builder.Property(x => x.ProductId)
                 .HasColumnName("PRODUCT_ID")

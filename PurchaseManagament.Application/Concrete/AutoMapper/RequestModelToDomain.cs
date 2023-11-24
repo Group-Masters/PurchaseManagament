@@ -9,6 +9,8 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.EmployeeRoles;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.MaterialOffers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Materials;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
@@ -69,6 +71,12 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<CreateRequestRM, Request>();
             CreateMap<UpdateRequestStateRM, Request>();
             CreateMap<UpdateRequestRM, Request>();
+
+            CreateMap<CreateMaterialRM, Material>();
+            CreateMap<UpdateMaterialRM, Material>();
+
+            CreateMap<CreateMaterialOfferRM, MaterialOffer>();
+            CreateMap<UpdateMaterialOfferRM, MaterialOffer>();
 
             CreateMap<CreateSupplierRM,  Supplier>();
             CreateMap<UpdateSupplierRM, Supplier>();

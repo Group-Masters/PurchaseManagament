@@ -121,7 +121,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<InvoiceDto>>();
             var entities = await _unitWork.GetRepository<Invoice>().GetAllAsync
-                ("Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+                ("Offer.ApprovingEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entities);
             result.Data = mappedEntity;
             return result;
@@ -138,7 +138,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var existEntity = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync
-                (x => x.Id == getInvoiceById.Id, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+                (x => x.Id == getInvoiceById.Id, "Offer.ApprovingEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<InvoiceDto>(existEntity);
             result.Data = mappedEntity;
             return result;
@@ -150,7 +150,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<HashSet<InvoiceDto>>();
 
             var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
-                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+                (x => x.Offer.ApprovingEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id, "Offer.ApprovingEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
 
             result.Data = mappedEntity;
@@ -162,7 +162,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<InvoiceDto>>();
             var entity = await _unitWork.GetRepository<Invoice>().GetByFilterAsync
-                (x => x.Offer.Request.RequestEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.Beklemede, "Offer.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Request.Product.MeasuringUnit", "Offer.Currency");
+                (x => x.Offer.ApprovingEmployee.CompanyDepartment.CompanyId == getInvoiceById.Id && x.Status == Status.Beklemede, "Offer.ApprovingEmployee.CompanyDepartment.Company", "Offer.Supplier", "Offer.Product.MeasuringUnit", "Offer.Currency");
             var mappedEntity = _mapper.Map<HashSet<InvoiceDto>>(entity);
 
             result.Data = mappedEntity;

@@ -41,23 +41,23 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetByRequestId/{requestid}")]
-        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByRequestId(Int64 requestId)
+        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByRequestId(Int64 requestid)
         {
-            var result = await _materialOfferService.GetMaterialOfferByRequestId(new GetByIdVM { Id = requestId });
+            var result = await _materialOfferService.GetMaterialOfferByRequestId(new GetByIdVM { Id = requestid });
             return Ok(result);
         }
 
         [HttpGet("GetByOfferId/{offerid}")]
-        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByOfferId(Int64 offerId)
+        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByOfferId(Int64 offerid)
         {
-            var result = await _materialOfferService.GetMaterialOfferByOfferId(new GetByIdVM { Id = offerId });
+            var result = await _materialOfferService.GetMaterialOfferByOfferId(new GetByIdVM { Id = offerid });
             return Ok(result);
         }
 
         [HttpGet("GetByMaterialId/{materialid}")]
-        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByMaterialId(Int64 materialId)
+        public async Task<ActionResult<Result<HashSet<MaterialOfferDto>>>> GetMaterialOfferByMaterialId(Int64 materialid)
         {
-            var result = await _materialOfferService.GetMaterialOfferByMaterialId(new GetByIdVM { Id = materialId });
+            var result = await _materialOfferService.GetMaterialOfferByMaterialId(new GetByIdVM { Id = materialid });
             return Ok(result);
         }
 

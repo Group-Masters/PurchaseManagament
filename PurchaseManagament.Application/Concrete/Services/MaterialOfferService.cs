@@ -77,7 +77,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<MaterialOfferDto>();
 
-            var entity = await _unitWork.GetRepository<MaterialOffer>().GetSingleByFilterAsync(x => x.Id == getMaterialOfferById.Id, "Product.MeasuringUnit", "Offer.Currency");
+            var entity = await _unitWork.GetRepository<MaterialOffer>().GetSingleByFilterAsync(x => x.Id == getMaterialOfferById.Id, "Material.Product.MeasuringUnit", "Offer.Currency", "Offer.Supplier");
             var mappedEntity = _mapper.Map<MaterialOfferDto>(entity);
 
             result.Data = mappedEntity;
@@ -88,7 +88,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<MaterialOfferDto>>();
 
-            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == getMaterialOfferByOfferIdRM.Id, "Product.MeasuringUnit", "Offer.Currency");
+            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == getMaterialOfferByOfferIdRM.Id, "Material.Product.MeasuringUnit", "Offer.Currency", "Offer.Supplier");
             var mappedEntity = _mapper.Map<HashSet<MaterialOfferDto>>(entity);
 
             result.Data = mappedEntity;
@@ -99,7 +99,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<MaterialOfferDto>>();
 
-            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.MaterialId== getMaterialOfferByMaterialIdRM.Id, "Product.MeasuringUnit", "Offer.Currency");
+            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.MaterialId== getMaterialOfferByMaterialIdRM.Id, "Material.Product.MeasuringUnit", "Offer.Currency", "Offer.Supplier");
             var mappedEntity = _mapper.Map<HashSet<MaterialOfferDto>>(entity);
 
             result.Data = mappedEntity;
@@ -110,7 +110,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<MaterialOfferDto>>();
 
-            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getMaterialOfferByRequestIdRM.Id, "Product.MeasuringUnit", "Offer.Currency");
+            var entity = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getMaterialOfferByRequestIdRM.Id, "Material.Product.MeasuringUnit", "Offer.Currency", "Offer.Supplier");
             var mappedEntity = _mapper.Map<HashSet<MaterialOfferDto>>(entity);
 
             result.Data = mappedEntity;
@@ -121,7 +121,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<MaterialOfferDto>>();
 
-            var entity = await _unitWork.GetRepository<MaterialOffer>().GetAllAsync("Product.MeasuringUnit");
+            var entity = await _unitWork.GetRepository<MaterialOffer>().GetAllAsync("Material.Product.MeasuringUnit", "Offer.Currency", "Offer.Supplier");
             var mappedEntity = _mapper.Map<HashSet<MaterialOfferDto>>(entity);
 
             result.Data = mappedEntity;

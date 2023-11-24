@@ -67,33 +67,33 @@ namespace PurchaseManagament.API.Controllers
 
         [HttpGet("GetByManager/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetByManager(int id)
+        public IActionResult GetByManager(int id)
         {
-            var result = await _offerService.GetOfferByManager(new GetOfferByIdRM { Id=id} );
+            var result = _offerService.GetOfferByManager(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }
 
         [HttpGet("GetByChairman/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetOfferByChairman(int id)
+        public IActionResult GetOfferByChairman(int id)
         {
-            var result = await _offerService.GetOfferByChairman(new GetOfferByIdRM { Id = id });
+            var result = _offerService.GetOfferByChairman(new GetOfferByIdRM { Id = id });
             return Ok(result);
-        }  
+        }
 
         [HttpGet("GetByAproved/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetOfferByAproved(int id)
+        public IActionResult GetOfferByAproved(int id)
         {
-            var result = await _offerService.GetOfferByAproved(new GetOfferByIdRM { Id = id });
+            var result = _offerService.GetOfferByAproved(new GetOfferByIdRM { Id = id });
             return Ok(result);
-        }        
-        
+        }
+
         [HttpGet("GetFromStock/{id}")]
         [Authorize]
-        public async Task<IActionResult> GetOfferFromStock(int id)
+        public IActionResult GetOfferFromStock(int id)
         {
-            var result = await _offerService.GetOfferFromStock(new GetOfferByIdRM { Id = id });
+            var result = _offerService.GetOfferFromStock(new GetOfferByIdRM { Id = id });
             return Ok(result);
         }
 

@@ -36,9 +36,9 @@ namespace PurchaseManagament.API.Controllers
 
         [HttpPut("UpdateState")]
         [Authorize(Roles = "1,3")]
-        public async Task<IActionResult> UpdateProductState([FromBody] UpdateRequestStateRM update)
+        public async Task<IActionResult> RequestStatusUpdate(Int64 id)
         {
-            var entity = await _requestService.UpdateRequestState(update);
+            var entity = await _requestService.RequestStatusUpdate(new GetByIdVM { Id = id });
             return Ok(entity);
         }
 

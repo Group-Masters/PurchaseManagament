@@ -53,7 +53,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<ReportDto>>> GetProductReport(GetReportProductVM getByIdVM)
         {
             var result = new Result<HashSet<ReportDto>>();
-            var requestEntity = await _uWork.GetRepository<Request>().GetByFilterAsync(x => x.Product.Id == getByIdVM.ProductId && x.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.CompanyId,
+            var requestEntity = await _uWork.GetRepository<Material>().GetByFilterAsync(x => x.Product.Id == getByIdVM.ProductId && x.Request.RequestEmployee.CompanyDepartment.CompanyId == getByIdVM.CompanyId,
                 "Product.MeasuringUnit", "RequestEmployee.CompanyDepartment.Department", "RequestEmployee.CompanyDepartment.Company", "ApprovedEmployee", "Offers.Supplier", "Offers.Currency", "Offers.Invoice");
             var requestMapping = _mapper.Map<HashSet<ReportDto>>(requestEntity);
             result.Data = requestMapping;
@@ -62,7 +62,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<HashSet<ReportSupplierDto>>> GetSupplierReport(GetReportSupplierVM getByIdVM)
         {
             var result = new Result<HashSet<ReportSupplierDto>>();
-            var offerEntity = await _uWork.GetRepository<Offer>().GetByFilterAsync(x => x.Supplier.Id == getByIdVM.SupplierId && x.Request.RequestEmployee.CompanyDepartment.CompanyId==getByIdVM.CompanyId,"Request.Product.MeasuringUnit", "Currency", "Supplier");
+            var offerEntity = await _uWork.GetRepository<Offer>().GetByFilterAsync(x => x.Supplier.Id == getByIdVM.SupplierId && x.ApprovingEmployee.CompanyDepartment.CompanyId==getByIdVM.CompanyId,"Request.Product.MeasuringUnit", "Currency", "Supplier");
             var dtos = _mapper.Map<HashSet<ReportSupplierDto>>(offerEntity);
             result.Data = dtos;
             return result;
