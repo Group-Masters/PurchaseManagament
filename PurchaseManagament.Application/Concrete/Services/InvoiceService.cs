@@ -56,7 +56,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 //Dosyanın ismi belirleniyor.
                 var fileName = PathUtil.GenerateFileNameFromBase64File(create.ImageSrc);
-                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:ProductImages"], fileName);
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:InvoiceImages"], fileName);
 
                 //Base64 string olarak gelen dosya byte dizisine çevriliyor.
                 var imageDataAsByteArray = Convert.FromBase64String(create.ImageSrc);
