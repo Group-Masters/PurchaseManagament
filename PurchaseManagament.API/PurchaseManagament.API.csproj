@@ -31,4 +31,8 @@
     <ProjectReference Include="..\PurchaseManagament.Application\PurchaseManagament.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product-images\" />
+  </ItemGroup>
+
 </Project>

@@ -34,38 +34,46 @@ namespace PurchaseManagament.Application.Concrete.Services
         [Validator(typeof(CreateProductImageValidator))]
         public async Task<Result<long>> CreateImgProduct(CreateImgProductRM ımgProduct)
         {
-           
-          
-                var result = new Result<long>();
 
-                var productExists = await _unitWork.GetRepository<Product>().AnyAsync(x => x.Id == ımgProduct.ProductId);
-                if (!productExists)
-                {
-                    throw new NotFoundException($"Ürün Bulunamadı.");
-                }
-                //Dosyanın ismi belirleniyor.
-                var fileName = PathUtil.GenerateFileNameFromBase64File(ımgProduct.ImageSrc);
-                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:ProductImages"], fileName);
 
-                //Base64 string olarak gelen dosya byte dizisine çevriliyor.
-                var imageDataAsByteArray = Convert.FromBase64String(ımgProduct.ImageSrc);
-                //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
-                var ms = new MemoryStream(imageDataAsByteArray);
-                ms.Position = 0;
+            var result = new Result<long>();
 
-                using (FileStream fs = new FileStream(filePath, FileMode.Create))
-                {
-                    ms.CopyTo(fs);
-                    fs.Close();
-                }
+            var productExists = await _unitWork.GetRepository<Product>().GetSingleByFilterAsync(x => x.Id == ımgProduct.ProductId, "ImgProduct");
+            if (productExists is null)
+            {
+                throw new NotFoundException($"Ürün Bulunamadı.");
+            }
+            //Dosyanın ismi belirleniyor.
+            var fileName = PathUtil.GenerateFileNameFromBase64File(ımgProduct.ImageSrc);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:ProductImages"], fileName);
+
+            //Base64 string olarak gelen dosya byte dizisine çevriliyor.
+            var imageDataAsByteArray = Convert.FromBase64String(ımgProduct.ImageSrc);
+            //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
+            var ms = new MemoryStream(imageDataAsByteArray);
+            ms.Position = 0;
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                ms.CopyTo(fs);
+                fs.Close();
+            }
             //Dosyanı yolu [Projenin kök dizininin yolu]+["images"]+"["product-images"]+["dosyanın adı.uzantısı"]
 
-            var productImageEntity = _mapper.Map<ImgProduct>(ımgProduct);
+            var productImageEntity = _mapper.Map(ımgProduct,productExists.ImgProduct);
             //images/product-images/14_8_2023_21_56_39_987.png
             productImageEntity.ImageSrc = $"{_configuration["Paths:ProductImages"]}/{fileName}";
 
             //Dosyaya ait bilgileri dbye yaz.
-            _unitWork.GetRepository<ImgProduct>().Add(productImageEntity);
+            if (productExists.ImgProduct is null)
+            {
+                _unitWork.GetRepository<ImgProduct>().Add(productImageEntity);
+            }
+            else
+            {
+                _unitWork.GetRepository<ImgProduct>().Update(productImageEntity);
+            }
+
             await _unitWork.CommitAsync();
 
             result.Data = productImageEntity.Id;
@@ -77,8 +85,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<HashSet<ImgProductDto>>();
             var entities = await _unitWork.GetRepository<ImgProduct>().GetAllAsync();
             var mappedEnties = _mapper.Map<HashSet<ImgProductDto>>(entities);
-            result.Data = mappedEnties; 
-            result.Success = true; 
+            result.Data = mappedEnties;
+            result.Success = true;
             return result;
         }
     }

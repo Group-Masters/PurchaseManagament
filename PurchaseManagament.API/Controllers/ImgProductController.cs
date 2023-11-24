@@ -17,7 +17,7 @@ namespace PurchaseManagament.API.Controllers
 
         [HttpPost("createProduct")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateProduct([FromForm] CreateImgProductRM ımgProduct)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateImgProductRM ımgProduct)
         {
             var entity = await _imgProductService.CreateImgProduct(ımgProduct);
 

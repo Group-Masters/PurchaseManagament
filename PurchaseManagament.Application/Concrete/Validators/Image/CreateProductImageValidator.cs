@@ -25,7 +25,7 @@ namespace PurchaseManagament.Application.Concrete.Validators.Image
             //Aşağıdaki koşul bu nedenle yazıldı.
             var base64FileInfo = base64FileString.Contains("base64") ? base64FileString.Split(",")[1] : base64FileString;
             var fileTypePart = base64FileInfo.Substring(0, 5);
-            var fileTypes = new string[] { "iVBOR", "/9J/4", "R0lGO" };
+            var fileTypes = new string[] { "iVBOR", "/9J/4", "R0lGO", "/9j/4", "iVBOR" };
             return fileTypes.Contains(fileTypePart);
         }
 
