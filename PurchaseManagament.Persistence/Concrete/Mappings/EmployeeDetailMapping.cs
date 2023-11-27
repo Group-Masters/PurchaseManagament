@@ -11,7 +11,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.EmployeeId)
                 .HasColumnName("EMPLOYEE_ID")
                 .HasColumnOrder(2)
-                .IsRequired(); 
+                .IsRequired();
 
             builder.Property(x => x.Username)
                 .HasColumnName("USERNAME")
@@ -22,7 +22,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("ADDRESS")
                 .HasColumnOrder(4)
                 .IsRequired();
-           
+
             builder.Property(x => x.Email)
                 .HasColumnName("EMAIL")
                 .HasColumnOrder(5)
@@ -34,7 +34,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnOrder(6)
                 .HasColumnType("nvarchar(50)")
                 .IsRequired();
-         
+
             builder.Property(x => x.Phone)
                 .HasColumnName("PHONE")
                 .HasColumnOrder(7)
@@ -51,7 +51,9 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("APPROVED_CODE")
                 .HasColumnOrder(9)
                 .HasColumnType("nvarchar(15)");
-
+            builder.Property(x => x.ImageSrc)
+                         .HasColumnName("IMAGE_SRC")
+                         .HasColumnOrder(10);
             builder.HasOne(x => x.Employee)
                 .WithOne(x => x.EmployeeDetail)
                 .HasForeignKey<EmployeeDetail>(x => x.EmployeeId)
