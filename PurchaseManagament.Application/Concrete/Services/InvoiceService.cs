@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
@@ -22,12 +24,16 @@ namespace PurchaseManagament.Application.Concrete.Services
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
         private readonly IRequestService _requestService;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public InvoiceService(IMapper mapper, IUnitWork unitWork, IRequestService requestService)
+        public InvoiceService(IMapper mapper, IUnitWork unitWork, IRequestService requestService, IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _mapper = mapper;
             _unitWork = unitWork;
             _requestService = requestService;
+            _hostingEnvironment = hostingEnvironment;
+            _configuration = configuration;
         }
 
         [Validator(typeof(CreateInvoiceValidator))]
@@ -52,6 +58,29 @@ namespace PurchaseManagament.Application.Concrete.Services
             foreach (var item in materialOffer)
             {
                 totalPrice += item.OfferedPrice;
+            }
+            if(create.ImageSrc != null)
+            {
+                //Dosyanın ismi belirleniyor.
+                var fileName = PathUtil.GenerateFileNameFromBase64File(create.ImageSrc);
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:InvoiceImages"], fileName);
+
+                //Base64 string olarak gelen dosya byte dizisine çevriliyor.
+                var imageDataAsByteArray = Convert.FromBase64String(create.ImageSrc);
+                //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
+                var ms = new MemoryStream(imageDataAsByteArray);
+                ms.Position = 0;
+
+                using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    ms.CopyTo(fs);
+                    fs.Close();
+                }
+                //Dosyanı yolu [Projenin kök dizininin yolu]+["images"]+"["product-images"]+["dosyanın adı.uzantısı"]
+
+
+                //images/product-images/14_8_2023_21_56_39_987.png
+                mappedEntity.ImageSrc = $"{_configuration["Paths:InvoiceImages"]}/{fileName}";
             }
 
             Request request = materialOffer.FirstOrDefault(x => x.OfferId == create.OfferId).Material.Request;

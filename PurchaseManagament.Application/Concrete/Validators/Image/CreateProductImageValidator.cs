@@ -1,18 +1,22 @@
 ﻿using FluentValidation;
-using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 
-namespace PurchaseManagament.Application.Concrete.Validators.Invoices
+namespace PurchaseManagament.Application.Concrete.Validators.Image
 {
-    public class CreateInvoiceValidator : AbstractValidator<CreateInvoiceRM>
+    public class CreateProductImageValidator : AbstractValidator<CreateImgProductRM>
     {
-        public CreateInvoiceValidator()
+        public CreateProductImageValidator()
         {
-            RuleFor(x => x.OfferId).NotEmpty().WithMessage("Teklif numarası boş bırakalamaz").GreaterThan(0).WithMessage("Lütfen 0 dan büyük bir sayı giriniz");
+            RuleFor(x => x.ProductId)
+                .NotEmpty().WithMessage("Ürün kimlik bilgisi boş olamaz.");
+
             RuleFor(x => x.ImageSrc)
-              .NotNull().WithMessage("Resim dosyası seçilmelidir.")
-              .Must(x => FileIsImageFile(x)).WithMessage("Sadece resim dosyası seçilebilir.")
-              .Must(x => FileSizeAsKb(x) < 1 * 1024).WithMessage("Dosya boyutu 1 MB dan büyük olamaz.");
+                .NotNull().WithMessage("Resim dosyası seçilmelidir.")
+                .Must(x => FileIsImageFile(x)).WithMessage("Sadece resim dosyası seçilebilir.")
+                .Must(x => FileSizeAsKb(x) < 1 * 1024).WithMessage("Dosya boyutu 1 MB dan büyük olamaz.");
         }
+
         bool FileIsImageFile(string base64FileString)
         {
             // Örnek olarak bir gif resmi için
@@ -35,5 +39,6 @@ namespace PurchaseManagament.Application.Concrete.Validators.Invoices
             var sizeInKb = sizeInBytes / 1024;
             return (int)sizeInKb;
         }
+
     }
 }
