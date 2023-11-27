@@ -210,7 +210,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-
+        [Validator(typeof (UpdateInvoiceImageVM))]
         public async Task<Result<long>> UpdateInvoiceImage(UpdateInvoiceImageVM updateInvoiceImageVM)
         {
             var result = new Result<long>();
