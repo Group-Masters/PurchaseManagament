@@ -13,28 +13,38 @@ namespace PurchaseManagament.API.Middleware
         }
         public async Task Invoke(HttpContext context)
         {
-            context.Request.EnableBuffering();
-
-            var buffer = new byte[2048];
-            var bytesRead = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
-            context.Request.Body.Seek(0, SeekOrigin.Begin);
-
-            if (bytesRead > 0)
+            if (context.Request.Path.Value.Contains("/ImgProduct"))
             {
-                var requestBody = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-                // Gelen JSON içeriğini JObject'e dönüştür
-                var jsonObject = JObject.Parse(requestBody);
-
-                // Key sayısını al
-                var keyCount = jsonObject.Properties().Count();
-
-                if(keyCount > 20)
-                {
-                    throw new Exception("Çok model propu geldi.");
-                }
+                await _next(context);
             }
-            await _next(context);
+
+            else
+            {
+                context.Request.EnableBuffering();
+
+                var buffer = new byte[2048];
+                var bytesRead = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+                context.Request.Body.Seek(0, SeekOrigin.Begin);
+
+                if (bytesRead > 0)
+                {
+                    var requestBody = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+                    // Gelen JSON içeriğini JObject'e dönüştür
+                    var jsonObject = JObject.Parse(requestBody);
+
+                    // Key sayısını al
+                    var keyCount = jsonObject.Properties().Count();
+
+                    if (keyCount > 20)
+                    {
+                        throw new Exception("Çok model propu geldi.");
+                    }
+                }
+                await _next(context);
+            }
+
+           
         }
     }
     public static class TrimPropertiesMiddlewareExtensions
