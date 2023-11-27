@@ -271,7 +271,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result; 
         }
         [Validator(typeof(CreateEmployeeImageValidator))]
-        public async Task<Result<long>> CreateImage(CreateEmployeeImageVM createEmployeeImageVM)
+        public async Task<Result<long>> CreateImg(CreateEmployeeImageVM createEmployeeImageVM)
         {
             var result = new Result<long>();
             var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == createEmployeeImageVM.Id);
