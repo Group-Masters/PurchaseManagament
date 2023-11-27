@@ -6,9 +6,6 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
     {
         public Int64 Id { get; set; }
 
-        public long ApprovingEmployeeId { get; set; }
-        public string ApprovingEmployeeName { get; set; }
-        public string ApprovingEmployeeSurname { get; set; }
         public long RequestEmployeeId { get; set; }
         public string RequestEmployeeName { get; set; }
         public string RequestEmployeeSurname { get; set; }

@@ -9,7 +9,7 @@ using PurchaseManagament.Application.Concrete.Wrapper;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Offer")]
-    [Authorize]
+    //[Authorize]
     public class OfferController : Controller
     {
         private readonly IOfferService _offerService;
@@ -34,7 +34,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpPut("UpdateOfferState")]
-        [Authorize(Roles = "1,2,7,8,9")]
+        //[Authorize(Roles = "1,2,7,8,9")]
         public async Task<IActionResult> UpdateOfferState([FromBody] UpdateOfferStateRM update)
         {
             var entity = await _offerService.UpdateOfferState(update);
@@ -42,7 +42,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<Result<OfferDto>>> GetOfferById(Int64 id)
         {
             var result = await _offerService.GetOfferById(new GetOfferByIdRM { Id = id });
@@ -50,7 +50,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetByRequestId/{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<Result<OfferDto>>> GetAllOfferByRequestId(Int64 id)
         {
             var result = await _offerService.GetAllOfferByRequestId(new GetOfferByIdRM { Id = id });
@@ -58,15 +58,15 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        [Authorize]
-        public async Task<IActionResult> GetAllDepartment()
+        //[Authorize]
+        public async Task<IActionResult> GetAllOffer()
         {
             var result = await _offerService.GetAllOffer();
             return Ok(result);
         }
 
         [HttpGet("GetByManager/{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetByManager(int id)
         {
             var result = _offerService.GetOfferByManager(new GetOfferByIdRM { Id = id });
@@ -74,7 +74,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetByChairman/{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetOfferByChairman(int id)
         {
             var result = _offerService.GetOfferByChairman(new GetOfferByIdRM { Id = id });
@@ -82,7 +82,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetByAproved/{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetOfferByAproved(int id)
         {
             var result = _offerService.GetOfferByAproved(new GetOfferByIdRM { Id = id });
@@ -90,7 +90,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetFromStock/{id}")]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetOfferFromStock(int id)
         {
             var result = _offerService.GetOfferFromStock(new GetOfferByIdRM { Id = id });

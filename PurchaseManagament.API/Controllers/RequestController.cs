@@ -34,7 +34,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entity);
         }
 
-        [HttpPut("UpdateState")]
+        [HttpPut("UpdateState/{id}")]
         [Authorize(Roles = "1,3")]
         public async Task<IActionResult> RequestStatusUpdate(Int64 id)
         {

@@ -34,7 +34,7 @@ Log.Logger.Information("Program Started...");
 builder.Services.AddControllers(opt =>
 {
     opt.Filters.Add(new ExceptionHandlerFilter());
-    //opt.Filters.Add(new ControllingProps());
+    opt.Filters.Add(new ControllingProps());
 
 });
 
@@ -75,8 +75,8 @@ builder.Services.AddAuthenticationService(builder);
 var app = builder.Build();
 
 // Requestleri loglayan / hatalı olanları loglayan
-//app.UseRequestLoggingMiddleware("~\\..\\..\\LogSaves\\RequestLogsSaves\\requests.log");
-//app.TrimPropertiesMiddleware();
+app.UseRequestLoggingMiddleware("~\\..\\..\\LogSaves\\RequestLogsSaves\\requests.log");
+app.TrimPropertiesMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

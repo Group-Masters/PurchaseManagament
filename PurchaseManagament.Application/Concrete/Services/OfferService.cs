@@ -39,8 +39,10 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> CreateOffer(CreateOfferRM create)
         {
             var result = new Result<long>();
+
             var mappedEntity = _mapper.Map<Offer>(create);
             _unitWork.GetRepository<Offer>().Add(mappedEntity);
+
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;
             return result;
@@ -50,12 +52,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateOffer(UpdateOfferRM update)
         {
             var result = new Result<long>();
-            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
-            if (entity is null)
-            {
-                throw new NotFoundException("Güncellenmek istenen Teklif kaydı bulunamadı.");
-            }
 
+            var entity = await _unitWork.GetRepository<Offer>().GetById(update.Id);
             var mappedEntity = _mapper.Map(update, entity);
             _unitWork.GetRepository<Offer>().Update(mappedEntity);
 
@@ -68,9 +66,9 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateOfferState(UpdateOfferStateRM update)
         {
             var result = new Result<long>();
-            var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == update.Id);
 
-            var offerMaterials = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == update.Id, "Offer.Supplier", "Material.Product.MeasuringUnit", "Offer.Currency");
+            var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == update.Id);
+            var offerMaterials = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == update.Id);
             var offerMaterialDtos = _mapper.Map<HashSet<MaterialOfferDto>>(offerMaterials);
 
             if (offer.SupplierId == 1 && update.Status == Status.YönetimOnay)
@@ -106,16 +104,23 @@ namespace PurchaseManagament.Application.Concrete.Services
                 Request request = new Request();
                 foreach(var offerMaterial in offerMaterialDtos)
                 {
-                    var materialEntity = await _unitWork.GetRepository<Material>().GetSingleByFilterAsync(x => x.Id == offerMaterial.MaterialId, "Product.MeasuringUnit");
+                    var materialEntity = await _unitWork.GetRepository<Material>().GetSingleByFilterAsync(x => x.Id == offerMaterial.MaterialId, "Request");
                     materialEntity.State = update.Status;
-                    _unitWork.GetRepository<Material>().Update(materialEntity);
-                    if(update.Status == Status.YönetimRed)
+                    if (update.Status == Status.YönetimRed)
                     {
+                        var materialOffers = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.MaterialId == offerMaterial.MaterialId);
+                        foreach( var item in materialOffers) 
+                        {
+                            item.Offer.Status = Status.Reddedildi;
+                            _unitWork.GetRepository<Offer>().Update(item.Offer);
+                        }
                         declinedMaterials.Add(materialEntity);
-                        request = materialEntity.Request;
+                        materialEntity.State = Status.Reddedildi;
                     }
+                    _unitWork.GetRepository<Material>().Update(materialEntity);
+                    request = materialEntity.Request;
                 }
-                if(declinedMaterials.Count > 0)
+                if (declinedMaterials.Count > 0)
                 {
                     string printDeclinedMaterial = new("");
                     int i = 1;
@@ -129,12 +134,12 @@ namespace PurchaseManagament.Application.Concrete.Services
                 await _requestService.RequestStatusUpdate(new GetByIdVM { Id = request.Id });
             }
 
-            _mapper.Map(update, offer);
-            offer.ApprovingEmployeeId = (Int64)_loggedService.UserId;
-            _unitWork.GetRepository<Offer>().Update(offer);
+            var mappedOffer = _mapper.Map(update, offer);
+            mappedOffer.ApprovingEmployeeId = (Int64)_loggedService.UserId;
+            _unitWork.GetRepository<Offer>().Update(mappedOffer);
 
             await _unitWork.CommitAsync();
-            result.Data = offer.Id;
+            result.Data = mappedOffer.Id;
             return result;
         }
 
@@ -236,7 +241,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             HashSet<OfferDto> offerDtos = new();
             foreach (var offerId in offerList)
             {
-                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee");
+                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee.CompanyDepartment.Company");
                 var offerDto = _mapper.Map<OfferDto>(offer);
                 offerDto.CompanyName = company.Result.Name;
                 offerDto.CompanyAddress = company.Result.Address;
@@ -250,22 +255,21 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            HashSet<long> companyIds = new();
-            var companies = await _unitWork.GetRepository<Company>().GetAllAsync();
-            foreach (var company in companies)
-            {
-                companyIds.Add(company.Id);
-            }
-
             HashSet<OfferDto> offerDtos = new();
-            foreach (var companyId in companyIds)
+            var offers = await _unitWork.GetRepository<Offer>().GetAllAsync();
+            foreach (var offer in offers)
             {
-                var offerDto = GetOfferByCompany(new GetOfferByIdRM { Id = companyId }).Result.Data;
-                foreach(var offer in offerDto)
+                if(offer.CreatedBy is not null)
                 {
-                    offerDtos.Add(offer);
+                    var createdBy = Int64.Parse(offer.CreatedBy);
+                    var creatorCompany = _unitWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == createdBy, "CompanyDepartment.Company").Result.CompanyDepartment.Company;
+
+                    var mappedOffer = _mapper.Map<OfferDto>(offer);
+                    mappedOffer.CompanyName = creatorCompany.Name;
+                    mappedOffer.CompanyAddress = creatorCompany.Address;
+                    offerDtos.Add(mappedOffer);
                 }
-            }
+            }            
 
             result.Data = offerDtos;
             return result;
@@ -276,25 +280,21 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var entities = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getOfferByRequestId.Id);
-            var request = _unitWork.GetRepository<Request>().GetById(getOfferByRequestId.Id);
+            var entities = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.RequestId == getOfferByRequestId.Id, 
+                "Material.Request.RequestEmployee.CompanyDepartment.Company", "Offer.Currency", "Offer.Supplier");
 
             HashSet<long> offerList = new();
+            HashSet<OfferDto> offerDtos = new();
             foreach (var entity in entities)
             {
                 if (!offerList.Contains(entity.OfferId))
                 {
                     offerList.Add(entity.OfferId);
+                    var mappedOffer = _mapper.Map<OfferDto>(entity.Offer);
+                    mappedOffer.CompanyName = entity.Material.Request.RequestEmployee.CompanyDepartment.Company.Name;
+                    mappedOffer.CompanyAddress = entity.Material.Request.RequestEmployee.CompanyDepartment.Company.Address;
+                    offerDtos.Add(mappedOffer);
                 }
-            }
-
-            HashSet<OfferDto> offerDtos = new();
-            foreach (var offerId in offerList)
-            {
-                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee");
-                var offerDto = _mapper.Map<OfferDto>(offer);
-                offerDto.CompanyName = request.Result.RequestEmployee.CompanyDepartment.Company.Name;
-                offerDto.CompanyAddress = request.Result.RequestEmployee.CompanyDepartment.Company.Address;
             }
 
             result.Data = offerDtos;
@@ -346,7 +346,7 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<OfferDto>();
 
-            var existEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == getOfferById.Id, "Currency", "Supplier", "ApprovingEmployee");
+            var existEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == getOfferById.Id, "Supplier", "Currency", "ApprovingEmployee.CompanyDepartment.Company");
             var mappedEntity = _mapper.Map<OfferDto>(existEntity);
 
             result.Data = mappedEntity;
