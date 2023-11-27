@@ -27,7 +27,9 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.Address, y => y.MapFrom(z => z.EmployeeDetail.Address))
                 .ForMember(x => x.DepartmentName, y => y.MapFrom(z => z.CompanyDepartment.Department.Name))
                 .ForMember(x => x.Roles, y => y.MapFrom(z => z.EmployeeRoles.Select(x => x.Role.Name).ToList()))
-               .ForMember(x => x.Username, y => y.MapFrom(z => z.EmployeeDetail.Username));
+               .ForMember(x => x.Username, y => y.MapFrom(z => z.EmployeeDetail.Username))
+               .ForMember(x => x.ImageSrc, y => y.MapFrom(z => z.EmployeeDetail.ImageSrc));
+
             CreateMap<EmployeeRole, EmployeeRoleDto>();
             CreateMap<EmployeeRole, EmployeeRoleDetailDto>()
                 .ForMember(x => x.EmployeeName, y => y.MapFrom(z => z.Employee.Name))

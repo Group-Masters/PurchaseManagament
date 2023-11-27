@@ -17,6 +17,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string IdNumber { get; set; }
         public string BirthYear { get; set; }
         public bool? IsActive { get; set; }
+        public string? ImageSrc { get; set; }
         public List<string>? Roles { get; set; }
     }
 }
