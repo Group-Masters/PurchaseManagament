@@ -33,6 +33,13 @@ namespace PurchaseManagament.API.Controllers
             var entity = await _invoiceService.UpdateInvoice(update);
             return Ok(entity);
         }
+        [HttpPut("UpdateImage")]
+        [Authorize(Roles = "1,6,7,8")]
+        public async Task<IActionResult> UpdateImage([FromBody] UpdateInvoiceImageVM update)
+        {
+            var entity = await _invoiceService.UpdateInvoiceImage(update);
+            return Ok(entity);
+        }
         [HttpPut("UpdateStatus")]
         public async Task<IActionResult> UpdateInvoiceStatus([FromBody] UpdateInvoiceStatusRM update)
         {
@@ -41,7 +48,7 @@ namespace PurchaseManagament.API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-       
+
         public async Task<ActionResult<Result<InvoiceDto>>> GetInvoiceById(Int64 id)
         {
             var result = await _invoiceService.GetInvoiceById(new GetInvoiceByIdRM { Id = id });
