@@ -16,7 +16,7 @@ namespace PurchaseManagament.API.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.Value.Contains("/ImgProduct"))
+            if (context.Request.Path.Value.Contains("Img"))
             {
                 await _next(context);
             }
