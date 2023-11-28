@@ -14,8 +14,8 @@ namespace PurchaseManagament.API.Controllers
             _service = service;
         }
 
-        [HttpGet("GetByEmployee/")]
-        public async Task<IActionResult> GetByEmployee()
+        [HttpGet("GetMainChart")]
+        public async Task<IActionResult> GetMainChart()
         {
             var entities = await _service.GetMainChart();
             return Ok(entities);
