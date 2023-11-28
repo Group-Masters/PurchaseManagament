@@ -31,7 +31,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var result = new Result<MainChartDto>();
 
             var enties = await _uWork.GetRepository<Employee>().GetByFilterAsync(x => x.IsActive == true);
-            var InvoiceEnties = await _uWork.GetRepository<Invoice>().GetByFilterAsync(x => x.Status == Status.FaturaEklendi || x.Status == Status.Tamamlandı);
+            var InvoiceEnties = await _uWork.GetRepository<Invoice>().GetAllAsync();
             var requestEntity = await _uWork.GetRepository<Request>().GetAllAsync();
             var companyentity = await _uWork.GetRepository<Company>().GetAllAsync();
      
