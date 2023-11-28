@@ -99,11 +99,11 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
         
-        [HttpPut("CreateImage")]
+        [HttpPut("CreateImg")]
         [Authorize]
-        public async Task<IActionResult> CreateImage([FromBody] CreateEmployeeImageVM createEmployeeImageVM)
+        public async Task<IActionResult> CreateImg([FromBody] CreateEmployeeImageVM createEmployeeImageVM)
         {
-            var entities = await _service.CreateImage(createEmployeeImageVM);
+            var entities = await _service.CreateImg(createEmployeeImageVM);
             return Ok(entities);
         }
 

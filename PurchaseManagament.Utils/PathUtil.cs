@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PurchaseManagament.Utils
 {
     public static class PathUtil
     {
-        
         public static string GenerateFileNameFromBase64File(string base64Image)
         {
             var date = DateTime.Now;
@@ -13,38 +15,6 @@ namespace PurchaseManagament.Utils
             var fileName = $"{date.Day}_{date.Month}_{date.Year}_{date.Hour}_{date.Minute}_{date.Second}_{date.Millisecond}{extension}";
             return fileName;
         }
-
-
-        //public static string CreatePath(string imageString, WebHostEnvironment hostingEnvironment, string path)
-        //{                                                   
-           
-
-        //    var fileName = PathUtil.GenerateFileNameFromBase64File(imageString);
-        //    var filePath = Path.Combine(hostingEnvironment.WebRootPath, path, fileName);
-
-        //    // Base64 string olarak gelen dosya byte dizisine çevriliyor.
-        //    var imageDataAsByteArray = Convert.FromBase64String(imageString);
-
-        //    // Byte dizisi MemoryStream'e yazmak üzere MemoryStream'e aktarılıyor.
-        //    using (var ms = new MemoryStream(imageDataAsByteArray))
-        //    {
-        //        ms.Position = 0;
-
-        //        // MemoryStream'den dosyayı kaydediyoruz.
-        //        using (var fs = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            ms.CopyTo(fs);
-        //        }
-        //    }
-
-        //    // Dosyanın yolu [Projenin kök dizininin yolu] + ["images"] + ["product-images"] + ["dosyanın adı.uzantısı"]
-        //    var relativePath = Path.Combine(path, fileName);
-        //    return relativePath;
-        
-        //}
-
-
-
 
         //Dosya base64 string olarak alınmaktadır.
         //base64 string bilgi içerisinde yer alan ilk 5 karakterden dosya türü öğrenilebilmektedir.

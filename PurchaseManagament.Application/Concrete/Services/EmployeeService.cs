@@ -270,7 +270,42 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = data;
             return result; 
         }
+        [Validator(typeof(CreateEmployeeImageValidator))]
+        public async Task<Result<long>> CreateImg(CreateEmployeeImageVM createEmployeeImageVM)
+        {
+            var result = new Result<long>();
+            var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == createEmployeeImageVM.Id);
+            if (entity is null)
+            {
+                throw new NotFoundException("kullanıcı Bulunamadı.");
 
+            }
+            //Dosyanın ismi belirleniyor.
+            var fileName = PathUtil.GenerateFileNameFromBase64File(createEmployeeImageVM.ImageString);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:EmployeeImages"], fileName);
+
+            //Base64 string olarak gelen dosya byte dizisine çevriliyor.
+            var imageDataAsByteArray = Convert.FromBase64String(createEmployeeImageVM.ImageString);
+            //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
+            var ms = new MemoryStream(imageDataAsByteArray);
+            ms.Position = 0;
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                ms.CopyTo(fs);
+                fs.Close();
+            }
+            //Dosyanı yolu [Projenin kök dizininin yolu]+["images"]+"["product-images"]+["dosyanın adı.uzantısı"]
+
+
+            //images/product-images/14_8_2023_21_56_39_987.png
+            entity.ImageSrc = $"{_configuration["Paths:EmployeeImages"]}/{fileName}";
+
+            _uWork.GetRepository<EmployeeDetail>().Update(entity);
+            await _uWork.CommitAsync();
+            result.Data = entity.Id;
+            return result;
+        }
         #region private methodlar
         private string GenerateJwtToken(Employee person, List<EmployeeRole> roles)
         {
@@ -302,42 +337,6 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<Result<long>> CreateImage(CreateEmployeeImageVM createEmployeeImageVM)
-        {
-            var result = new Result<long>();
-            var entity = await _uWork.GetRepository<EmployeeDetail>().GetSingleByFilterAsync(x => x.EmployeeId == createEmployeeImageVM.Id);
-            if (entity is null)
-            {
-                throw new NotFoundException("kullanıcı Bulunamadı.");
-
-            }
-            //Dosyanın ismi belirleniyor.
-            var fileName = PathUtil.GenerateFileNameFromBase64File(createEmployeeImageVM.ImageString);
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:EmployeeImages"], fileName);
-
-            //Base64 string olarak gelen dosya byte dizisine çevriliyor.
-            var imageDataAsByteArray = Convert.FromBase64String(createEmployeeImageVM.ImageString);
-            //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
-            var ms = new MemoryStream(imageDataAsByteArray);
-            ms.Position = 0;
-
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
-            {
-                ms.CopyTo(fs);
-                fs.Close();
-            }
-            //Dosyanı yolu [Projenin kök dizininin yolu]+["images"]+"["product-images"]+["dosyanın adı.uzantısı"]
-
-
-            //images/product-images/14_8_2023_21_56_39_987.png
-            entity.ImageSrc = $"{_configuration["Paths:EmployeeImages"]}/{fileName}";
-  
-            _uWork.GetRepository<EmployeeDetail>().Update(entity);
-            await _uWork.CommitAsync();
-            result.Data = entity.Id;
-            return result;
         }
 
         #endregion
