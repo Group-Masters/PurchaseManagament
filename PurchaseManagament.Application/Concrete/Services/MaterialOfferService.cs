@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Employee;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MaterialOffers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
 using PurchaseManagament.Application.Concrete.Wrapper;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -15,11 +16,13 @@ namespace PurchaseManagament.Application.Concrete.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
+        private readonly IOfferService _offerService;
 
-        public MaterialOfferService(IMapper mapper, IUnitWork unitWork)
+        public MaterialOfferService(IMapper mapper, IUnitWork unitWork, IOfferService offerService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
+            _offerService = offerService;
         }
 
         #region MaterialOffer CRUD Operations
@@ -29,6 +32,8 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var mappedEntity = _mapper.Map<MaterialOffer>(createMaterialOfferRM);
             _unitWork.GetRepository<MaterialOffer>().Add(mappedEntity);
+
+            await _offerService.UpdateAboveThreshold(new GetOfferByIdRM { Id = createMaterialOfferRM.OfferId});
 
             await _unitWork.CommitAsync();
             result.Data = mappedEntity.Id;

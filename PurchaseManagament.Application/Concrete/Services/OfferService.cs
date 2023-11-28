@@ -22,15 +22,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         private readonly IMapper _mapper;
         private readonly IUnitWork _unitWork;
         private readonly ILoggedService _loggedService;
-        private readonly IMaterialOfferService _materialOfferService;
         private readonly IRequestService _requestService;
 
-        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService, IMaterialOfferService materialOfferService, IRequestService requestService)
+        public OfferService(IMapper mapper, IUnitWork unitWork, ILoggedService loggedService, IRequestService requestService)
         {
             _mapper = mapper;
             _unitWork = unitWork;
             _loggedService = loggedService;
-            _materialOfferService = materialOfferService;
             _requestService = requestService;
         }
 
@@ -156,15 +154,19 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             var result = new Result<bool>();
             decimal totalPrice = 0;
+            decimal threshold = 0;
 
-            var offer = await _unitWork.GetRepository<Offer>().GetById(offerId);
+            var offer = await _unitWork.GetRepository<Offer>().GetById(offerId.Id);
             offer.AboveThreshold = false;
 
-            var offerMaterials = _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == offerId.Id, "Product.MeasuringUnit");
-            var threshold = _unitWork.GetRepository<MaterialOffer>().GetSingleByFilterAsync(x => x.OfferId == offerId.Id).Result.Material.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
+            var offerMaterials = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == offerId.Id, 
+                "Material.Product.MeasuringUnit", "Offer.Supplier", "Offer.Currency");
             var materialOfferDtos = _mapper.Map<HashSet<MaterialOfferDto>>(offerMaterials);
             foreach (var materialOfferDto in materialOfferDtos)
             {
+                var material = await _unitWork.GetRepository<Material>().GetSingleByFilterAsync(x => x.Id == materialOfferDto.MaterialId, 
+                    "Request.RequestEmployee.CompanyDepartment.Company");
+                threshold = material.Request.RequestEmployee.CompanyDepartment.Company.ManagerThreshold;
                 totalPrice += materialOfferDto.OfferedPrice;
             }
             if (offer.Currency.Name != "TRY")
@@ -176,9 +178,15 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
 
                 offer.AboveThreshold = true;
-                _unitWork.GetRepository<Offer>().Update(offer);
-                await _unitWork.CommitAsync();
+
             }
+            else
+            {
+                offer.AboveThreshold = false;
+            }
+            _unitWork.GetRepository<Offer>().Update(offer);
+            await _unitWork.CommitAsync();
+
             result.Data = offer.AboveThreshold;
             return result;
         }
@@ -226,8 +234,8 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var materialOffers = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == companyId.Id);
-            var company = _unitWork.GetRepository<Company>().GetById(companyId.Id);
+            var materialOffers = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.Material.Request.RequestEmployee.CompanyDepartment.CompanyId == companyId.Id, "Material.Request.RequestEmployee.CompanyDepartment.Company");
+            var company = await _unitWork.GetRepository<Company>().GetById(companyId.Id);
 
             HashSet<long> offerList = new();
             foreach (var materialOffer in materialOffers)
@@ -241,35 +249,35 @@ namespace PurchaseManagament.Application.Concrete.Services
             HashSet<OfferDto> offerDtos = new();
             foreach (var offerId in offerList)
             {
-                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee.CompanyDepartment.Company");
+                var offer = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == offerId, "Supplier", "Currency", "ApprovingEmployee");
                 var offerDto = _mapper.Map<OfferDto>(offer);
-                offerDto.CompanyName = company.Result.Name;
-                offerDto.CompanyAddress = company.Result.Address;
+                offerDto.CompanyName = company.Name;
+                offerDto.CompanyAddress = company.Address;
+                offerDtos.Add(offerDto);
             }
 
             result.Data = offerDtos;
             return result;
         }
 
+        /// <summary>
+        /// Tüm teklifleri listeler.
+        /// </summary>
+        /// <returns>HashSet OfferDto</returns>
         public async Task<Result<HashSet<OfferDto>>> GetAllOffer()
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            HashSet<OfferDto> offerDtos = new();
-            var offers = await _unitWork.GetRepository<Offer>().GetAllAsync();
-            foreach (var offer in offers)
+            var offers = await _unitWork.GetRepository<Offer>().GetByFilterAsync(x => x.CreatedBy != null, "Supplier", "Currency", "ApprovingEmployee");
+            var offerDtos = _mapper.Map<HashSet<OfferDto>>(offers);
+            foreach (var offer in offerDtos)
             {
-                if(offer.CreatedBy is not null)
-                {
-                    var createdBy = Int64.Parse(offer.CreatedBy);
-                    var creatorCompany = _unitWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == createdBy, "CompanyDepartment.Company").Result.CompanyDepartment.Company;
+                var createdBy = Int64.Parse(offer.CreatedBy);
+                var creator = await _unitWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == createdBy, "CompanyDepartment.Company");
 
-                    var mappedOffer = _mapper.Map<OfferDto>(offer);
-                    mappedOffer.CompanyName = creatorCompany.Name;
-                    mappedOffer.CompanyAddress = creatorCompany.Address;
-                    offerDtos.Add(mappedOffer);
-                }
-            }            
+                offer.CompanyName = creator.CompanyDepartment.Company.Name;
+                offer.CompanyAddress = creator.CompanyDepartment.Company.Address;
+            }
 
             result.Data = offerDtos;
             return result;
@@ -289,11 +297,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 if (!offerList.Contains(entity.OfferId))
                 {
-                    offerList.Add(entity.OfferId);
                     var mappedOffer = _mapper.Map<OfferDto>(entity.Offer);
                     mappedOffer.CompanyName = entity.Material.Request.RequestEmployee.CompanyDepartment.Company.Name;
                     mappedOffer.CompanyAddress = entity.Material.Request.RequestEmployee.CompanyDepartment.Company.Address;
+
                     offerDtos.Add(mappedOffer);
+                    offerList.Add(entity.OfferId);
                 }
             }
 
@@ -302,13 +311,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
         [Validator(typeof(GetOfferByIdValidator))]
-        public Result<HashSet<OfferDto>> GetOfferByChairman(GetOfferByIdRM company)
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByChairman(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            var offerByCompany = await GetOfferByCompany(company);
             HashSet<OfferDto> offerChairman = new();
-            foreach (var offer in offerByCompany)
+            foreach (var offer in offerByCompany.Data)
             {
                 if (offer.Status == Status.YönetimBekleme && offer.AboveThreshold == true)
                 {
@@ -322,13 +331,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
         [Validator(typeof(GetOfferByIdValidator))]
-        public Result<HashSet<OfferDto>> GetOfferByManager(GetOfferByIdRM company)
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByManager(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            var offerByCompany = await GetOfferByCompany(company);
             HashSet<OfferDto> offerManager = new();
-            foreach (var offer in offerByCompany)
+            foreach (var offer in offerByCompany.Data)
             {
                 if (offer.Status == Status.YönetimBekleme && offer.AboveThreshold == false)
                 {
@@ -359,12 +368,12 @@ namespace PurchaseManagament.Application.Concrete.Services
         /// <param name="company">Company.Id</param>
         /// <returns>Yönetim tarafından onaylanmış tekliflerin listesini döner.</returns>
         [Validator(typeof(GetOfferByIdValidator))]
-        public Result<HashSet<OfferDto>> GetOfferByAproved(GetOfferByIdRM company)
+        public async Task<Result<HashSet<OfferDto>>> GetOfferByAproved(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
-            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            var offerByCompany = await GetOfferByCompany(company);
             HashSet<OfferDto> approvedOfferByCompany = new();
-            foreach (var offer in offerByCompany)
+            foreach (var offer in offerByCompany.Data)
             {
                 if (offer.Status == Status.YönetimOnay)
                 {
@@ -372,6 +381,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 }
             }
             var mappedEntity = _mapper.Map<HashSet<OfferDto>>(approvedOfferByCompany);
+
             result.Data = mappedEntity;
             return result;
         }
@@ -382,13 +392,13 @@ namespace PurchaseManagament.Application.Concrete.Services
         /// <param name="company">Company.Id</param>
         /// <returns>Stok işlemi gerçekleştirilmiş tekliflerin listesini döner.</returns>
         [Validator(typeof(GetOfferByIdValidator))]
-        public Result<HashSet<OfferDto>> GetOfferFromStock(GetOfferByIdRM company)
+        public async Task<Result<HashSet<OfferDto>>> GetOfferFromStock(GetOfferByIdRM company)
         {
             var result = new Result<HashSet<OfferDto>>();
 
-            var offerByCompany = GetOfferByCompany(company).Result.Data;
+            var offerByCompany = await GetOfferByCompany(company);
             HashSet<OfferDto> offerFromStock = new();
-            foreach (var offer in offerByCompany)
+            foreach (var offer in offerByCompany.Data)
             {
                 if (offer.Status == Status.FaturaEklendi)
                 {

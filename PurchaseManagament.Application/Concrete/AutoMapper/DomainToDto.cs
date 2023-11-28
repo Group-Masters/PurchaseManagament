@@ -76,8 +76,6 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.SupplierName, y => y.MapFrom(z => z.Supplier.Name))
                 .ForMember(x => x.ApprovingEmployeeName, y => y.MapFrom(z => z.ApprovingEmployee.Name))
                 .ForMember(x => x.ApprovingEmployeeSurname, y => y.MapFrom(z => z.ApprovingEmployee.Surname))
-                .ForMember(x => x.CompanyName, y => y.MapFrom(x => x.ApprovingEmployee.CompanyDepartment.Company.Name))
-                .ForMember(x => x.CompanyAddress, y => y.MapFrom(x => x.ApprovingEmployee.CompanyDepartment.Company.Address))
                 .ForMember(x => x.SupplierAddress, y => y.MapFrom(x => x.Supplier.Address));
 
             //CreateMap<Offer, ReportDto>()

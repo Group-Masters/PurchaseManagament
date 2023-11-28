@@ -18,6 +18,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string ApprovingEmployeeName { get; set; }
         public string ApprovingEmployeeSurname { get; set; }
 
+        public string CreatedBy { get; set; }
         public string Details { get; set; }
     }
 }
