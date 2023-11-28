@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Configuration;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Attributes;
@@ -51,6 +52,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var mappedEntity = _mapper.Map<Invoice>(create);
+            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == create.OfferId, "Request", "Currency");
+            if (offerEntity is null)
             var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == create.OfferId, 
                 "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company");
             var materialOffer = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == create.OfferId);
@@ -60,6 +63,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 totalPrice += item.OfferedPrice;
             }
+            if (create.ImageSrc != null)
             if(create.ImageSrc != null || create.ImageSrc != string.Empty || create.ImageSrc != "\"\"")
             {
                 //Dosyanın ismi belirleniyor.
@@ -86,9 +90,12 @@ namespace PurchaseManagament.Application.Concrete.Services
 
             Request request = materialOffer.FirstOrDefault(x => x.OfferId == create.OfferId).Material.Request;
 
+            mappedEntity.TRY_Rate = offerEntity.Currency.Name == "TRY" ? 1 * offerEntity.OfferedPrice : offerEntity.OfferedPrice * Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
+
             mappedEntity.TRY_Rate = offerEntity.Currency.Name == "TRY" ? 1 * totalPrice : totalPrice * Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", $"{offerEntity.Currency.Name}")).InnerText.Replace('.', ','));
 
             offerEntity.Status = Status.FaturaEklendi;
+            offerEntity.Request.State = Status.FaturaEklendi;
             foreach (var item in materialOffer)
             {
                 item.Material.State = Status.FaturaEklendi;
@@ -202,6 +209,21 @@ namespace PurchaseManagament.Application.Concrete.Services
         public async Task<Result<long>> UpdateInvoiceState(UpdateInvoiceStatusRM update)
         {
             var result = new Result<long>();
+            var entityInvoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == update.Id, "Offer.Request.RequestEmployee.EmployeeDetail", "Offer.Request.Product.MeasuringUnit");
+            if (update is null)
+            {
+                throw new NotFoundException("Güncellenmek istenen Fatura kaydı bulunamadı.");
+            }
+            var entity = _mapper.Map(update, entityInvoice);
+            if (entity.Status == Status.Tamamlandı)
+            {
+                entity.Offer.Status = Status.Tamamlandı;
+                entity.Offer.Request.State = Status.Tamamlandı;
+                _unitWork.GetRepository<Invoice>().Update(entity);
+                SenderUtils.SendMail(entityInvoice.Offer.Request.RequestEmployee.EmployeeDetail.Email, "TAMAMLANAN TALEP",
+                    $"{entityInvoice.Offer.RequestId} talep numaralı talebiniz tamamlanmıştır. Stoktan temin edebilirsiniz . Talep içeriğiniz : {entityInvoice.Offer.Request.Quantity}- Adet " +
+                    $"{entityInvoice.Offer.Request.Product.Name}-{entityInvoice.Offer.Request.Product.MeasuringUnit.Name} ");
+
 
             var invoice = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == update.Id);
 
@@ -244,5 +266,43 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = updatedInvoice.Id;
             return result;
         }
+        [Validator(typeof (UpdateInvoiceImageVM))]
+        public async Task<Result<long>> UpdateInvoiceImage(UpdateInvoiceImageVM updateInvoiceImageVM)
+        {
+            var result = new Result<long>();
+            var entity = await _unitWork.GetRepository<Invoice>().GetSingleByFilterAsync(x => x.Id == updateInvoiceImageVM.Id);
+            if (entity is null)
+            {
+                throw new NotFoundException("Fatura Bulunamadı.");
+
+            }
+            //Dosyanın ismi belirleniyor.
+            var fileName = PathUtil.GenerateFileNameFromBase64File(updateInvoiceImageVM.ImageString);
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, _configuration["Paths:InvoiceImages"], fileName);
+
+            //Base64 string olarak gelen dosya byte dizisine çevriliyor.
+            var imageDataAsByteArray = Convert.FromBase64String(updateInvoiceImageVM.ImageString);
+            //byte dizisi FileStream'e yazmak üzere FileStream'e aktarılıyor.
+            var ms = new MemoryStream(imageDataAsByteArray);
+            ms.Position = 0;
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                ms.CopyTo(fs);
+                fs.Close();
+            }
+            //Dosyanı yolu [Projenin kök dizininin yolu]+["images"]+"["product-images"]+["dosyanın adı.uzantısı"]
+
+
+            //images/product-images/14_8_2023_21_56_39_987.png
+            updateInvoiceImageVM.ImageString = $"{_configuration["Paths:InvoiceImages"]}/{fileName}";
+            var updatedEntity = _mapper.Map(updateInvoiceImageVM, entity);
+            _unitWork.GetRepository<Invoice>().Update(updatedEntity);
+            await _unitWork.CommitAsync();
+            result.Data = entity.Id;
+            return result; 
+        }
+
     }
 }
+

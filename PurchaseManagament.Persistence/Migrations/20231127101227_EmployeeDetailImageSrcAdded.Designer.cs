@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PurchaseManagament.Persistence.Concrete.Context;
 
@@ -11,9 +12,11 @@ using PurchaseManagament.Persistence.Concrete.Context;
 namespace PurchaseManagament.Persistence.Migrations
 {
     [DbContext(typeof(PurchaseManagamentContext))]
-    partial class PurchaseManagamentContextModelSnapshot : ModelSnapshot
+    [Migration("20231127101227_EmployeeDetailImageSrcAdded")]
+    partial class EmployeeDetailImageSrcAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,15 +96,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("COMPANIES", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Address = "Varsayılan Adres",
-                            ManagerThreshold = 0m,
-                            Name = "Varsayılan Şirket"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -175,14 +169,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("COMPANY_DEPARTMENTS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CompanyId = 1L,
-                            DepartmentId = 1L
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyStock", b =>
@@ -326,73 +312,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CURRENCIES", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "TRY"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "USD"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "AUD"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "DKK"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "EUR"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Name = "GBP"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Name = "CHF"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Name = "SEK"
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Name = "CAD"
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Name = "KWD"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            Name = "NOK"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            Name = "SAR"
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            Name = "JPY"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Department", b =>
@@ -458,13 +377,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DEPARTMENTS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Varsayılan Departman"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Employee", b =>
@@ -560,18 +472,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("CompanyDepartmentId");
 
                     b.ToTable("EMPLOYEES", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            BirthYear = "1999",
-                            CompanyDepartmentId = 1L,
-                            Gender = 0,
-                            IdNumber = "12345678910",
-                            Name = "Varsayılan",
-                            Surname = "Çalışan"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.EmployeeDetail", b =>
@@ -686,20 +586,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("EMPLOYEE_DETAILS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Address = "Varsayılan Adres",
-                            ApprovedCode = "111111",
-                            Email = "default@mail.com",
-                            EmailOk = true,
-                            EmployeeId = 1L,
-                            Password = "kVU41twDyttUL/SM7IO0vQ==",
-                            Phone = "12345678910",
-                            Username = "Varsayılan"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.EmployeeRole", b =>
@@ -773,14 +659,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("EMPLOYEE_ROLES", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            EmployeeId = 1L,
-                            RoleId = 1L
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.ImgProduct", b =>
@@ -884,102 +762,8 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Property<string>("ImageSrc")
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("IMAGE_SRC")
-                        .HasColumnOrder(4);
-
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
-                        .HasDefaultValueSql("1");
-
-                    b.Property<bool?>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
-                        .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
-
-                    b.Property<long>("OfferId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int")
-                        .HasColumnName("STATUS")
-                        .HasColumnOrder(3);
-
-                    b.Property<decimal>("TRY_Rate")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("TRY_RATE")
                         .HasColumnOrder(5);
 
-                    b.Property<Guid>("UUID")
-                        .HasColumnType("UNIQUEIDENTIFIER")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId")
-                        .IsUnique();
-
-                    b.ToTable("INVOICES", (string)null);
-                });
-
-            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Material", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("ID")
-                        .HasColumnOrder(1);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("ApprovedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("APPROVED_DATE")
-                        .HasColumnOrder(7);
-
-                    b.Property<long?>("ApprovingEmployeeId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("APPROVING_EMPLOYEE_ID")
-                        .HasColumnOrder(6);
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
-                    b.Property<string>("Details")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DETAILS")
-                        .HasColumnOrder(4);
-
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -993,96 +777,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("IS_DELETED")
                         .HasColumnOrder(57)
                         .HasDefaultValueSql("0");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("MODIFIED_BY_ID")
-                        .HasColumnOrder(54);
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("MODIFIED_DATE")
-                        .HasColumnOrder(53);
-
-                    b.Property<string>("ModifiedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("MODIFIED_IP")
-                        .HasColumnOrder(55);
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("PRODUCT_ID")
-                        .HasColumnOrder(3);
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float")
-                        .HasColumnName("QUANTITY")
-                        .HasColumnOrder(5);
-
-                    b.Property<long>("RequestId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("REQUEST_ID")
-                        .HasColumnOrder(2);
-
-                    b.Property<int>("State")
-                        .HasColumnType("int")
-                        .HasColumnName("STATUS")
-                        .HasColumnOrder(8);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovingEmployeeId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("MATERIALS", (string)null);
-                });
-
-            modelBuilder.Entity("PurchaseManagament.Domain.Entities.MaterialOffer", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("ID")
-                        .HasColumnOrder(1);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("CREATED_BY_ID")
-                        .HasColumnOrder(51);
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CREATE_DATE")
-                        .HasColumnOrder(50);
-
-                    b.Property<string>("CreatedIP")
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("CREATE_IP")
-                        .HasColumnOrder(52);
-
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasColumnName("IS_ACTIVE")
-                        .HasColumnOrder(56)
-                        .HasDefaultValueSql("1");
-
-                    b.Property<bool?>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasColumnName("IS_DELETED")
-                        .HasColumnOrder(57)
-                        .HasDefaultValueSql("0");
-
-                    b.Property<long>("MaterialId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("MATERIAL_ID")
-                        .HasColumnOrder(3);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(50)")
@@ -1104,16 +798,26 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("OFFER_ID")
                         .HasColumnOrder(2);
 
-                    b.Property<decimal>("OfferedPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("STATUS")
+                        .HasColumnOrder(4);
+
+                    b.Property<decimal>("TRY_Rate")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("TRY_RATE")
+                        .HasColumnOrder(6);
+
+                    b.Property<Guid>("UUID")
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasColumnOrder(3);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialId");
+                    b.HasIndex("OfferId")
+                        .IsUnique();
 
-                    b.HasIndex("OfferId");
-
-                    b.ToTable("MATERIAL_OFFERS", (string)null);
+                    b.ToTable("INVOICES", (string)null);
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.MeasuringUnit", b =>
@@ -1179,38 +883,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MEASURING_UNIT", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Adet"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Kilogram"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Metre"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Metrekare"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "Metre Küp"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Name = "Litre"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Offer", b =>
@@ -1222,13 +894,6 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnOrder(1);
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<bool>("AboveThreshold")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("ABOVE_THRESHOLD")
-                        .HasColumnOrder(6);
 
                     b.Property<long?>("ApprovingEmployeeId")
                         .HasColumnType("bigint")
@@ -1289,6 +954,16 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_IP")
                         .HasColumnOrder(55);
 
+                    b.Property<long>("OfferedPrice")
+                        .HasColumnType("BigInt")
+                        .HasColumnName("OFFERED_PRICE")
+                        .HasColumnOrder(6);
+
+                    b.Property<long>("RequestId")
+                        .HasColumnType("BigInt")
+                        .HasColumnName("REQUEST_ID")
+                        .HasColumnOrder(4);
+
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("STATUS")
@@ -1304,6 +979,8 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasIndex("ApprovingEmployeeId");
 
                     b.HasIndex("CurrencyId");
+
+                    b.HasIndex("RequestId");
 
                     b.HasIndex("SupplierId");
 
@@ -1396,6 +1073,16 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("APPROVED_DATE")
+                        .HasColumnOrder(8);
+
+                    b.Property<long?>("ApprovingEmployeeId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("APPROVING_EMPLOYEE_ID")
+                        .HasColumnOrder(3);
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("CREATED_BY_ID")
@@ -1411,10 +1098,10 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("CREATE_IP")
                         .HasColumnOrder(52);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DESCRIPTION")
-                        .HasColumnOrder(3);
+                        .HasColumnName("DETAILS")
+                        .HasColumnOrder(5);
 
                     b.Property<bool?>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -1445,20 +1132,29 @@ namespace PurchaseManagament.Persistence.Migrations
                         .HasColumnName("MODIFIED_IP")
                         .HasColumnOrder(55);
 
-                    b.Property<long?>("ProductId")
-                        .HasColumnType("bigint");
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("PRODUCT_ID")
+                        .HasColumnOrder(2);
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float")
+                        .HasColumnName("QUANTITY")
+                        .HasColumnOrder(6);
 
                     b.Property<long>("RequestEmployeeId")
                         .HasColumnType("bigint")
                         .HasColumnName("REQUEST_EMPLOYEE_ID")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(4);
 
                     b.Property<int>("State")
                         .HasColumnType("int")
                         .HasColumnName("STATUS")
-                        .HasColumnOrder(4);
+                        .HasColumnOrder(7);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovingEmployeeId");
 
                     b.HasIndex("ProductId");
 
@@ -1530,58 +1226,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ROLES", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Satın Alma Sorumlusu"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Onay"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Talep"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Name = "Birim Sorumlusu"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Name = "Muhasebe"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Name = "Genel Müdür"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Name = "Y.K Başkanı"
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Name = "Stok Sorumlusu"
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Name = "Birim Müdürü"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.StockOperations", b =>
@@ -1731,14 +1375,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SUPPLIERS", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Address = "Şirket Adres",
-                            Name = "Şirket Stok"
-                        });
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.CompanyDepartment", b =>
@@ -1842,58 +1478,9 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.HasOne("PurchaseManagament.Domain.Entities.Offer", "Offer")
                         .WithOne("Invoice")
                         .HasForeignKey("PurchaseManagament.Domain.Entities.Invoice", "OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Offer");
-                });
-
-            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Material", b =>
-                {
-                    b.HasOne("PurchaseManagament.Domain.Entities.Employee", "ApprovedEmployee")
-                        .WithMany("ApprovedMaterials")
-                        .HasForeignKey("ApprovingEmployeeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .HasConstraintName("MATERIAL_APPROVING_EMPLOYEE");
-
-                    b.HasOne("PurchaseManagament.Domain.Entities.Product", "Product")
-                        .WithMany("Materials")
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-                        .HasConstraintName("MATERIAL_PRODUCT");
-
-                    b.HasOne("PurchaseManagament.Domain.Entities.Request", "Request")
-                        .WithMany("Materials")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("MATERIAL_REQUEST");
-
-                    b.Navigation("ApprovedEmployee");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Request");
-                });
-
-            modelBuilder.Entity("PurchaseManagament.Domain.Entities.MaterialOffer", b =>
-                {
-                    b.HasOne("PurchaseManagament.Domain.Entities.Material", "Material")
-                        .WithMany("MaterialOffers")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("MATERIAL_OFFERS_MATERIAL");
-
-                    b.HasOne("PurchaseManagament.Domain.Entities.Offer", "Offer")
-                        .WithMany("MaterialOffers")
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("MATERIAL_OFFERS_OFFER");
-
-                    b.Navigation("Material");
+                        .HasConstraintName("INVOICES_ORDER");
 
                     b.Navigation("Offer");
                 });
@@ -1911,6 +1498,12 @@ namespace PurchaseManagament.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("PurchaseManagament.Domain.Entities.Request", "Request")
+                        .WithMany("Offers")
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("PurchaseManagament.Domain.Entities.Supplier", "Supplier")
                         .WithMany("Offers")
                         .HasForeignKey("SupplierId")
@@ -1920,6 +1513,8 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("ApprovingEmployee");
 
                     b.Navigation("Currency");
+
+                    b.Navigation("Request");
 
                     b.Navigation("Supplier");
                 });
@@ -1938,9 +1533,18 @@ namespace PurchaseManagament.Persistence.Migrations
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Request", b =>
                 {
-                    b.HasOne("PurchaseManagament.Domain.Entities.Product", null)
+                    b.HasOne("PurchaseManagament.Domain.Entities.Employee", "ApprovedEmployee")
+                        .WithMany("ApprovedRequests")
+                        .HasForeignKey("ApprovingEmployeeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("REQUEST_APPROVING_EMPLOYEE");
+
+                    b.HasOne("PurchaseManagament.Domain.Entities.Product", "Product")
                         .WithMany("Requests")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("REQUEST_PRODUCTS");
 
                     b.HasOne("PurchaseManagament.Domain.Entities.Employee", "RequestEmployee")
                         .WithMany("EmployeeRequests")
@@ -1948,6 +1552,10 @@ namespace PurchaseManagament.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("REQUEST_REQUEST_EMPLOYEE");
+
+                    b.Navigation("ApprovedEmployee");
+
+                    b.Navigation("Product");
 
                     b.Navigation("RequestEmployee");
                 });
@@ -2002,7 +1610,7 @@ namespace PurchaseManagament.Persistence.Migrations
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Employee", b =>
                 {
-                    b.Navigation("ApprovedMaterials");
+                    b.Navigation("ApprovedRequests");
 
                     b.Navigation("EmployeeDetail");
 
@@ -2015,11 +1623,6 @@ namespace PurchaseManagament.Persistence.Migrations
                     b.Navigation("StockOperations");
                 });
 
-            modelBuilder.Entity("PurchaseManagament.Domain.Entities.Material", b =>
-                {
-                    b.Navigation("MaterialOffers");
-                });
-
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.MeasuringUnit", b =>
                 {
                     b.Navigation("Products");
@@ -2028,8 +1631,6 @@ namespace PurchaseManagament.Persistence.Migrations
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Offer", b =>
                 {
                     b.Navigation("Invoice");
-
-                    b.Navigation("MaterialOffers");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Product", b =>
@@ -2038,14 +1639,12 @@ namespace PurchaseManagament.Persistence.Migrations
 
                     b.Navigation("ImgProduct");
 
-                    b.Navigation("Materials");
-
                     b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Request", b =>
                 {
-                    b.Navigation("Materials");
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("PurchaseManagament.Domain.Entities.Role", b =>

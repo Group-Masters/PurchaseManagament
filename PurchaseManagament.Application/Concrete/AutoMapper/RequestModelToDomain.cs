@@ -97,6 +97,8 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
 
             CreateMap<CreateImgProductRM, ImgProduct>();
             CreateMap<ImgProductDto, ImgProduct>();
+            CreateMap<UpdateInvoiceImageVM, Invoice>()
+             .ForMember(x => x.ImageSrc, y => y.MapFrom(x => x.ImageString));
         }
     }
 }
