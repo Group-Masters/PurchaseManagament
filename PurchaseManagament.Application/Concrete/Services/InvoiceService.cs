@@ -36,7 +36,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             _configuration = configuration;
         }
 
-        [Validator(typeof(CreateInvoiceValidator))]
+        //[Validator(typeof(CreateInvoiceValidator))]
         public async Task<Result<long>> CreateInvoice(CreateInvoiceRM create)
         {
             XmlDocument xmlVerisi = new XmlDocument();
@@ -51,7 +51,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
 
             var mappedEntity = _mapper.Map<Invoice>(create);
-            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == create.OfferId, "Request", "Currency");
+            var offerEntity = await _unitWork.GetRepository<Offer>().GetSingleByFilterAsync(x => x.Id == create.OfferId, 
+                "Currency", "Supplier", "ApprovingEmployee.CompanyDepartment.Company");
             var materialOffer = await _unitWork.GetRepository<MaterialOffer>().GetByFilterAsync(x => x.OfferId == create.OfferId);
 
             decimal totalPrice = 0;
@@ -59,7 +60,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             {
                 totalPrice += item.OfferedPrice;
             }
-            if(create.ImageSrc != null)
+            if(create.ImageSrc != null || create.ImageSrc != string.Empty || create.ImageSrc != "\"\"")
             {
                 //Dosyanın ismi belirleniyor.
                 var fileName = PathUtil.GenerateFileNameFromBase64File(create.ImageSrc);
