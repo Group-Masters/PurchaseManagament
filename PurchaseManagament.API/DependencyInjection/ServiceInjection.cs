@@ -47,6 +47,7 @@ namespace PurchaseManagament.API.DependencyInjection
             services.AddScoped(typeof(ReportToPdfService));
 
             services.AddScoped<IImgProductService, ImgProductService>();
+            services.AddScoped<IChartService, ChartService>();
 
             return services;
         }
