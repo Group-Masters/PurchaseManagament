@@ -9,11 +9,11 @@
         public string CompanyAddress { get; set; }
         public string SupplierName { get; set; }
         public string SupplierAddress { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal TRY_Rate { get; set; }
         public string Currency {  get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public HashSet<MaterialDto> MaterialDtos { get; set; }
+        public HashSet<MaterialOfferDto> MaterialOfferDtos { get; set; }
 
     }
 }
