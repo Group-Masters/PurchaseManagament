@@ -11,6 +11,6 @@ namespace PurchaseManagament.Application.Abstract.Service
     public interface IChartService
     {
         Task<Result<MainChartDto>> GetMainChart();
-        //Task<Result<List<ChartDto>>> GetChartCompany();
+        Task<Result<List<ChartDto>>> GetChartCompanyRequest();
     }
 }

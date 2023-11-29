@@ -14,10 +14,16 @@ namespace PurchaseManagament.API.Controllers
             _service = service;
         }
 
-        [HttpGet("GetMainChart")]
+        [HttpGet("GetMain")]
         public async Task<IActionResult> GetMainChart()
         {
             var entities = await _service.GetMainChart();
+            return Ok(entities);
+        }
+        [HttpGet("GetCompanyRequest")]
+        public async Task<IActionResult> GetChartCompanyRequest()
+        {
+            var entities = await _service.GetChartCompanyRequest();
             return Ok(entities);
         }
         //[HttpGet("GetByDepartment/{CompanyId}/{DepartmentId}")]

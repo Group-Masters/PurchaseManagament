@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
+using PurchaseManagament.Application.Concrete.Models.Dtos.ChartDtos;
 using PurchaseManagament.Domain.Entities;
 using PurchaseManagament.Domain.Enums;
 
@@ -146,6 +147,11 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.DepartmentId, y => y.MapFrom(z => z.CompanyDepartment.DepartmentId))
                 .ForMember(x => x.RolId, y => y.MapFrom(z => z.EmployeeRoles.Select(x => x.RoleId).ToList()));
 
+            CreateMap<Company, ChartDto>()
+              .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
+              .ForMember(x => x.Value, y => y.MapFrom(z => z.CompanyDepartments.SelectMany(x=>x.Employees).SelectMany(x=>x.EmployeeRequests).Count()));
+            //CreateMap<Company, MainChartDto>()
+            //        .ForMember(x => x., y => y.MapFrom(z => z.Name));
         }
        
 
