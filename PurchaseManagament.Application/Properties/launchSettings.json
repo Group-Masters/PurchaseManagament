@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PurchaseManagament.Application": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

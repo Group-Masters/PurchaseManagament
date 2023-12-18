@@ -32,15 +32,35 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
+        //public async Task<Result<HashSet<PageDto>>> GetAllPage()
+        //{
+        //    var result = new Result<HashSet<PageDto>>();
+        //    var entity=await _uwork.GetRepository<PageRole>().GetByFilterAsync(x=>_loggedService.Role.Contains(x.RoleId),"Page") /*x.RoleId==_loggedService.Role.Select(*/;
+        //   // var entity = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.UpperPageId == null, "LowerPages");
+        //    var dtos = _mapper.Map<HashSet<PageDto>>(entity);
+        //    result.Data = dtos;
+        //    return result;
+        //}
+
         public async Task<Result<HashSet<PageDto>>> GetAllPage()
         {
             var result = new Result<HashSet<PageDto>>();
-            var entity=await _uwork.GetRepository<PageRole>().GetByFilterAsync(x=>_loggedService.Role.Contains(x.RoleId), "Page") /*x.RoleId==_loggedService.Role.Select(*/;
-           // var entity = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.UpperPageId == null, "LowerPages");
-            var dtos = _mapper.Map<HashSet<PageDto>>(entity);
-            result.Data = dtos;
+            var roles = _loggedService.Role; // _loggedService.Role birden fazla rol içeriyorsa
+
+            HashSet<PageDto> allPages = new HashSet<PageDto>();
+
+            foreach (var roleId in roles)
+            {
+                var entity = await _uwork.GetRepository<PageRole>()
+                                        .GetByFilterAsync(x => x.RoleId == roleId, "Page");
+                var dtos = _mapper.Map<HashSet<PageDto>>(entity);
+                allPages.UnionWith(dtos);
+            }
+
+            result.Data = allPages;
             return result;
         }
+
 
         public async Task<Result<bool>> PageAddRole(PageAddRoleVM pageAddRoleVM)
         {
