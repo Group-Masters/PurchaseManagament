@@ -13,6 +13,6 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
         public string PageName { get; set; }
         public string Content { get; set; }
 
-        public ICollection<PageDto> LowerPages { get; set; }
+        public IEnumerable<PageDto> LowerPages { get; set; }
     }
 }

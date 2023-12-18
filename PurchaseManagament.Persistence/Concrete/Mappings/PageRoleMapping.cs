@@ -43,9 +43,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasForeignKey(pr => pr.RoleId);
 
 
-            builder.HasOne(x=>x.Page)
-                .WithMany(p => p.PageRoles)
-                .HasForeignKey(pr => pr.PageId);
+            
 
 
             builder.ToTable("PAGE_ROLE");
