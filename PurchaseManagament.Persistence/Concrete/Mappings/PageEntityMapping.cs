@@ -20,7 +20,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnType("nvarchar(50)");
 
             builder.Property(x => x.UpperPageId)
-              .HasColumnName("LOWER_PAGES")
+              .HasColumnName("UPPPER_PAGE_ID")
               .HasColumnOrder(3)
               .IsRequired(false);
 

@@ -8,6 +8,7 @@ namespace PurchaseManagament.Application.Concrete.Models.Dtos
 {
     public class PageDto
     {
+        public Int64 Id { get; set; }
         public string Url { get; set; }
         public string PageName { get; set; }
         public string Content { get; set; }

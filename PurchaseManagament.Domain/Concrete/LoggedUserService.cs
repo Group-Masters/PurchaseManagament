@@ -20,7 +20,8 @@ namespace PurchaseManagament.Domain.Concrete
         }
 
         public Int64? UserId => GetClaim(ClaimTypes.Sid) != null ? Int64.Parse(GetClaim(ClaimTypes.Sid)) : null;
-       // public Roles? Role => GetClaim(ClaimTypes.Role) != null ? (Roles)Enum.Parse(typeof(Roles), GetClaim(ClaimTypes.Role)) : null;
+        //public List<Int64>? Role => GetClaim(ClaimTypes.Role) != null ? GetRoles(GetClaim(ClaimTypes.Role)) : null;
+        public List<Int64>? Role => GetClaim(ClaimTypes.Role) != null ? GetRoles(GetClaim(ClaimTypes.Role)) : null;
         public string Username => GetClaim(ClaimTypes.Name) != null ? GetClaim(ClaimTypes.Name) : null;
         public string Email => GetClaim(ClaimTypes.Email) != null ? GetClaim(ClaimTypes.Email) : null;
 
@@ -32,11 +33,13 @@ namespace PurchaseManagament.Domain.Concrete
         {
             return _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimType)?.Value;
         }
-        //private List<string> GetClaimList(string claimType)
-        //{
-        //  var roles= _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == claimType)?.Value.Split(',');
-        //    return roles.ToList();
-        //}
+       private List<Int64> GetRoles(string roles)
+        {
+            var rolesList = roles.Split(',');
+            List<Int64> Roles = rolesList.Select(id => Int64.Parse(id) ).ToList();
+         return Roles;
+
+        }
 
     }
 }

@@ -306,40 +306,8 @@ namespace PurchaseManagament.Application.Concrete.Services
             result.Data = entity.Id;
             return result;
         }
-        #region private methodlar
-        private string GenerateJwtToken(Employee person, List<EmployeeRole> roles)
-        {
-            var secretkey = _configuration["Jwt:SigningKey"];
-            var ıssuer = _configuration["Jwt:Issuer"];
-            var audience = _configuration["Jwt:Audiance"];
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(secretkey); // appsettings.json içinde JWT ayarlarınızı yapmalısınız
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Audience = audience,
-                Issuer = ıssuer,
-
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Email, person.EmployeeDetail.Email),
-                    new Claim(ClaimTypes.Name, person.EmployeeDetail.Username),
-                    new Claim(ClaimTypes.Sid, person.Id.ToString()),
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            foreach (var r in roles)
-            {
-                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
-                Console.WriteLine(r.ToString());
-            }
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<Result<TokenDto>> LoginData(LoginVM loginData)
+       
+         public async Task<Result<TokenDto>> LoginData(LoginVM loginData)
         {
             var result = new Result<TokenDto>();
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginData.Password);
@@ -379,6 +347,39 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        
+        #region private methodlar
+        private string GenerateJwtToken(Employee person, List<EmployeeRole> roles)
+        {
+            var secretkey = _configuration["Jwt:SigningKey"];
+            var ıssuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audiance"];
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(secretkey); // appsettings.json içinde JWT ayarlarınızı yapmalısınız
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Audience = audience,
+                Issuer = ıssuer,
+
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Email, person.EmployeeDetail.Email),
+                    new Claim(ClaimTypes.Name, person.EmployeeDetail.Username),
+                    new Claim(ClaimTypes.Sid, person.Id.ToString()),
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            foreach (var r in roles)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, r.RoleId.ToString()));
+                //Console.WriteLine(r.ToString());
+            }
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
         #endregion
     }
 }

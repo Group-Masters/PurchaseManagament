@@ -11,6 +11,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.ImgProduct;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Invoices;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.MeasuringUnits;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Offers;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Pages;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Products;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Roles;
@@ -91,6 +92,7 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
             CreateMap<ImgProductDto, ImgProduct>();
             CreateMap<UpdateInvoiceImageVM, Invoice>()
              .ForMember(x => x.ImageSrc, y => y.MapFrom(x => x.ImageString));
+            CreateMap<CreatePageVM, Page>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurchaseManagament.Application.Abstract.Service;
+using PurchaseManagament.Application.Concrete.Models.RequestModels.Pages;
 
 namespace PurchaseManagament.API.Controllers
 {
@@ -19,6 +20,12 @@ namespace PurchaseManagament.API.Controllers
         {
             var entities = await _service.GetAllPage();
             return Ok(entities);
+        }
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreatePage(CreatePageVM createPageVM)
+        {
+            var result = await _service.CreatePage(createPageVM);
+            return Ok(result);
         }
         //[HttpGet("GetByDepartment/{CompanyId}/{DepartmentId}")]
         //public async Task<IActionResult> GetByDepartment(Int64 CompanyId, Int64 DepartmentId)
