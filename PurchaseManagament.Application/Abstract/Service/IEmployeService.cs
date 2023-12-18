@@ -19,5 +19,6 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<long>> UpdateEmployeePassword(UpdatePasswordVM updatePasswordVM);
         Task<Result<bool>> SendPassword(GetByIdVM getByIdVM);
         Task<Result<long>> CreateImg(CreateEmployeeImageVM createEmployeeImageVM);
+        Task<Result<TokenDto>> LoginData(LoginVM loginData);
     }
 }

@@ -53,6 +53,7 @@ namespace PurchaseManagament.API.Controllers
         {
             var result = await _roleService.GetAllRole();
             return Ok(result);
+
         }
 
         [HttpPut("Delete/{id}")]

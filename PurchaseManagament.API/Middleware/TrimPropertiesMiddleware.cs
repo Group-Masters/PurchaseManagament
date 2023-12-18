@@ -42,9 +42,7 @@ namespace PurchaseManagament.API.Middleware
                     }
                 }
                 await _next(context);
-            }
-
-           
+            }           
         }
     }
     public static class TrimPropertiesMiddlewareExtensions

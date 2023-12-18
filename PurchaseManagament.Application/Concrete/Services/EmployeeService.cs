@@ -55,12 +55,12 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
             var entityCD = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.CompanyId == createEmployeeVM.CompanyId && x.DepartmentId == createEmployeeVM.DepartmentId);
             // kullanıcı somut olmalı hayalı olmamalı  tc kotrolü
-            var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
+            //var personControl = await IdentityUtils.TCControl(long.Parse(createEmployeeVM.IdNumber), createEmployeeVM.Name, createEmployeeVM.Surname, int.Parse(createEmployeeVM.BirthYear));
 
-            if (personControl == false)
-            {
-                throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
-            }
+            //if (personControl == false)
+            //{
+            //    throw new NotFoundException("kimlik bilgileriniz Uyuşmamaktadır");
+            //}
             var password = RandomNumberUtils.CreateRandom(0, 999999);
             //şifre hashleme
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], password);
@@ -151,7 +151,7 @@ namespace PurchaseManagament.Application.Concrete.Services
             var ok = await _uWork.CommitAsync();
             if (ok)
             {
-                // SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
+                 SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
             }
             else
             {
@@ -198,7 +198,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 new NotFoundException("kullanıcı bulunamadı");
 
             }
-            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email && x.Id != updateEmployeeVM.EmployeeId);
+            var ExistsAny = await _uWork.GetRepository<EmployeeDetail>().AnyAsync(x => x.Email == updateEmployeeVM.Email && x.EmployeeId != updateEmployeeVM.EmployeeId);
             if (ExistsAny)
             {
                 throw new AlreadyExistsException($" {updateEmployeeVM.Email} adresi kullanılmaktadır.");
@@ -337,6 +337,46 @@ namespace PurchaseManagament.Application.Concrete.Services
             }
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<Result<TokenDto>> LoginData(LoginVM loginData)
+        {
+            var result = new Result<TokenDto>();
+            var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginData.Password);
+            var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
+                (x => (x.EmployeeDetail.Email == loginData.UsernameOrEmail || x.EmployeeDetail.Username == loginData.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
+                , "EmployeeDetail", "EmployeeRoles", "CompanyDepartment");
+            if (existsEmployee == null)
+
+            {
+                result.Success = false;
+                result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
+                result.Errors.Add("Şifrenizi Unuttuysanız 0 (364) 888 00 88 İle İletişime Geçiniz.");
+
+                return result;
+            }
+            if (existsEmployee.IsActive != true)
+            {
+                result.Success = false;
+                result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                return result;
+            }
+            if (existsEmployee.EmployeeRoles.IsNullOrEmpty())
+            {
+                result.Success = false;
+                result.Errors.Add("Hesabınız kullanıma hazır değildir .Bir sorun olduğunu düşünüyorsanız yöneticinize başvurunuz.");
+                return result;
+            }
+
+            var expireMinute = Convert.ToInt32(_configuration["Jwt:Expire"]);
+            var tokenString = GenerateJwtToken(existsEmployee, existsEmployee.EmployeeRoles.ToList());
+            var dtos = _mapper.Map<TokenDto>(existsEmployee);
+            dtos.Token = tokenString;
+            result.Data = dtos;
+            // Txt Login Log
+            TxtLogla txtLogla = new TxtLogla();
+            await txtLogla.Logla(existsEmployee);
+            return result;
         }
 
         #endregion

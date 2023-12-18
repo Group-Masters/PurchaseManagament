@@ -6,5 +6,6 @@ namespace PurchaseManagament.Domain.Entities
     {
         public string Name { get; set; }
         public virtual IEnumerable<EmployeeRole> EmployeeRoles { get; set; }
+        public virtual IEnumerable<PageRole> PageRoles { get; set; }
     }
 }

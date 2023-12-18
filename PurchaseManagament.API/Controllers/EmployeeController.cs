@@ -7,7 +7,7 @@ using PurchaseManagament.Application.Concrete.Models.RequestModels.Request;
 namespace PurchaseManagament.API.Controllers
 {
     [Route("Employee")]
-    [Authorize]
+    //[Authorize]
     public class EmployeeController : Controller
     {
         private IEmployeService _service;
@@ -24,7 +24,7 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
         [HttpPost("Login")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
         {
             var entities = await _service.Login(loginVM);
@@ -38,7 +38,15 @@ namespace PurchaseManagament.API.Controllers
             return Ok(entities);
         }
 
-        
+        [HttpPost("LoginData")]
+        //[AllowAnonymous]
+        public async Task<IActionResult> LoginData([FromBody] LoginVM loginVM)
+        {
+            var entities = await _service.LoginData(loginVM);
+            return Ok(entities);
+        }
+
+
         [HttpGet("GetAll")]
         [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetAllEmployee()

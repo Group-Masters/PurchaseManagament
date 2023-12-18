@@ -28,6 +28,8 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<StockOperations> StockOperations { get; set; }
         public virtual DbSet<ImgProduct> ImgProducts { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<PageRole> PageRoles { get; set; }
 
         private readonly ILoggedService _loggedUserService;
 
@@ -63,6 +65,8 @@ namespace PurchaseManagament.Persistence.Concrete.Context
             modelBuilder.ApplyConfiguration(new StockOperationMapping());
             modelBuilder.ApplyConfiguration(new SupplierMapping());
             modelBuilder.ApplyConfiguration(new ImgProductMapping());
+            modelBuilder.ApplyConfiguration(new PageEntityMapping());
+            modelBuilder.ApplyConfiguration(new PageRoleMapping());
 
             //Aşağıdaki entity türleri için isDeleted bilgisi false olanların otomatik olarak filtrelenmesi sağlanır.
             modelBuilder.Entity<Company>().HasQueryFilter(x => x.IsDeleted == null || (x.IsDeleted.HasValue && !x.IsDeleted.Value));
