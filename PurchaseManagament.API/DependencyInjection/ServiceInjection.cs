@@ -13,6 +13,7 @@ namespace PurchaseManagament.API.DependencyInjection
             services.AddScoped<ICompanyService, CompanyService>();
 
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IPageService, PageService>();
 
             services.AddScoped<IDepartmentService, DepartmentService>();
 
