@@ -146,15 +146,15 @@ namespace PurchaseManagament.Application.Concrete.AutoMapper
                 .ForMember(x => x.DepartmentId, y => y.MapFrom(z => z.CompanyDepartment.DepartmentId))
                 .ForMember(x => x.RolId, y => y.MapFrom(z => z.EmployeeRoles.Select(x => x.RoleId).ToList()));
             CreateMap<Page, PageDto>()
-               .ForMember(x => x.LowerPages, y => y.MapFrom(z => z.LowerPages));
-            CreateMap<PageRole, PageDto>()
-                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Page.Id))
-                .ForMember(x => x.LowerPages, y => y.MapFrom(z => z.Page.LowerPages.ToList()))
-                .ForMember(x => x.Url, y => y.MapFrom(z => z.Page.Url))
-                .ForMember(x => x.PageName, y => y.MapFrom(z => z.Page.PageName))
-                .ForMember(x => x.Content, y => y.MapFrom(z => z.Page.Content));
+               .ForMember(x => x.LowerPages, y => y.MapFrom(z =>z.LowerPages.ToHashSet()));
+            //CreateMap<PageRole, PageDto>()
+            //     .ForMember(x => x.Id, y => y.MapFrom(z => z.Page.Id))
+            //    .ForMember(x => x.LowerPages, y => y.MapFrom(z => z.Page.LowerPages.ToList()))
+            //    .ForMember(x => x.Url, y => y.MapFrom(z => z.Page.Url))
+            //    .ForMember(x => x.PageName, y => y.MapFrom(z => z.Page.PageName))
+            //    .ForMember(x => x.Content, y => y.MapFrom(z => z.Page.Content));
         }
-       
+
 
         private string GetPricesTry(Request x)
         {

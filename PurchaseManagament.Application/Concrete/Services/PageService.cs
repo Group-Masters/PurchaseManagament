@@ -33,35 +33,42 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
         public async Task<Result<HashSet<PageDto>>> GetAllPage()
         {
+
             var result = new Result<HashSet<PageDto>>();
-            var UpperEntity = await _uwork.GetRepository<PageRole>().GetByFilterAsync(x => _loggedService.Role.Contains(x.RoleId) && x.Page.UpperPage == null, "Page");
+            var UpperEntity = await _uwork.GetRepository<Page>()
+           .GetByFilterAsync(x => x.PageRoles.Any(y => _loggedService.Role.Contains(y.RoleId)) && x.UpperPage == null)
+           .ConfigureAwait(false);
+            
+            
             var upperdtos = _mapper.Map<HashSet<PageDto>>(UpperEntity);
             foreach (var item in upperdtos)
             {
-                var entity  = await _uwork.GetRepository<PageRole>().GetByFilterAsync(x => _loggedService.Role.Contains(x.RoleId)&& x.Page.UpperPageId==item.Id, "Page");
+                var entity  = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.PageRoles.Any(y => _loggedService.Role.Contains(y.RoleId)) && x.UpperPageId == item.Id)
+                .ConfigureAwait(false);
                 if (entity != null)
                 {
+                    //var   entity2 = entity.ToList();
                     var entitydtos = _mapper.Map<HashSet<PageDto>>(entity);
+
+
                     item.LowerPages = entitydtos;
                 }
             }
 
+          //var upperdtos = _mapper.Map<HashSet<PageDto>>(UpperEntity);
 
-
-            //       var entity = await _uwork.GetRepository<PageRole>()
-            //.GetByFilterAsync(x =>
-            //    _loggedService.Role.Contains(x.RoleId) &&
-            //    x.Page.LowerPages.Any(lp =>
-            //        lp.PageRoles.Any(pr =>
-            //            _loggedService.Role.Contains(pr.RoleId)
-            //        )
-            //    ), "Page.LowerPages"
-            //);
-
-
-            /*x.RoleId==_loggedService.Role.Select(*/
-            // var entity = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.UpperPageId == null, "LowerPages");
-          ;
+          //       var entity = await _uwork.GetRepository<PageRole>()
+          //.GetByFilterAsync(x =>
+          //    _loggedService.Role.Contains(x.RoleId) &&
+          //    x.Page.LowerPages.Any(lp =>
+          //        lp.PageRoles.Any(pr =>
+          //            _loggedService.Role.Contains(pr.RoleId)
+          //        )
+          //    ), "Page.LowerPages"
+          //);
+          /*x.RoleId==_loggedService.Role.Select(*/
+          // var entity = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.UpperPageId == null, "LowerPages");
+          
             result.Data = upperdtos;
             return result;
         }
