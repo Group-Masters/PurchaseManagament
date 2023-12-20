@@ -3,6 +3,7 @@ using PurchaseManagament.Application.Concrete.Services.PDFServices;
 using PurchaseManagament.Application.Concrete.Services;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Concrete;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace PurchaseManagament.API.DependencyInjection
 {
@@ -44,6 +45,7 @@ namespace PurchaseManagament.API.DependencyInjection
             services.AddScoped<IOfferService, OfferService>();
 
             services.AddScoped<IStockOperationsService, StockOperationsService>();
+            services.AddSingleton<IMemoryCache, MemoryCache>();
 
             services.AddScoped(typeof(ReportToPdfService));
 

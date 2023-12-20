@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using PurchaseManagament.Application.Abstract.Service;
 using PurchaseManagament.Application.Concrete.Models.Dtos;
 using PurchaseManagament.Application.Concrete.Models.RequestModels.Pages;
@@ -15,12 +16,14 @@ namespace PurchaseManagament.Application.Concrete.Services
         private readonly IUnitWork _uwork;
         private readonly IMapper _mapper;
         private readonly ILoggedService _loggedService;
+        private readonly IMemoryCache _memoryCache;
 
-        public PageService(IUnitWork uwork, IMapper mapper, ILoggedService loggedService)
+        public PageService(IUnitWork uwork, IMapper mapper, ILoggedService loggedService, IMemoryCache memoryCache)
         {
             _uwork = uwork;
             _mapper = mapper;
             _loggedService = loggedService;
+            _memoryCache = memoryCache;
         }
         public async Task<Result<bool>> CreatePage(CreatePageVM addPageVM)
         {
@@ -35,7 +38,9 @@ namespace PurchaseManagament.Application.Concrete.Services
         {
 
             var result = new Result<HashSet<PageDto>>();
-            var UpperEntity = await _uwork.GetRepository<Page>()
+
+            var cacheDtos = await _memoryCache.GetOrCreateAsync("ProductDto", async (cacheEntry) =>
+            {    var UpperEntity = await _uwork.GetRepository<Page>()
            .GetByFilterAsync(x => x.PageRoles.Any(y => _loggedService.Role.Contains(y.RoleId)) && x.UpperPage == null)
            .ConfigureAwait(false);
             
@@ -55,6 +60,14 @@ namespace PurchaseManagament.Application.Concrete.Services
                 }
             }
 
+                return upperdtos;
+            });
+
+            
+
+
+
+        
           //var upperdtos = _mapper.Map<HashSet<PageDto>>(UpperEntity);
 
           //       var entity = await _uwork.GetRepository<PageRole>()
@@ -69,7 +82,7 @@ namespace PurchaseManagament.Application.Concrete.Services
           /*x.RoleId==_loggedService.Role.Select(*/
           // var entity = await _uwork.GetRepository<Page>().GetByFilterAsync(x => x.UpperPageId == null, "LowerPages");
           
-            result.Data = upperdtos;
+            result.Data = cacheDtos;
             return result;
         }
         public async Task<Result<bool>> PageAddRole(PageAddRoleVM pageAddRoleVM)
