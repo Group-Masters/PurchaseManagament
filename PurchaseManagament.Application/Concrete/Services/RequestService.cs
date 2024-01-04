@@ -137,6 +137,22 @@ namespace PurchaseManagament.Application.Concrete.Services
             return result;
         }
 
+        //[Validator(typeof(GetRequestByIdValidator))] Validasyon Yazılacak
+        public async Task<Result<HashSet<RequestDto>>> GetRequestByIdentity(GetByIdentityVM getIdentity)
+        {
+            var result = new Result<HashSet<RequestDto>>();
+            var entityControl = await _unitWork.GetRepository<Request>().AnyAsync(x => x.RequestEmployee.IdNumber == getIdentity.IdentityNumber);
+            if (!entityControl)
+            {
+                throw new NotFoundException("İstenen Talep kaydı bulunamadı.");
+            }
+
+            var existEntity = await _unitWork.GetRepository<Request>().GetByFilterAsync(x => x.RequestEmployee.IdNumber == getIdentity.IdentityNumber, "Product.MeasuringUnit", "ApprovedEmployee", "RequestEmployee");
+            var mappedEntity = _mapper.Map<HashSet<RequestDto>>(existEntity);
+            result.Data = mappedEntity;
+            return result;
+        }
+
         [Validator(typeof(GetRequestByEmployeeIdValidator))]
         public async Task<Result<HashSet<RequestDto>>> GetRequestByEmployeeId(GetRequestByEmployeeIdRM getRequestByEmployeeIdRM)
         {

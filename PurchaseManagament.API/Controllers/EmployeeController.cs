@@ -54,12 +54,20 @@ namespace PurchaseManagament.API.Controllers
             var entities = await _service.GetAllEmployes();
             return Ok(entities);
         }
-        [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(long id)
+        [HttpGet("GetByIdentity/{identity}")]
+        public async Task<IActionResult> GetByIdentity(string identity)
         {
-            var entities = await _service.GetEmployeeById(new GetByIdVM { Id=id});
+            var entities = await _service.GetEmployeeByIdentity(new GetByIdentityVM { IdentityNumber= identity });
             return Ok(entities);
         }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var entities = await _service.GetEmployeeById(new GetByIdVM { Id = id });
+            return Ok(entities);
+        }
+
         [HttpGet("GetByCompany/{id}")]
         [Authorize(Roles = "1,3,9")]
         public async Task<IActionResult> GetByCompanyId(long id)

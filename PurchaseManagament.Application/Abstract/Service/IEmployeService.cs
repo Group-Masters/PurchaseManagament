@@ -11,6 +11,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<List<EmployeeDto>>> GetEmployeesByCompany(GetByIdVM getByIdVM);
         Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCompany(GetByIdVM getByIdVM);
         Task<Result<List<EmployeeDto>>> GetEmployeeIsActiveByCIdDId(GetRequestByCIdDIdRM getByCIdDId);
+        Task<Result<EmployeeDto>> GetEmployeeByIdentity(GetByIdentityVM getByIdVM);
         Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM);
         Task<Result<long>> CreateEmployee(CreateEmployeeVM createEmployeeVM);
         Task<Result<TokenDto>> Login2FK(LoginVM2 loginVM);

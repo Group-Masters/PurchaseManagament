@@ -33,6 +33,11 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
               .HasColumnName("URL")
                 .HasColumnOrder(5)
                 .HasColumnType("nvarchar(100)");
+            
+            builder.Property(x => x.Icon)
+              .HasColumnName("ICON")
+                .HasColumnOrder(6)
+                .HasColumnType("nvarchar(50)");
 
             //builder.HasOne(x => x.UpperPage)
             // .WithOne(x => x.LowerPages)

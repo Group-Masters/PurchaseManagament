@@ -13,6 +13,7 @@ namespace PurchaseManagament.Domain.Entities
         public string Url { get; set; }
         public string PageName { get; set; }
         public string Content { get; set; }
+        public string Icon { get; set; }
 
         public virtual IEnumerable<PageRole> PageRoles { get; set; }
         public virtual Page? UpperPage { get; set; }

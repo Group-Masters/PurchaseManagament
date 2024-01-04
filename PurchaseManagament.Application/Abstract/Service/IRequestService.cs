@@ -22,6 +22,7 @@ namespace PurchaseManagament.Application.Abstract.Service
         Task<Result<HashSet<RequestDto>>> GetRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
         Task<Result<HashSet<RequestDto>>> GetPendingRequestByCIdDId(GetRequestByCIdDIdRM getRequestByCIdDIdRM);
         Task<Result<RequestDto>> GetRequestById(GetRequestByIdRM getRequestById);
+        Task<Result<HashSet<RequestDto>>> GetRequestByIdentity(GetByIdentityVM getIdentity);
         Task<Result<HashSet<RequestDto>>> GetAllRequest();
         Task<Result<HashSet<RequestDto>>> GetRequesApprovedtByCompany(GetByIdVM getByIdVM);
     }

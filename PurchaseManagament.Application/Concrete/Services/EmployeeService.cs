@@ -101,11 +101,22 @@ namespace PurchaseManagament.Application.Concrete.Services
 
         }
 
+        //[Validator(typeof(GetByIdEmployeeValidator))] Validasyon yazılacak
+        public async Task<Result<EmployeeDto>> GetEmployeeByIdentity(GetByIdentityVM getByIdVM)
+        {
+            var result = new Result<EmployeeDto>();
+            var employeEntity = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.IdNumber == getByIdVM.IdentityNumber, "EmployeeDetail", "CompanyDepartment.Department", "EmployeeRoles.Role", "CompanyDepartment.Company");
+            var employeDto = _mapper.Map<EmployeeDto>(employeEntity);
+            result.Data = employeDto;
+            return result;
+
+        }
+
         [Validator(typeof(GetByIdEmployeeValidator))]
         public async Task<Result<EmployeeDto>> GetEmployeeById(GetByIdVM getByIdVM)
         {
             var result = new Result<EmployeeDto>();
-            var employeEntity = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == getByIdVM.Id, "EmployeeDetail", "CompanyDepartment.Department", "EmployeeRoles.Role");
+            var employeEntity = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync(x => x.Id == getByIdVM.Id, "EmployeeDetail", "CompanyDepartment.Department", "EmployeeRoles.Role", "CompanyDepartment.Company");
             var employeDto = _mapper.Map<EmployeeDto>(employeEntity);
             result.Data = employeDto;
             return result;

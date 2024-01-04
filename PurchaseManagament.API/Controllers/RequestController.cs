@@ -48,7 +48,14 @@ namespace PurchaseManagament.API.Controllers
             var result = await _requestService.GetRequestById(new GetRequestByIdRM { Id = id });
             return Ok(result);
         }
-        
+
+        [HttpGet("GetByIdentity/{identity}")]
+        public async Task<ActionResult<Result<RequestDto>>> GetRequestByIdentity(string identity)
+        {
+            var result = await _requestService.GetRequestByIdentity(new GetByIdentityVM { IdentityNumber = identity });
+            return Ok(result);
+        }
+
         [HttpGet("GetByEmployeeId/{requestemployeeid}")]
         public async Task<ActionResult<Result<HashSet<RequestDto>>>>  GetRequestByEmployeeId(Int64 requestemployeeid)
         {
