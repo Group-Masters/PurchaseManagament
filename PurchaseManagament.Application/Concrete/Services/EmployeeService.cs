@@ -113,51 +113,38 @@ namespace PurchaseManagament.Application.Concrete.Services
         }
 
         [Validator(typeof(LoginEmployeeValidator))]
-        public async Task<Result<bool>> Login(LoginVM loginVM)
+        public async Task<Result<TokenDto>> Login(LoginVM loginVM)
         {
-            var result = new Result<bool>();
+            var result = new Result<TokenDto>();
             var hashedPassword = CipherUtils.EncryptString(_configuration["AppSettings:SecretKey"], loginVM.Password);
             var existsEmployee = await _uWork.GetRepository<Employee>().GetSingleByFilterAsync
                 (x => (x.EmployeeDetail.Email == loginVM.UsernameOrEmail || x.EmployeeDetail.Username == loginVM.UsernameOrEmail) && x.EmployeeDetail.Password == hashedPassword
-                , "EmployeeDetail", "EmployeeRoles");
-            result.Data = false;
+                , "EmployeeDetail");
             if (existsEmployee == null)
 
             {
-                result.Success = false;
-                result.Errors.Add("Şifreniz Kullanıcı Adınız Veya Mail Adresiniz Uyuşmamaktadır.");
-                result.Errors.Add("Şifrenizi Unuttuysanız 0 (364) 888 00 88 İle İletişime Geçiniz.");
-
-                return result;
+                throw new NotFoundException("kullanıcı bulunamadı");
             }
             if (existsEmployee.IsActive != true)
             {
-                result.Success = false;
-                result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
-                return result;
+                throw new NotFoundException("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
             }
-            if (existsEmployee.EmployeeRoles.IsNullOrEmpty())
-            {
-                result.Success = false;
-                result.Errors.Add("Hesabınız kullanıma hazır değildir .Bir sorun olduğunu düşünüyorsanız yöneticinize başvurunuz.");
-                return result;
-            }
+            var companyEntity = await _uWork.GetRepository<CompanyDepartment>().GetSingleByFilterAsync(x => x.Id == existsEmployee.CompanyDepartmentId);
+            var role = await _uWork.GetRepository<EmployeeRole>().GetByFilterAsync(x => x.EmployeeId == existsEmployee.Id);
+            var roleList = role.ToList();
 
-            // onay kodu gönderimi son aşamada tekrar acılacak
-            var deger = RandomNumberUtils.CreateRandom(0, 999999);
-            var employedetails = existsEmployee.EmployeeDetail;
-            employedetails.ApprovedCode = deger;
-            _uWork.GetRepository<EmployeeDetail>().Update(employedetails);
-            var ok = await _uWork.CommitAsync();
-            if (ok)
+            var expireMinute = Convert.ToInt32(_configuration["Jwt:Expire"]);
+            var tokenString = GenerateJwtToken(existsEmployee, roleList);
+
+            result.Data = new TokenDto
             {
-                // SenderUtils.SendMail(employedetails.Email, "GIRIS ISLEMLERI", $"Giriş Doğrulama Kodunuz : {employedetails.ApprovedCode}");              
-            }
-            else
-            {
-                throw new NotFoundException("Lütfen Daha sonra tekrar Deneyiniz");
-            }
-            result.Data = true;
+                Id = existsEmployee.Id,
+                CompanyId = companyEntity.CompanyId,
+                DepartmentId = companyEntity.DepartmentId,
+                RolId = roleList.Select(x => x.RoleId).ToList(),
+                Token = tokenString,
+
+            };
             return result;
         }
 
