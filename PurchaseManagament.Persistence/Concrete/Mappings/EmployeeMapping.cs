@@ -16,13 +16,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .HasColumnName("NAME")
                 .HasColumnOrder(3)
-                .HasColumnType("nvarchar(20)")
+                .HasColumnType("varchar(20)")
                 .IsRequired();
 
             builder.Property(x => x.Surname)
                 .HasColumnName("SURNAME")
                 .HasColumnOrder(4)
-                .HasColumnType("nvarchar(20)")
+                .HasColumnType("varchar(20)")
                 .IsRequired();
 
             builder.Property(x => x.IdNumber)
@@ -33,7 +33,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.BirthYear)
                 .HasColumnName("BIRTH_YEAR")
                 .HasColumnOrder(6)
-                .HasColumnType("nvarchar(4)")
+                .HasColumnType("varchar(4)")
                 .IsRequired();
 
             builder.Property(x => x.Gender)

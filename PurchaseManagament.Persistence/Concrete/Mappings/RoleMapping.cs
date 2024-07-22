@@ -11,7 +11,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .HasColumnName("ROLE_NAME")
                 .HasColumnOrder(2)
-                .HasColumnType("nvarchar(50)")
+                .HasColumnType("varchar(50)")
                 .IsRequired();
 
             builder.ToTable("ROLES");

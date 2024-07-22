@@ -11,7 +11,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .HasColumnName("NAME")
                 .HasColumnOrder(2)
-                .HasColumnType("nvarchar(20)")
+                .HasColumnType("varchar(20)")
                 .IsRequired();
 
             builder.ToTable("MEASURING_UNIT");

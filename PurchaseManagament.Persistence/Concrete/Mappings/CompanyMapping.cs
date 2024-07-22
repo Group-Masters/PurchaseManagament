@@ -11,12 +11,12 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Name)
                 .HasColumnName("NAME")
                 .HasColumnOrder(2)
-                .HasColumnType("nvarchar(50)");
+                .HasColumnType("varchar(50)");
 
             builder.Property(x => x.Address)
               .HasColumnName("ADDRESS")
               .HasColumnOrder(3)
-              .HasColumnType("nvarchar(150)");
+              .HasColumnType("varchar(150)");
           
             builder.Property(x => x.ManagerThreshold)
               .HasColumnName("MANAGER_THRESHOLD");

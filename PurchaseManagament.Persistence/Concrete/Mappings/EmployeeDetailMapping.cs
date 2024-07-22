@@ -26,31 +26,31 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Email)
                 .HasColumnName("EMAIL")
                 .HasColumnOrder(5)
-                .HasColumnType("nvarchar(150)")
+                .HasColumnType("varchar(150)")
                 .IsRequired();
 
             builder.Property(x => x.Password)
                 .HasColumnName("PASSWORD")
                 .HasColumnOrder(6)
-                .HasColumnType("nvarchar(50)")
+                .HasColumnType("varchar(50)")
                 .IsRequired();
 
             builder.Property(x => x.Phone)
                 .HasColumnName("PHONE")
                 .HasColumnOrder(7)
-                .HasColumnType("nvarchar(20)")
+                .HasColumnType("varchar(20)")
                 .IsRequired();
 
             builder.Property(x => x.EmailOk)
                 .HasColumnName("EMAIL_OK")
                 .HasColumnOrder(8)
-                .HasColumnType("bit")
+                .HasColumnType("boolean")
                 .HasDefaultValue(false);
 
             builder.Property(x => x.ApprovedCode)
                 .HasColumnName("APPROVED_CODE")
                 .HasColumnOrder(9)
-                .HasColumnType("nvarchar(15)");
+                .HasColumnType("varchar(15)");
             builder.Property(x => x.ImageSrc)
                          .HasColumnName("IMAGE_SRC")
                          .HasColumnOrder(10);

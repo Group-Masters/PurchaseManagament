@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PurchaseManagament.Domain.Abstract;
 using PurchaseManagament.Domain.Common;
 using PurchaseManagament.Domain.Entities;
@@ -8,6 +9,16 @@ namespace PurchaseManagament.Persistence.Concrete.Context
 {
     public class PurchaseManagamentContext : DbContext
     {
+
+        private readonly ILoggedService _loggedUserService;
+        private readonly IConfiguration _configuration;
+
+        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService)
+            : base(options)
+        {
+            _loggedUserService = loggedService;
+        }
+
         //Tables => Db deki tablo şemaları
         //public DbSet<> Table { get; set; }
 
@@ -29,19 +40,7 @@ namespace PurchaseManagament.Persistence.Concrete.Context
         public virtual DbSet<StockOperations> StockOperations { get; set; }
         public virtual DbSet<ImgProduct> ImgProducts { get; set; }
 
-        private readonly ILoggedService _loggedUserService;
 
-        public PurchaseManagamentContext(DbContextOptions<PurchaseManagamentContext> options, ILoggedService loggedService) : base(options)
-        {
-            //Silince Runtime'da hata veriliyor dendi, hata durumunda yorum satırından çıkarmayı dene
-            //Database.EnsureCreated();
-            _loggedUserService = loggedService;
-            
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=PURCHASEMANAGAMENT_DB;Trusted_Connection=True;TrustServerCertificate=True");
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Veritabanı İlkleme

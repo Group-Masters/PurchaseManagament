@@ -24,13 +24,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.CreatedBy)
                 .HasColumnName("CREATED_BY_ID")
                 .HasColumnOrder(51)
-                .HasColumnType("nvarchar(50)")
+                .HasColumnType("varchar(50)")
                 .IsRequired(false);
 
             builder.Property(x => x.CreatedIP)
                 .HasColumnName("CREATE_IP")
                 .HasColumnOrder(52)
-                .HasColumnType("nvarchar(100)")
+                .HasColumnType("varchar(100)")
                 .IsRequired(false);
 
             builder.Property(x => x.ModifiedDate)
@@ -39,13 +39,13 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
 
             builder.Property(x => x.ModifiedBy)
                 .HasColumnName("MODIFIED_BY_ID")
-                .HasColumnType("nvarchar(50)")
+                .HasColumnType("varchar(50)")
                 .HasColumnOrder(54)
                 .IsRequired(false);
 
             builder.Property(x => x.ModifiedIP)
                 .HasColumnName("MODIFIED_IP")
-                .HasColumnType("nvarchar(100)")
+                .HasColumnType("varchar(100)")
                 .HasColumnOrder(55)
                 .IsRequired(false);
 
@@ -53,12 +53,12 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .HasColumnName("IS_ACTIVE")
                 .HasColumnOrder(56)
                 .IsRequired(false)
-                .HasDefaultValueSql("1");
+                .HasDefaultValueSql("true");
 
             builder.Property(x => x.IsDeleted)
                 .HasColumnName("IS_DELETED")
                 .HasColumnOrder(57)
-                .HasDefaultValueSql("0");
+                .HasDefaultValueSql("false");
         }
     }
 }

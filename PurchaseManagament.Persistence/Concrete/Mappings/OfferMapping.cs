@@ -37,7 +37,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.Details)
                 .HasColumnName("DETAILS")
                 .HasColumnOrder(7)
-                .HasColumnType("nvarchar(250)");
+                .HasColumnType("varchar(250)");
 
             builder.Property(x => x.Status)
                 .HasColumnName("STATUS")

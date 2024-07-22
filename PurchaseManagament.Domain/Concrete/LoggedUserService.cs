@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PurchaseManagament.Domain.Abstract;
-using PurchaseManagament.Domain.Entities;
-using System.Data;
 using System.Security.Claims;
 
 namespace PurchaseManagament.Domain.Concrete

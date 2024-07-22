@@ -15,7 +15,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
                 .IsRequired();
 
             builder.Property(x => x.UUID)
-                .HasColumnType("UNIQUEIDENTIFIER")
+                .HasColumnType("uuid")
                 .HasColumnOrder(3)
                 .IsRequired();
 
@@ -26,7 +26,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.ImageSrc)
                .HasColumnName("IMAGE_SRC")
                .HasColumnOrder(5)
-               .HasColumnType("nvarchar(150)");
+               .HasColumnType("varchar(150)");
             
             builder.Property(x => x.TRY_Rate)
                .HasColumnName("TRY_RATE")

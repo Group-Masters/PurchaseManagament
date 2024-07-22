@@ -25,7 +25,7 @@ namespace PurchaseManagament.Persistence.Concrete.Mappings
             builder.Property(x => x.ImageSrc)
                 .HasColumnName("IMAGE_SRC")
                 .HasColumnOrder(3)
-                .HasColumnType("nvarchar(150)")
+                .HasColumnType("varchar(150)")
                 .IsRequired();
 
 

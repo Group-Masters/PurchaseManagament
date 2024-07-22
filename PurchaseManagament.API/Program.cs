@@ -1,11 +1,11 @@
-﻿using Autofac.Extensions.DependencyInjection;
-using Autofac;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PurchaseManagament.API.DependencyInjection;
 using PurchaseManagament.API.Filters;
-using PurchaseManagament.API.Middleware;
 using PurchaseManagament.Application.Concrete.AutoMapper;
+using PurchaseManagament.Application.Concrete.Inteceptors;
 using PurchaseManagament.Application.Concrete.Validators.CompanyDepartman;
 using PurchaseManagament.Persistence.Abstract.Repository;
 using PurchaseManagament.Persistence.Abstract.UnitWork;
@@ -13,7 +13,6 @@ using PurchaseManagament.Persistence.Concrete.Context;
 using PurchaseManagament.Persistence.Concrete.Repositories;
 using PurchaseManagament.Persistence.Concrete.UnitWork;
 using Serilog;
-using PurchaseManagament.Application.Concrete.Inteceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +52,10 @@ builder.Services.AddJWTSwaggerService();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddDbContext<PurchaseManagamentContext>(a => a.UseSqlServer(@"Server=.\SQLEXPRESS;Database=PURCHASEMANAGAMENT_DB;Trusted_Connection=True;TrustServerCertificate=True"));
+//builder.Services.AddDbContext<PurchaseManagamentContext>(a => a.UseSqlServer(@"Server=.\SQLEXPRESS;Database=PURCHASEMANAGAMENT_DB;Trusted_Connection=True;TrustServerCertificate=True"));
+
+builder.Services.AddDbContext<PurchaseManagamentContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("postgresql")));
+
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -63,7 +65,7 @@ builder.Services.AddScoped<IUnitWork, UnitWork>();
 builder.Services.AddDIServices();
 
 //AutoMapper
-builder.Services.AddAutoMapper(typeof(DomainToDto), typeof(RequestModelToDomain));
+builder.Services.AddAutoMapper(new[] { typeof(DomainToDto), typeof(RequestModelToDomain)});
 
 // Validators
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCompanyDepartmanValidator));

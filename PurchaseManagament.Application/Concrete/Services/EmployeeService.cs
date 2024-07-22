@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Facilities.TypedFactory.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -136,7 +137,7 @@ namespace PurchaseManagament.Application.Concrete.Services
                 result.Errors.Add("Kullanıcı Erişiminiz sınırlandırılmıştır bir hata olduğunu düşünüyorsanız yöneticinize başvurunuz.");
                 return result;
             }
-            if (existsEmployee.EmployeeRoles.IsNullOrEmpty())
+            if (existsEmployee.EmployeeRoles == null)
             {
                 result.Success = false;
                 result.Errors.Add("Hesabınız kullanıma hazır değildir .Bir sorun olduğunu düşünüyorsanız yöneticinize başvurunuz.");
